@@ -71,6 +71,8 @@ def fetch_capitron_html():
         timeout=25,
         verify=False,
     )
+    print(f"Status Code: {response.status_code}")
+    print(f"HTML Content: {response.text[:500]}...")  # Печать первых 500 символов
     response.raise_for_status()
     return response.text
 
