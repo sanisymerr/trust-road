@@ -1,4 +1,8 @@
+console.log("app.js loaded");
+
 async function loadRates(force = false) {
+  console.log("loadRates started");
+
   const statusEl = document.getElementById("status");
   const tableBody = document.getElementById("rates-body");
 
@@ -6,16 +10,11 @@ async function loadRates(force = false) {
     if (statusEl) statusEl.textContent = "Загрузка курсов...";
     if (tableBody) tableBody.innerHTML = "";
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-    const response = await fetch(`/api/rates${force ? "?force=1" : ""}`, {
-      signal: controller.signal
-    });
-
-    clearTimeout(timeoutId);
+    const response = await fetch(`/api/rates${force ? "?force=1" : ""}`);
+    console.log("response received");
 
     const data = await response.json();
+    console.log("api data", data);
 
     if (!data.ok) {
       throw new Error(data.error || "Не удалось загрузить курсы");
@@ -70,7 +69,7 @@ async function loadRates(force = false) {
           : "Курсы загружены.";
     }
   } catch (error) {
-    console.error(error);
+    console.log("loadRates error", error);
     if (statusEl) {
       statusEl.textContent = "Ошибка загрузки курсов.";
     }
@@ -84,23 +83,10 @@ function fillCurrencySelect(rates) {
   const currentValue = select.value;
   select.innerHTML = "";
 
-  // Добавить валюты
-  const currencyList = [
-    { code: 'USD', name: 'Ам доллар' },
-    { code: 'EUR', name: 'Евро' },
-    { code: 'CNY', name: 'Юань' },
-    { code: 'JPY', name: 'Иен' },
-    { code: 'KRW', name: 'Вон' },
-    { code: 'GBP', name: 'Фунт' },
-    { code: 'CHF', name: 'Франк' },
-    { code: 'SGD', name: 'Сингапур доллар' },
-    { code: 'HKD', name: 'Гонконг доллар' },
-  ];
-
-  currencyList.forEach((currency) => {
+  rates.forEach((item) => {
     const option = document.createElement("option");
-    option.value = currency.code;
-    option.textContent = `${currency.code} — ${currency.name}`;
+    option.value = item.code;
+    option.textContent = `${item.code} — ${item.name || item.code}`;
     select.appendChild(option);
   });
 
@@ -108,3 +94,54 @@ function fillCurrencySelect(rates) {
     select.value = currentValue;
   }
 }
+
+async function calculate() {
+  const amount = document.getElementById("amount")?.value;
+  const currency = document.getElementById("currency")?.value;
+  const mntEl = document.getElementById("result-mnt");
+  const rubEl = document.getElementById("result-rub");
+
+  if (!amount || !currency) {
+    if (mntEl) mntEl.textContent = "—";
+    if (rubEl) rubEl.textContent = "—";
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `/api/convert?amount=${encodeURIComponent(amount)}&currency=${encodeURIComponent(currency)}`
+    );
+    const data = await response.json();
+
+    if (!data.ok) {
+      throw new Error(data.error || "Ошибка расчёта");
+    }
+
+    if (mntEl) mntEl.textContent = formatNumber(data.total_mnt);
+    if (rubEl) rubEl.textContent = formatNumber(data.total_rub);
+  } catch (error) {
+    console.log("calculate error", error);
+    if (mntEl) mntEl.textContent = "Ошибка";
+    if (rubEl) rubEl.textContent = "Ошибка";
+  }
+}
+
+function formatNumber(value) {
+  const num = Number(value);
+  if (Number.isNaN(num)) return "—";
+  return num.toLocaleString("ru-RU", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOMContentLoaded fired");
+
+  document.getElementById("reload-rates")?.addEventListener("click", () => loadRates(true));
+  document.getElementById("calculate-btn")?.addEventListener("click", calculate);
+  document.getElementById("amount")?.addEventListener("input", calculate);
+  document.getElementById("currency")?.addEventListener("change", calculate);
+
+  loadRates(false);
+});
