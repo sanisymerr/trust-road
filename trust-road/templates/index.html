@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trust Road</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>Trust Road</h1>
+      <p class="sub">Курсы Capitron Bank • Бэлэн бус → Зарах</p>
+    </section>
+
+    <section class="card calculator-card">
+      <div class="field">
+        <label for="amount">Сумма</label>
+        <input id="amount" type="number" min="0" step="0.01" placeholder="Например, 50000" />
+      </div>
+
+      <div class="field">
+        <label for="currency">Валюта клиента</label>
+        <select id="currency"></select>
+      </div>
+
+      <button id="convertBtn">Рассчитать</button>
+
+      <div class="result-grid">
+        <div class="result-box">
+          <span class="result-label">Итого в тугриках (MNT)</span>
+          <strong id="mntResult">—</strong>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Итого в рублях (RUB)</span>
+          <strong id="rubResult">—</strong>
+        </div>
+      </div>
+
+      <div class="meta">
+        <span id="status">Загрузка курсов Capitron...</span>
+      </div>
+    </section>
+
+    <section class="card rates-card">
+      <div class="rates-head">
+        <h2>Валюты Capitron и курс из последнего столбца</h2>
+        <button id="refreshBtn" class="ghost-btn">Обновить</button>
+      </div>
+      <p class="rates-note">Клик по строке — выбрать валюту</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Валюта</th>
+              <th>Курс (MNT)</th>
+            </tr>
+          </thead>
+          <tbody id="ratesBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const amountInput = document.getElementById('amount');
+    const currencySelect = document.getElementById('currency');
+    const convertBtn = document.getElementById('convertBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const ratesBody = document.getElementById('ratesBody');
+    const statusNode = document.getElementById('status');
+    const mntResult = document.getElementById('mntResult');
+    const rubResult = document.getElementById('rubResult');
+
+    let rates = [];
+
+    function formatNumber(value, digits = 2) {
+      return new Intl.NumberFormat('ru-RU', {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits,
+      }).format(value);
+    }
+
+    function setStatus(text, isError = false) {
+      statusNode.textContent = text;
+      statusNode.classList.toggle('error', isError);
+    }
+
+    function renderRates() {
+      ratesBody.innerHTML = '';
+      currencySelect.innerHTML = '';
+
+      rates.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${item.code}</td><td>${formatNumber(item.rate, 2)}</td>`;
+        tr.addEventListener('click', () => {
+          currencySelect.value = item.code;
+        });
+        ratesBody.appendChild(tr);
+
+        const option = document.createElement('option');
+        option.value = item.code;
+        option.textContent = item.code;
+        currencySelect.appendChild(option);
+      });
+    }
+
+    async function loadRates() {
+      setStatus('Загрузка курсов Capitron...');
+      try {
+        const response = await fetch('/api/rates');
+        const data = await response.json();
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || 'Не удалось загрузить курсы.');
+        }
+        rates = data.items;
+        renderRates();
+        setStatus('Курсы загружены. Используется последний столбец: Бэлэн бус → Зарах.');
+      } catch (error) {
+        setStatus(error.message || 'Ошибка загрузки курсов.', true);
+      }
+    }
+
+    async function convert() {
+      const amount = amountInput.value.trim();
+      const currency = currencySelect.value;
+      if (!amount) {
+        setStatus('Введите сумму.', true);
+        return;
+      }
+      if (!currency) {
+        setStatus('Выберите валюту.', true);
+        return;
+      }
+
+      setStatus('Считаю...');
+      try {
+        const response = await fetch(`/api/convert?amount=${encodeURIComponent(amount)}&currency=${encodeURIComponent(currency)}`);
+        const data = await response.json();
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || 'Не удалось выполнить расчет.');
+        }
+        mntResult.textContent = formatNumber(data.total_mnt, 2);
+        rubResult.textContent = formatNumber(data.total_rub, 2);
+        setStatus(`Курс ${data.currency}: ${formatNumber(data.client_rate, 2)} MNT • RUB: ${formatNumber(data.rub_rate, 2)} MNT`);
+      } catch (error) {
+        setStatus(error.message || 'Ошибка расчета.', true);
+      }
+    }
+
+    convertBtn.addEventListener('click', convert);
+    refreshBtn.addEventListener('click', loadRates);
+    amountInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') convert();
+    });
+
+    loadRates();
+  </script>
+</body>
+</html>
