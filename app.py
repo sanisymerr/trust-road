@@ -227,6 +227,27 @@ def parse_capitron(html):
         except Exception:
             pass
 
+    # заменяем валюты на текстовые:
+    for code, value in merged.items():
+        if code == "USD":
+            value["name"] = "Ам доллар"
+        elif code == "EUR":
+            value["name"] = "Евро"
+        elif code == "CNY":
+            value["name"] = "Юань"
+        elif code == "JPY":
+            value["name"] = "Иен"
+        elif code == "KRW":
+            value["name"] = "Вон"
+        elif code == "GBP":
+            value["name"] = "Фунт"
+        elif code == "CHF":
+            value["name"] = "Франк"
+        elif code == "SGD":
+            value["name"] = "Сингапур доллар"
+        elif code == "HKD":
+            value["name"] = "Гонконг доллар"
+
     if not merged:
         return {}
 
