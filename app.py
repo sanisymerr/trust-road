@@ -10,7 +10,22 @@ from flask import Flask, jsonify, render_template, request
 
 app = Flask(__name__)
 
-CAPITRON_URL = "https://www.capitronbank.mn/p/exchange?lang=&type="
+// Заменим URL на переменную
+const CAPITRON_URL = "https://www.capitronbank.mn/p/exchange?lang=&type";
+
+// Используем прокси для обхода CORS
+const url = 'https://cors-anywhere.herokuapp.com/' + CAPITRON_URL;
+
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);  // Посмотрим, что нам вернется
+    // Здесь можно обработать данные для отображения
+  })
+  .catch(error => {
+    console.error('Ошибка при запросе:', error);
+  });
+
 CACHE_DIR = Path("data")
 CACHE_DIR.mkdir(exist_ok=True)
 CACHE_FILE = CACHE_DIR / "capitron_rates.json"
