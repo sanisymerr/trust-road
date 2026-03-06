@@ -6,7 +6,15 @@ async function loadRates(force = false) {
     if (statusEl) statusEl.textContent = "Загрузка курсов...";
     if (tableBody) tableBody.innerHTML = "";
 
-    const response = await fetch(`/api/rates${force ? "?force=1" : ""}`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+    const response = await fetch(`/api/rates${force ? "?force=1" : ""}`, {
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
     const data = await response.json();
 
     if (!data.ok) {
@@ -56,13 +64,15 @@ async function loadRates(force = false) {
           : source === "cache"
           ? "Курсы загружены из cache."
           : source === "stale_cache"
-          ? "Live-курсы недоступны, показан последний сохранённый cache."
+          ? "Capitron недоступен, показан сохранённый курс."
+          : source === "fallback"
+          ? "Capitron недоступен, показаны резервные курсы."
           : "Курсы загружены.";
     }
   } catch (error) {
     console.error(error);
     if (statusEl) {
-      statusEl.textContent = error.message || "Ошибка загрузки курсов.";
+      statusEl.textContent = "Ошибка загрузки курсов.";
     }
   }
 }

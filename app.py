@@ -81,7 +81,7 @@ def fetch_capitron_html():
     response = requests.get(
         CAPITRON_URL,
         headers=HEADERS,
-        timeout=25,
+        timeout=8,
         verify=False,
     )
     response.raise_for_status()
@@ -188,7 +188,6 @@ def parse_capitron(html):
 
     return filtered
 
-
 def get_rates(force=False):
     cached = load_cache()
 
@@ -204,7 +203,7 @@ def get_rates(force=False):
         html = fetch_capitron_html()
         rates = parse_capitron(html)
 
-        if rates:
+        if rates and "RUB" in rates:
             save_cache(rates)
             return rates, {
                 "source": "capitron_live",
@@ -215,10 +214,25 @@ def get_rates(force=False):
             return cached["rates"], {
                 "source": "stale_cache",
                 "updated_at": cached.get("updated_at"),
-                "warning": "Capitron live parsing failed, using cached data.",
+                "warning": "Capitron parsed incorrectly, using cache.",
             }
 
-        raise RuntimeError("Не удалось получить курсы Capitron.")
+        return {
+            "USD": {"code": "USD", "name": "Ам доллар", "rate": 3566.60},
+            "EUR": {"code": "EUR", "name": "Евро", "rate": 4324.00},
+            "CNY": {"code": "CNY", "name": "Юань", "rate": 523.00},
+            "JPY": {"code": "JPY", "name": "Иен", "rate": 23.42},
+            "KRW": {"code": "KRW", "name": "Вон", "rate": 2.53},
+            "GBP": {"code": "GBP", "name": "Фунт", "rate": 4951.00},
+            "CHF": {"code": "CHF", "name": "Франк", "rate": 4667.00},
+            "SGD": {"code": "SGD", "name": "Сингапур доллар", "rate": 2640.00},
+            "HKD": {"code": "HKD", "name": "Гонконг доллар", "rate": 458.00},
+            "RUB": {"code": "RUB", "name": "Рубль", "rate": 39.00},
+        }, {
+            "source": "fallback",
+            "updated_at": int(time.time()),
+            "warning": "Capitron unavailable, using fallback values.",
+        }
 
     except Exception as e:
         if cached and cached.get("rates"):
@@ -227,7 +241,23 @@ def get_rates(force=False):
                 "updated_at": cached.get("updated_at"),
                 "warning": str(e),
             }
-        raise
+
+        return {
+            "USD": {"code": "USD", "name": "Ам доллар", "rate": 3566.60},
+            "EUR": {"code": "EUR", "name": "Евро", "rate": 4324.00},
+            "CNY": {"code": "CNY", "name": "Юань", "rate": 523.00},
+            "JPY": {"code": "JPY", "name": "Иен", "rate": 23.42},
+            "KRW": {"code": "KRW", "name": "Вон", "rate": 2.53},
+            "GBP": {"code": "GBP", "name": "Фунт", "rate": 4951.00},
+            "CHF": {"code": "CHF", "name": "Франк", "rate": 4667.00},
+            "SGD": {"code": "SGD", "name": "Сингапур доллар", "rate": 2640.00},
+            "HKD": {"code": "HKD", "name": "Гонконг доллар", "rate": 458.00},
+            "RUB": {"code": "RUB", "name": "Рубль", "rate": 39.00},
+        }, {
+            "source": "fallback",
+            "updated_at": int(time.time()),
+            "warning": str(e),
+        }
 
 
 @app.route("/")
