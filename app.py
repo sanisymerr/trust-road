@@ -10,27 +10,11 @@ from flask import Flask, jsonify, render_template, request
 
 app = Flask(__name__)
 
-# Заменим URL на переменную
-CAPITRON_URL = "https://www.capitronbank.mn/p/exchange?lang=&type"
-
-// Используем прокси для обхода CORS
-const url = 'https://cors-anywhere.herokuapp.com/' + CAPITRON_URL;
-
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);  // Посмотрим, что нам вернется
-    // Здесь можно обработать данные для отображения
-  })
-  .catch(error => {
-    console.error('Ошибка при запросе:', error);
-  });
-
+CAPITRON_URL = "https://www.capitronbank.mn/p/exchange?lang=&type="
 CACHE_DIR = Path("data")
 CACHE_DIR.mkdir(exist_ok=True)
 CACHE_FILE = CACHE_DIR / "capitron_rates.json"
 CACHE_TTL = 60 * 10  # 10 минут
-
 
 HEADERS = {
     "User-Agent": (
@@ -42,6 +26,20 @@ HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Cache-Control": "no-cache",
     "Pragma": "no-cache",
+}
+
+
+CURRENCY_NAMES = {
+    "USD": "Ам доллар",
+    "EUR": "Евро",
+    "CNY": "Юань",
+    "JPY": "Иен",
+    "KRW": "Вон",
+    "GBP": "Фунт",
+    "CHF": "Франк",
+    "SGD": "Сингапур доллар",
+    "HKD": "Гонконг доллар",
+    "RUB": "Рубль",
 }
 
 
@@ -86,8 +84,6 @@ def fetch_capitron_html():
         timeout=25,
         verify=False,
     )
-    print(f"Status Code: {response.status_code}")
-    print(f"HTML Content: {response.text[:500]}...")  # Печать первых 500 символов
     response.raise_for_status()
     return response.text
 
@@ -95,22 +91,21 @@ def fetch_capitron_html():
 def extract_currency_code(text):
     text = (text or "").strip().upper()
 
-    m = re.search(r"\b([A-Z]{3})\1\b", text)
-    if m:
-        return m.group(1)
-
-    m = re.search(r"\b([A-Z]{3})\b", text)
-    if m:
-        return m.group(1)
+    known_codes = list(CURRENCY_NAMES.keys())
+    for code in known_codes:
+        if re.search(rf"\b{code}\b", text):
+            return code
+        if re.search(rf"\b{code}{code}\b", text):
+            return code
 
     return None
 
 
 def parse_from_tables(html):
     soup = BeautifulSoup(html, "html.parser")
-    tables = soup.find_all("table")
     results = {}
 
+    tables = soup.find_all("table")
     for table in tables:
         rows = table.find_all("tr")
         for row in rows:
@@ -125,16 +120,22 @@ def parse_from_tables(html):
             if not code:
                 continue
 
-            numbers = [normalize_number(x) for x in texts]
-            numbers = [x for x in numbers if x is not None]
+            # Берем все числа из строки
+            numbers = []
+            for t in texts:
+                found = re.findall(r"\d[\d,\.]*", t)
+                numbers.extend(found)
 
-            # берем последнее числовое значение в строке
-            if numbers:
-                rate = numbers[-1]
+            parsed_numbers = [normalize_number(x) for x in numbers]
+            parsed_numbers = [x for x in parsed_numbers if x is not None]
+
+            # На странице Capitron обычно нужный курс — последнее число строки
+            if parsed_numbers:
+                rate = parsed_numbers[-1]
                 if rate and rate > 0:
                     results[code] = {
                         "code": code,
-                        "name": texts[1] if len(texts) > 1 else code,
+                        "name": CURRENCY_NAMES.get(code, code),
                         "rate": rate,
                         "raw": texts,
                     }
@@ -142,69 +143,11 @@ def parse_from_tables(html):
     return results
 
 
-def parse_from_text_blocks(html):
-    results = {}
-    lines = html.splitlines()
-
-    for line in lines:
-        code = extract_currency_code(line)
-        if not code:
-            continue
-
-        found_numbers = re.findall(r"\d[\d,\.]*", line)
-        numbers = [normalize_number(x) for x in found_numbers]
-        numbers = [x for x in numbers if x is not None]
-
-        if numbers:
-            rate = numbers[-1]
-            if rate and rate > 0:
-                results[code] = {
-                    "code": code,
-                    "name": code,
-                    "rate": rate,
-                    "raw": found_numbers,
-                }
-
-    return results
-
-
-def parse_from_script_json(html):
-    results = {}
-
-    pattern = re.compile(
-        r'([A-Z]{3})(?:\1)?[^0-9]{1,120}'
-        r'([0-9][0-9,\.]*)[^0-9]+'
-        r'([0-9][0-9,\.]*)[^0-9]+'
-        r'([0-9][0-9,\.]*)[^0-9]+'
-        r'([0-9][0-9,\.]*)[^0-9]+'
-        r'([0-9][0-9,\.]*)'
-    )
-
-    for match in pattern.finditer(html):
-        code = match.group(1)
-        nums = [normalize_number(match.group(i)) for i in range(2, 7)]
-        nums = [x for x in nums if x is not None]
-
-        if nums:
-            rate = nums[-1]
-            if rate and rate > 0:
-                results[code] = {
-                    "code": code,
-                    "name": code,
-                    "rate": rate,
-                    "raw": nums,
-                }
-
-    return results
-
-
 def parse_from_known_lines(html):
     results = {}
-    currency_codes = ["USD", "EUR", "CNY", "JPY", "KRW", "GBP", "CHF", "RUB"]
-
-    for code in currency_codes:
+    for code in CURRENCY_NAMES.keys():
         matches = re.findall(
-            rf"{code}(?:{code})?.{{0,120}}?(\d[\d,\.]*).{{0,40}}?(\d[\d,\.]*).{{0,40}}?(\d[\d,\.]*).{{0,40}}?(\d[\d,\.]*).{{0,40}}?(\d[\d,\.]*)",
+            rf"{code}(?:{code})?.{{0,200}}?(\d[\d,\.]*).{{0,50}}?(\d[\d,\.]*).{{0,50}}?(\d[\d,\.]*).{{0,50}}?(\d[\d,\.]*).{{0,50}}?(\d[\d,\.]*)",
             html,
             flags=re.IGNORECASE | re.DOTALL,
         )
@@ -217,7 +160,7 @@ def parse_from_known_lines(html):
                 if rate and rate > 0:
                     results[code] = {
                         "code": code,
-                        "name": code,
+                        "name": CURRENCY_NAMES.get(code, code),
                         "rate": rate,
                         "raw": nums,
                     }
@@ -229,14 +172,7 @@ def parse_from_known_lines(html):
 def parse_capitron(html):
     merged = {}
 
-    parsers = [
-        parse_from_tables,
-        parse_from_script_json,
-        parse_from_known_lines,
-        parse_from_text_blocks,
-    ]
-
-    for parser in parsers:
+    for parser in [parse_from_tables, parse_from_known_lines]:
         try:
             parsed = parser(html)
             if parsed:
@@ -244,31 +180,13 @@ def parse_capitron(html):
         except Exception:
             pass
 
-    # заменяем валюты на текстовые:
+    # Оставляем только нормальные валюты
+    filtered = {}
     for code, value in merged.items():
-        if code == "USD":
-            value["name"] = "Ам доллар"
-        elif code == "EUR":
-            value["name"] = "Евро"
-        elif code == "CNY":
-            value["name"] = "Юань"
-        elif code == "JPY":
-            value["name"] = "Иен"
-        elif code == "KRW":
-            value["name"] = "Вон"
-        elif code == "GBP":
-            value["name"] = "Фунт"
-        elif code == "CHF":
-            value["name"] = "Франк"
-        elif code == "SGD":
-            value["name"] = "Сингапур доллар"
-        elif code == "HKD":
-            value["name"] = "Гонконг доллар"
+        if code in CURRENCY_NAMES:
+            filtered[code] = value
 
-    if not merged:
-        return {}
-
-    return merged
+    return filtered
 
 
 def get_rates(force=False):
