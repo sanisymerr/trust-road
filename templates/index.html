@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -8,59 +8,56 @@
 </head>
 <body>
   <main class="page">
-    <section class="hero">
+    <section class="container">
       <h1>Trust Road</h1>
-      <p class="sub">Курсы Capitron Bank • Бэлэн бус → Зарах</p>
-    </section>
+      <p class="subtitle">Курсы Capitron Bank · Бэлэн бус → Зарах</p>
 
-    <section class="card calculator-card">
-      <div class="field">
+      <div class="card">
         <label for="amount">Сумма</label>
-        <input id="amount" type="number" min="0" step="0.01" placeholder="Например, 50000" />
-      </div>
+        <input id="amount" type="number" value="100" min="0" step="any" />
 
-      <div class="field">
         <label for="currency">Валюта клиента</label>
         <select id="currency"></select>
-      </div>
 
-      <button id="convertBtn">Рассчитать</button>
+        <button id="calculate-btn" type="button">Рассчитать</button>
 
-      <div class="result-grid">
-        <div class="result-box">
-          <span class="result-label">Итого в тугриках (MNT)</span>
-          <strong id="mntResult">—</strong>
+        <div class="results">
+          <div class="result-box">
+            <div class="result-label">Итого в тугриках (MNT)</div>
+            <div id="result-mnt" class="result-value">—</div>
+          </div>
+          <div class="result-box">
+            <div class="result-label">Итого в рублях (RUB)</div>
+            <div id="result-rub" class="result-value">—</div>
+          </div>
         </div>
-        <div class="result-box">
-          <span class="result-label">Итого в рублях (RUB)</span>
-          <strong id="rubResult">—</strong>
+
+        <div id="status" class="status">Загрузка курсов...</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Валюты Capitron и курс из последнего столбца</h2>
+            <p class="hint">Клик по строке — выбрать валюту</p>
+          </div>
+          <button id="reload-rates" type="button">Обновить</button>
         </div>
-      </div>
 
-      <div class="meta">
-        <span id="status">Загрузка курсов Capitron...</span>
-      </div>
-    </section>
-
-    <section class="card rates-card">
-      <div class="rates-head">
-        <h2>Валюты Capitron и курс из последнего столбца</h2>
-        <button id="refreshBtn" class="ghost-btn">Обновить</button>
-      </div>
-      <p class="rates-note">Клик по строке — выбрать валюту</p>
-      <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>Валюта</th>
+              <th>Название</th>
               <th>Курс (MNT)</th>
             </tr>
           </thead>
-          <tbody id="ratesBody"></tbody>
+          <tbody id="rates-body"></tbody>
         </table>
       </div>
     </section>
   </main>
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

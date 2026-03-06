@@ -128,6 +128,7 @@ function formatNumber(value) {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("reload-rates")?.addEventListener("click", () => loadRates(true));
+  document.getElementById("calculate-btn")?.addEventListener("click", calculate);
   document.getElementById("amount")?.addEventListener("input", calculate);
   document.getElementById("currency")?.addEventListener("change", calculate);
   loadRates(false);
