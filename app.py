@@ -10,8 +10,8 @@ from flask import Flask, jsonify, render_template, request
 
 app = Flask(__name__)
 
-// Заменим URL на переменную
-const CAPITRON_URL = "https://www.capitronbank.mn/p/exchange?lang=&type";
+# Заменим URL на переменную
+CAPITRON_URL = "https://www.capitronbank.mn/p/exchange?lang=&type"
 
 // Используем прокси для обхода CORS
 const url = 'https://cors-anywhere.herokuapp.com/' + CAPITRON_URL;
