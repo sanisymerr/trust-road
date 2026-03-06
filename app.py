@@ -1,11 +1,9 @@
-from __future__ import annotations
-
+import json
 import os
 import re
-import unicodedata
-from typing import Dict, List, Optional
+import time
+from pathlib import Path
 
-import certifi
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask, jsonify, render_template, request
@@ -13,224 +11,267 @@ from flask import Flask, jsonify, render_template, request
 app = Flask(__name__)
 
 CAPITRON_URL = "https://www.capitronbank.mn/p/exchange?lang=&type="
-TIMEOUT = 20
+CACHE_DIR = Path("data")
+CACHE_DIR.mkdir(exist_ok=True)
+CACHE_FILE = CACHE_DIR / "capitron_rates.json"
+CACHE_TTL = 60 * 10  # 10 минут
 
-# Common aliases found on banking sites / merged cells / duplicate codes.
-CODE_ALIASES = {
-    "RUR": "RUB",
-    "USDT": "USD",
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/122.0.0.0 Safari/537.36"
+    ),
+    "Accept-Language": "ru,en;q=0.9,mn;q=0.8",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
 }
 
-# Candidate header names for the column user needs.
-TARGET_HEADER_CANDIDATES = [
-    "бэлэн бус зарах",
-    "бэлэнбус зарах",
-    "бэлэн бус",
-    "cashless sell",
-    "non cash sell",
-    "noncash sell",
-    "sell",
-]
 
-
-def normalize_text(value: str) -> str:
-    value = unicodedata.normalize("NFKC", value or "")
-    value = value.strip().lower()
-    value = re.sub(r"\s+", " ", value)
-    value = value.replace("ё", "е")
-    return value
-
-
-def parse_number(value: str) -> Optional[float]:
+def normalize_number(value):
     if value is None:
         return None
-    text = str(value).strip()
-    if not text:
-        return None
-    text = text.replace("\xa0", " ").replace(" ", "")
-    text = text.replace(",", "")
-    match = re.search(r"-?\d+(?:\.\d+)?", text)
-    if not match:
+    s = str(value).strip()
+    s = s.replace("\xa0", "").replace(" ", "")
+    s = s.replace(",", "")
+    s = s.replace("—", "").replace("-", "")
+    if not s:
         return None
     try:
-        return float(match.group(0))
+        return float(s)
     except ValueError:
         return None
 
 
-def extract_currency_code(text: str) -> Optional[str]:
-    raw = re.sub(r"[^A-Za-z]", "", text or "").upper()
-    if len(raw) >= 6 and raw[:3] == raw[3:6]:
-        raw = raw[:3]
-    if len(raw) > 3:
-        found = re.findall(r"[A-Z]{3}", raw)
-        if found:
-            raw = found[0]
-    if len(raw) != 3:
+def load_cache():
+    if not CACHE_FILE.exists():
         return None
-    return CODE_ALIASES.get(raw, raw)
+    try:
+        with open(CACHE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
 
 
-def pick_target_column(headers: List[str]) -> int:
-    normalized = [normalize_text(h) for h in headers]
-
-    # Strong matches first.
-    for candidate in TARGET_HEADER_CANDIDATES:
-        for i, header in enumerate(normalized):
-            if candidate in header:
-                return i
-
-    # If there's a grouped header layout, choose the last numeric column as fallback.
-    if len(headers) >= 3:
-        return len(headers) - 1
-
-    raise ValueError("Не удалось определить столбец 'Бэлэн бус / Зарах'.")
-
-
-def fetch_html() -> str:
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/122.0 Safari/537.36"
-        ),
-        "Accept-Language": "mn,en;q=0.9,ru;q=0.8",
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache",
+def save_cache(rates):
+    payload = {
+        "updated_at": int(time.time()),
+        "rates": rates,
     }
-
-    last_error: Optional[Exception] = None
-
-    # First, try strict certificate verification.
-    try:
-        response = requests.get(
-            CAPITRON_URL,
-            headers=headers,
-            timeout=TIMEOUT,
-            verify=certifi.where(),
-        )
-        response.raise_for_status()
-        return response.text
-    except Exception as exc:  # noqa: BLE001
-        last_error = exc
-
-    # Fallback for some hosts where the runtime CA bundle is broken.
-    try:
-        response = requests.get(
-            CAPITRON_URL,
-            headers=headers,
-            timeout=TIMEOUT,
-            verify=False,
-        )
-        response.raise_for_status()
-        return response.text
-    except Exception as exc:  # noqa: BLE001
-        last_error = exc
-
-    raise RuntimeError(f"Не удалось загрузить страницу Capitron: {last_error}")
+    with open(CACHE_FILE, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
 
 
-def parse_rates_from_html(html: str) -> Dict[str, float]:
+def fetch_capitron_html():
+    response = requests.get(
+        CAPITRON_URL,
+        headers=HEADERS,
+        timeout=25,
+        verify=False,
+    )
+    response.raise_for_status()
+    return response.text
+
+
+def extract_currency_code(text):
+    text = (text or "").strip().upper()
+
+    m = re.search(r"\b([A-Z]{3})\1\b", text)
+    if m:
+        return m.group(1)
+
+    m = re.search(r"\b([A-Z]{3})\b", text)
+    if m:
+        return m.group(1)
+
+    return None
+
+
+def parse_from_tables(html):
     soup = BeautifulSoup(html, "html.parser")
     tables = soup.find_all("table")
-    if not tables:
-        raise ValueError("На странице Capitron не найдены таблицы с курсами.")
-
-    best_rates: Dict[str, float] = {}
-    last_error: Optional[Exception] = None
+    results = {}
 
     for table in tables:
+        rows = table.find_all("tr")
+        for row in rows:
+            cells = row.find_all(["td", "th"])
+            texts = [cell.get_text(" ", strip=True) for cell in cells]
+
+            if len(texts) < 3:
+                continue
+
+            row_text = " | ".join(texts)
+            code = extract_currency_code(row_text)
+            if not code:
+                continue
+
+            numbers = [normalize_number(x) for x in texts]
+            numbers = [x for x in numbers if x is not None]
+
+            # берем последнее числовое значение в строке
+            if numbers:
+                rate = numbers[-1]
+                if rate and rate > 0:
+                    results[code] = {
+                        "code": code,
+                        "name": texts[1] if len(texts) > 1 else code,
+                        "rate": rate,
+                        "raw": texts,
+                    }
+
+    return results
+
+
+def parse_from_text_blocks(html):
+    results = {}
+    lines = html.splitlines()
+
+    for line in lines:
+        code = extract_currency_code(line)
+        if not code:
+            continue
+
+        found_numbers = re.findall(r"\d[\d,\.]*", line)
+        numbers = [normalize_number(x) for x in found_numbers]
+        numbers = [x for x in numbers if x is not None]
+
+        if numbers:
+            rate = numbers[-1]
+            if rate and rate > 0:
+                results[code] = {
+                    "code": code,
+                    "name": code,
+                    "rate": rate,
+                    "raw": found_numbers,
+                }
+
+    return results
+
+
+def parse_from_script_json(html):
+    results = {}
+
+    pattern = re.compile(
+        r'([A-Z]{3})(?:\1)?[^0-9]{1,120}'
+        r'([0-9][0-9,\.]*)[^0-9]+'
+        r'([0-9][0-9,\.]*)[^0-9]+'
+        r'([0-9][0-9,\.]*)[^0-9]+'
+        r'([0-9][0-9,\.]*)[^0-9]+'
+        r'([0-9][0-9,\.]*)'
+    )
+
+    for match in pattern.finditer(html):
+        code = match.group(1)
+        nums = [normalize_number(match.group(i)) for i in range(2, 7)]
+        nums = [x for x in nums if x is not None]
+
+        if nums:
+            rate = nums[-1]
+            if rate and rate > 0:
+                results[code] = {
+                    "code": code,
+                    "name": code,
+                    "rate": rate,
+                    "raw": nums,
+                }
+
+    return results
+
+
+def parse_from_known_lines(html):
+    results = {}
+    currency_codes = ["USD", "EUR", "CNY", "JPY", "KRW", "GBP", "CHF", "RUB"]
+
+    for code in currency_codes:
+        matches = re.findall(
+            rf"{code}(?:{code})?.{{0,120}}?(\d[\d,\.]*).{{0,40}}?(\d[\d,\.]*).{{0,40}}?(\d[\d,\.]*).{{0,40}}?(\d[\d,\.]*).{{0,40}}?(\d[\d,\.]*)",
+            html,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+
+        for match in matches:
+            nums = [normalize_number(x) for x in match]
+            nums = [x for x in nums if x is not None]
+            if nums:
+                rate = nums[-1]
+                if rate and rate > 0:
+                    results[code] = {
+                        "code": code,
+                        "name": code,
+                        "rate": rate,
+                        "raw": nums,
+                    }
+                    break
+
+    return results
+
+
+def parse_capitron(html):
+    merged = {}
+
+    parsers = [
+        parse_from_tables,
+        parse_from_script_json,
+        parse_from_known_lines,
+        parse_from_text_blocks,
+    ]
+
+    for parser in parsers:
         try:
-            rates = parse_rates_from_table(table)
-            if len(rates) > len(best_rates):
-                best_rates = rates
-        except Exception as exc:  # noqa: BLE001
-            last_error = exc
-            continue
+            parsed = parser(html)
+            if parsed:
+                merged.update(parsed)
+        except Exception:
+            pass
 
-    if best_rates:
-        return best_rates
+    if not merged:
+        return {}
 
-    raise ValueError(f"Не удалось распарсить курсы Capitron: {last_error}")
-
-
-def parse_rates_from_table(table) -> Dict[str, float]:
-    rows = table.find_all("tr")
-    if not rows:
-        raise ValueError("Пустая таблица")
-
-    headers: List[str] = []
-    data_rows = []
-
-    for row in rows:
-        ths = row.find_all("th")
-        tds = row.find_all("td")
-        cells = ths or tds
-        values = [cell.get_text(" ", strip=True) for cell in cells]
-        if not values:
-            continue
-        if ths and not data_rows:
-            headers = values
-            continue
-        data_rows.append(values)
-
-    if not headers and data_rows:
-        # Sometimes the first row is a header but marked with <td>.
-        candidate_headers = data_rows[0]
-        if any(normalize_text(x) for x in candidate_headers[1:]):
-            headers = candidate_headers
-            data_rows = data_rows[1:]
-
-    if not headers:
-        raise ValueError("Не найдены заголовки")
-
-    target_col = pick_target_column(headers)
-    rates: Dict[str, float] = {}
-
-    for row in data_rows:
-        if len(row) < 2:
-            continue
-        code = None
-        for cell in row[:2]:
-            code = extract_currency_code(cell)
-            if code:
-                break
-        if not code:
-            merged = " ".join(row[:2])
-            code = extract_currency_code(merged)
-        if not code:
-            continue
-
-        value: Optional[float] = None
-        if target_col < len(row):
-            value = parse_number(row[target_col])
-
-        # Fallback: choose last numeric cell in the row.
-        if value is None:
-            numeric_candidates = [parse_number(cell) for cell in row[1:]]
-            numeric_candidates = [x for x in numeric_candidates if x is not None]
-            if numeric_candidates:
-                value = numeric_candidates[-1]
-
-        if value is None:
-            continue
-        rates[code] = value
-
-    if not rates:
-        raise ValueError("Не найдены курсы валют")
-
-    return rates
+    return merged
 
 
-def get_rates() -> Dict[str, float]:
-    html = fetch_html()
-    rates = parse_rates_from_html(html)
+def get_rates(force=False):
+    cached = load_cache()
 
-    # Normalize and keep only sensible numeric values.
-    cleaned = {k: float(v) for k, v in rates.items() if isinstance(v, (int, float)) and v > 0}
-    if "RUB" not in cleaned:
-        raise ValueError("В таблице Capitron не найден RUB. Без него нельзя посчитать итог в рублях.")
-    return cleaned
+    if not force and cached:
+        age = int(time.time()) - int(cached.get("updated_at", 0))
+        if age < CACHE_TTL and cached.get("rates"):
+            return cached["rates"], {
+                "source": "cache",
+                "updated_at": cached.get("updated_at"),
+            }
+
+    try:
+        html = fetch_capitron_html()
+        rates = parse_capitron(html)
+
+        if rates:
+            save_cache(rates)
+            return rates, {
+                "source": "capitron_live",
+                "updated_at": int(time.time()),
+            }
+
+        if cached and cached.get("rates"):
+            return cached["rates"], {
+                "source": "stale_cache",
+                "updated_at": cached.get("updated_at"),
+                "warning": "Capitron live parsing failed, using cached data.",
+            }
+
+        raise RuntimeError("Не удалось получить курсы Capitron.")
+
+    except Exception as e:
+        if cached and cached.get("rates"):
+            return cached["rates"], {
+                "source": "stale_cache",
+                "updated_at": cached.get("updated_at"),
+                "warning": str(e),
+            }
+        raise
 
 
 @app.route("/")
@@ -238,54 +279,61 @@ def index():
     return render_template("index.html")
 
 
-@app.get("/api/rates")
+@app.route("/api/rates")
 def api_rates():
     try:
-        rates = get_rates()
-        items = [{"code": code, "rate": rates[code]} for code in sorted(rates.keys())]
-        return jsonify({"ok": True, "items": items, "source": CAPITRON_URL})
-    except Exception as exc:  # noqa: BLE001
-        return jsonify({"ok": False, "error": str(exc)}), 500
+        rates, meta = get_rates(force=request.args.get("force") == "1")
+        return jsonify({
+            "ok": True,
+            "rates": rates,
+            "meta": meta,
+        })
+    except Exception as e:
+        return jsonify({
+            "ok": False,
+            "error": str(e),
+            "rates": {},
+            "meta": {"source": "error"},
+        }), 500
 
 
-@app.get("/api/convert")
+@app.route("/api/convert")
 def api_convert():
-    amount_raw = request.args.get("amount", "")
-    currency = (request.args.get("currency", "") or "").upper().strip()
+    amount = request.args.get("amount", type=float)
+    currency = (request.args.get("currency") or "").upper()
 
-    amount = parse_number(amount_raw)
-    if amount is None or amount < 0:
+    if not amount or amount <= 0:
         return jsonify({"ok": False, "error": "Некорректная сумма."}), 400
-    if not currency:
-        return jsonify({"ok": False, "error": "Не выбрана валюта."}), 400
 
-    try:
-        rates = get_rates()
-    except Exception as exc:  # noqa: BLE001
-        return jsonify({"ok": False, "error": str(exc)}), 500
+    if not currency:
+        return jsonify({"ok": False, "error": "Не указана валюта."}), 400
+
+    rates, meta = get_rates(force=False)
 
     if currency not in rates:
-        return jsonify({"ok": False, "error": f"Валюта {currency} не найдена в Capitron."}), 400
+        return jsonify({"ok": False, "error": f"Валюта {currency} не найдена."}), 404
 
-    client_rate = rates[currency]
-    rub_rate = rates["RUB"]
-    total_mnt = amount * client_rate
+    if "RUB" not in rates:
+        return jsonify({"ok": False, "error": "Курс RUB не найден."}), 500
+
+    rate_to_mnt = rates[currency]["rate"]
+    rub_rate = rates["RUB"]["rate"]
+
+    total_mnt = amount * rate_to_mnt
     total_rub = total_mnt / rub_rate
 
-    return jsonify(
-        {
-            "ok": True,
-            "amount": amount,
-            "currency": currency,
-            "client_rate": client_rate,
-            "rub_rate": rub_rate,
-            "total_mnt": total_mnt,
-            "total_rub": total_rub,
-            "source": CAPITRON_URL,
-        }
-    )
+    return jsonify({
+        "ok": True,
+        "currency": currency,
+        "amount": amount,
+        "rate_to_mnt": rate_to_mnt,
+        "rub_rate": rub_rate,
+        "total_mnt": round(total_mnt, 2),
+        "total_rub": round(total_rub, 2),
+        "meta": meta,
+    })
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
