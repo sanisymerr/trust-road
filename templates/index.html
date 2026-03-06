@@ -63,98 +63,133 @@
   </main>
 
   <script>
-    const amountInput = document.getElementById('amount');
-    const currencySelect = document.getElementById('currency');
-    const convertBtn = document.getElementById('convertBtn');
-    const refreshBtn = document.getElementById('refreshBtn');
-    const ratesBody = document.getElementById('ratesBody');
-    const statusNode = document.getElementById('status');
-    const mntResult = document.getElementById('mntResult');
-    const rubResult = document.getElementById('rubResult');
+async function loadRates(force = false) {
+  const statusEl = document.getElementById("status");
+  const tableBody = document.getElementById("rates-body");
 
-    let rates = [];
+  try {
+    statusEl.textContent = "Загрузка курсов...";
+    tableBody.innerHTML = "";
 
-    function formatNumber(value, digits = 2) {
-      return new Intl.NumberFormat('ru-RU', {
-        minimumFractionDigits: digits,
-        maximumFractionDigits: digits,
-      }).format(value);
+    const response = await fetch(`/api/rates${force ? "?force=1" : ""}`);
+    const data = await response.json();
+
+    if (!data.ok) {
+      throw new Error(data.error || "Не удалось загрузить курсы");
     }
 
-    function setStatus(text, isError = false) {
-      statusNode.textContent = text;
-      statusNode.classList.toggle('error', isError);
+    const ratesObj = data.rates || {};
+    const rates = Object.values(ratesObj);
+
+    if (!rates.length) {
+      statusEl.textContent = "Курсы не найдены.";
+      return;
     }
 
-    function renderRates() {
-      ratesBody.innerHTML = '';
-      currencySelect.innerHTML = '';
+    rates.sort((a, b) => a.code.localeCompare(b.code));
 
-      rates.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${item.code}</td><td>${formatNumber(item.rate, 2)}</td>`;
-        tr.addEventListener('click', () => {
+    tableBody.innerHTML = "";
+    rates.forEach((item) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${item.code || ""}</td>
+        <td>${item.name || item.code || ""}</td>
+        <td>${formatNumber(item.rate)}</td>
+      `;
+
+      tr.addEventListener("click", () => {
+        const currencySelect = document.getElementById("currency");
+        if (currencySelect) {
           currencySelect.value = item.code;
-        });
-        ratesBody.appendChild(tr);
-
-        const option = document.createElement('option');
-        option.value = item.code;
-        option.textContent = item.code;
-        currencySelect.appendChild(option);
+        }
+        calculate();
       });
-    }
 
-    async function loadRates() {
-      setStatus('Загрузка курсов Capitron...');
-      try {
-        const response = await fetch('/api/rates');
-        const data = await response.json();
-        if (!response.ok || !data.ok) {
-          throw new Error(data.error || 'Не удалось загрузить курсы.');
-        }
-        rates = data.items;
-        renderRates();
-        setStatus('Курсы загружены. Используется последний столбец: Бэлэн бус → Зарах.');
-      } catch (error) {
-        setStatus(error.message || 'Ошибка загрузки курсов.', true);
-      }
-    }
-
-    async function convert() {
-      const amount = amountInput.value.trim();
-      const currency = currencySelect.value;
-      if (!amount) {
-        setStatus('Введите сумму.', true);
-        return;
-      }
-      if (!currency) {
-        setStatus('Выберите валюту.', true);
-        return;
-      }
-
-      setStatus('Считаю...');
-      try {
-        const response = await fetch(`/api/convert?amount=${encodeURIComponent(amount)}&currency=${encodeURIComponent(currency)}`);
-        const data = await response.json();
-        if (!response.ok || !data.ok) {
-          throw new Error(data.error || 'Не удалось выполнить расчет.');
-        }
-        mntResult.textContent = formatNumber(data.total_mnt, 2);
-        rubResult.textContent = formatNumber(data.total_rub, 2);
-        setStatus(`Курс ${data.currency}: ${formatNumber(data.client_rate, 2)} MNT • RUB: ${formatNumber(data.rub_rate, 2)} MNT`);
-      } catch (error) {
-        setStatus(error.message || 'Ошибка расчета.', true);
-      }
-    }
-
-    convertBtn.addEventListener('click', convert);
-    refreshBtn.addEventListener('click', loadRates);
-    amountInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') convert();
+      tableBody.appendChild(tr);
     });
 
-    loadRates();
-  </script>
+    fillCurrencySelect(rates);
+
+    const source = data.meta?.source || "unknown";
+    statusEl.textContent =
+      source === "capitron_live"
+        ? "Курсы загружены с Capitron."
+        : source === "cache"
+        ? "Курсы загружены из cache."
+        : source === "stale_cache"
+        ? "Live-курсы недоступны, показан последний сохранённый cache."
+        : "Курсы загружены.";
+  } catch (error) {
+    console.error(error);
+    statusEl.textContent = error.message || "Ошибка загрузки курсов.";
+  }
+}
+
+function fillCurrencySelect(rates) {
+  const select = document.getElementById("currency");
+  if (!select) return;
+
+  const currentValue = select.value;
+  select.innerHTML = "";
+
+  rates.forEach((item) => {
+    const option = document.createElement("option");
+    option.value = item.code;
+    option.textContent = `${item.code} — ${item.name || item.code}`;
+    select.appendChild(option);
+  });
+
+  if (currentValue && rates.some((x) => x.code === currentValue)) {
+    select.value = currentValue;
+  }
+}
+
+async function calculate() {
+  const amount = document.getElementById("amount")?.value;
+  const currency = document.getElementById("currency")?.value;
+  const mntEl = document.getElementById("result-mnt");
+  const rubEl = document.getElementById("result-rub");
+
+  if (!amount || !currency) {
+    if (mntEl) mntEl.textContent = "—";
+    if (rubEl) rubEl.textContent = "—";
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `/api/convert?amount=${encodeURIComponent(amount)}&currency=${encodeURIComponent(currency)}`
+    );
+    const data = await response.json();
+
+    if (!data.ok) {
+      throw new Error(data.error || "Ошибка расчёта");
+    }
+
+    if (mntEl) mntEl.textContent = formatNumber(data.total_mnt);
+    if (rubEl) rubEl.textContent = formatNumber(data.total_rub);
+  } catch (error) {
+    console.error(error);
+    if (mntEl) mntEl.textContent = "Ошибка";
+    if (rubEl) rubEl.textContent = "Ошибка";
+  }
+}
+
+function formatNumber(value) {
+  const num = Number(value);
+  if (Number.isNaN(num)) return "—";
+  return num.toLocaleString("ru-RU", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("reload-rates")?.addEventListener("click", () => loadRates(true));
+  document.getElementById("amount")?.addEventListener("input", calculate);
+  document.getElementById("currency")?.addEventListener("change", calculate);
+  loadRates(false);
+});
+</script>
 </body>
 </html>
