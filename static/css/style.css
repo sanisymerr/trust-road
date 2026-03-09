@@ -235,6 +235,28 @@ body {
     padding-top: 6px;
     line-height: 1.45;
     text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.hero__update-logo {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hero__update-logo img {
+    display: block;
+    width: 220px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 0 10px rgba(96, 165, 250, 0.18))
+        drop-shadow(0 0 24px rgba(59, 130, 246, 0.12));
+    opacity: 0.96;
 }
 
 .hero__badge {
@@ -533,8 +555,16 @@ tbody tr:hover {
     }
 
     .hero__update {
-        padding-top: 0;
+        align-items: flex-start;
         text-align: left;
+    }
+
+    .hero__update-logo {
+        justify-content: flex-start;
+    }
+
+    .hero__update-logo img {
+        width: 180px;
     }
 }
 
