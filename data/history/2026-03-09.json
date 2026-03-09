@@ -1,0 +1,84 @@
+{
+  "updated_at_vladivostok": "2026-03-09 12:00:00",
+  "date": "2026-03-09",
+  "rub_source_date": "2026/03/07",
+  "rows": [
+    {
+      "code": "USD",
+      "name": "Доллар США",
+      "mongol_bank_mnt": "3,566.14",
+      "capitron_mnt": "3,567.00",
+      "cbr_rate_rub": "79.1500"
+    },
+    {
+      "code": "EUR",
+      "name": "Евро",
+      "mongol_bank_mnt": "4,142.07",
+      "capitron_mnt": "4,147.00",
+      "cbr_rate_rub": "91.8391"
+    },
+    {
+      "code": "CNY",
+      "name": "Китайский юань",
+      "mongol_bank_mnt": "516.99",
+      "capitron_mnt": "516.00",
+      "cbr_rate_rub": "11.4368"
+    },
+    {
+      "code": "JPY",
+      "name": "Японская иена",
+      "mongol_bank_mnt": "22.64",
+      "capitron_mnt": "22.75",
+      "cbr_rate_rub": "0.502859"
+    },
+    {
+      "code": "KRW",
+      "name": "Южнокорейская вона",
+      "mongol_bank_mnt": "2.43",
+      "capitron_mnt": "2.44",
+      "cbr_rate_rub": "0.0540531"
+    },
+    {
+      "code": "GBP",
+      "name": "Фунт стерлингов",
+      "mongol_bank_mnt": "4,767.75",
+      "capitron_mnt": "4,849.00",
+      "cbr_rate_rub": "105.4515"
+    },
+    {
+      "code": "CHF",
+      "name": "Швейцарский франк",
+      "mongol_bank_mnt": "4,575.20",
+      "capitron_mnt": "4,681.00",
+      "cbr_rate_rub": "101.2278"
+    },
+    {
+      "code": "SGD",
+      "name": "Сингапурский доллар",
+      "mongol_bank_mnt": "2,792.15",
+      "capitron_mnt": "2,810.00",
+      "cbr_rate_rub": "61.9472"
+    },
+    {
+      "code": "HKD",
+      "name": "Гонконгский доллар",
+      "mongol_bank_mnt": "455.84",
+      "capitron_mnt": "460.65",
+      "cbr_rate_rub": "10.1383"
+    },
+    {
+      "code": "MNT",
+      "name": "Монгольский тугрик",
+      "mongol_bank_mnt": "1.00",
+      "capitron_mnt": "1.00",
+      "cbr_rate_rub": "0.0221949"
+    },
+    {
+      "code": "RUB",
+      "name": "Российский рубль",
+      "mongol_bank_mnt": "45.02",
+      "capitron_mnt": "45.02",
+      "cbr_rate_rub": "1.0000"
+    }
+  ]
+}

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustRoad — Курсы валют</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="hero">
+    <div class="hero__top">
+        <div>
+            <div class="hero__badge">TrustRoad</div>
+            <h1>Курсы валют</h1>
+        </div>
+        <div class="hero__update">
+    <div>Обновлено: {{ data.updated_at_vladivostok }}</div>
+    <div>Автообновление каждый день в 12:00 по Владивостоку</div>
+</div>
+    </div>
+    <p class="hero__text">
+        Монголбанк и Capitron — в MNT, ЦБ РФ — в RUB.
+    </p>
+</header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts">
+                    {% for category, message in messages %}
+                        <div class="alert alert--{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+<section class="converter-card">
+
+    <div class="converter-card__header converter-card__header--top">
+    <div>
+        <h2>Конвертер валют</h2>
+        <p id="converterSubtitle">Расчёт по выбранной дате. Используются курсы Монголбанка и Capitron.</p>
+    </div>
+
+    <div class="converter-mode-switch">
+        <button type="button" class="converter-mode-button converter-mode-button--active" data-mode="mng">
+            Монгол + Capitron
+        </button>
+        <button type="button" class="converter-mode-button" data-mode="cbr">
+            ЦБ РФ
+        </button>
+    </div>
+</div>
+
+    <div class="converter-grid">
+        <div class="converter-field">
+            <span>Из валюты</span>
+            <div class="currency-chip-grid" id="fromCurrencyGrid">
+                <button type="button" class="currency-chip currency-chip--active" data-target="from" data-code="MNT">MNT</button>
+                {% for row in data.rows %}
+                    {% if row.code != 'MNT' %}
+                        <button type="button" class="currency-chip" data-target="from" data-code="{{ row.code }}">{{ row.code }}</button>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <input type="hidden" id="convertFrom" value="MNT">
+        </div>
+
+        <label class="converter-field">
+            <span>Сумма</span>
+            <input id="convertAmount" type="number" step="any" min="0" inputmode="decimal" placeholder="Введите сумму">
+        </label>
+
+        <div class="converter-field">
+            <span>В валюту</span>
+            <div class="currency-chip-grid" id="toCurrencyGrid">
+                {% for row in data.rows %}
+                    {% if row.code != 'MNT' %}
+                        <button type="button" class="currency-chip {% if row.code == 'USD' %}currency-chip--active{% endif %}" data-target="to" data-code="{{ row.code }}">{{ row.code }}</button>
+                    {% endif %}
+                {% endfor %}
+                <button type="button" class="currency-chip" data-target="to" data-code="MNT">MNT</button>
+            </div>
+            <input type="hidden" id="convertTo" value="USD">
+        </div>
+    </div>
+
+    <div class="converter-results" id="converterResults">
+    <article class="converter-result" id="mongolResultCard">
+        <span class="converter-result__label">Монголбанк</span>
+        <strong class="converter-result__value" id="mongolResult">—</strong>
+    </article>
+
+    <article class="converter-result" id="capitronResultCard">
+        <span class="converter-result__label">Capitron</span>
+        <strong class="converter-result__value" id="capitronResult">—</strong>
+    </article>
+
+    <article class="converter-result converter-result--single is-hidden" id="cbrResultCard">
+        <span class="converter-result__label">В России так</span>
+        <strong class="converter-result__value" id="cbrResult">—</strong>
+    </article>
+</div>
+</section>
+
+      <section class="page-actions">
+    <form action="{{ url_for('refresh') }}" method="post">
+        <button class="primary-button" type="submit">Обновить курс</button>
+    </form>
+
+    <div class="date-picker-wrap" id="datePickerWrap">
+        <button class="date-pill" id="datePickerOpen" type="button">
+            <span>{{ selected_date or data.date or data.updated_at_vladivostok[:10] }}</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1Zm12 8H5v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8ZM6 6a1 1 0 0 0-1 1v1h14V7a1 1 0 0 0-1-1H6Z" fill="currentColor"/>
+            </svg>
+        </button>
+
+        <div class="date-dropdown" id="dateModal" hidden>
+            <div class="date-modal__panel">
+                <div class="date-modal__header">
+                    <div class="date-modal__title">{{ month_title }}</div>
+                </div>
+
+                <div class="date-modal__grid">
+                    {% for item in date_items %}
+                        <button
+                            type="button"
+                            class="date-option {% if item.value == selected_date %}date-option--active{% endif %}"
+                            data-url="{{ url_for('index', date=item.value) }}"
+                        >
+                            <span class="date-option__weekday">{{ item.weekday }}</span>
+                            <span class="date-option__day">{{ item.day }}</span>
+                        </button>
+                    {% endfor %}
+                </div>
+
+                <div class="date-modal__footer">
+                    <button type="button" class="date-modal__ok" id="dateModalOk">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <section class="table-card">
+            <div class="table-card__header">
+                <div>
+                    <h2>Общая таблица</h2>
+                    <p>Актуальные курсы из трёх источников.</p>
+                    {% if show_changes and previous_date %}
+                    <p class="table-card__hint">Изменение относительно {{ previous_date }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Код</th>
+                            <th>Валюта</th>
+                            <th>Монголбанк (MNT)</th>
+                            <th>Capitron (MNT)</th>
+                            <th>ЦБ РФ: курс за 1 ед. (RUB)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data.rows %}
+                        <tr>
+                            <td class="code">{{ row.code }}</td>
+                            <td>{{ row.name }}</td>
+                            <td>
+    <div class="rate-cell">
+        <span class="rate-cell__value">{{ row.mongol_bank_mnt }}</span>
+        {% if show_changes and row.delta_mongol %}
+            <span class="rate-delta rate-delta--{{ row.delta_mongol.kind }}">
+                {{ row.delta_mongol.text }}
+            </span>
+        {% endif %}
+    </div>
+</td>
+
+<td>
+    <div class="rate-cell">
+        <span class="rate-cell__value">{{ row.capitron_mnt }}</span>
+        {% if show_changes and row.delta_capitron %}
+            <span class="rate-delta rate-delta--{{ row.delta_capitron.kind }}">
+                {{ row.delta_capitron.text }}
+            </span>
+        {% endif %}
+    </div>
+</td>
+
+<td>
+    <div class="rate-cell">
+        <span class="rate-cell__value">{{ row.cbr_rate_rub }}</span>
+        {% if show_changes and row.delta_cbr %}
+            <span class="rate-delta rate-delta--{{ row.delta_cbr.kind }}">
+                {{ row.delta_cbr.text }}
+            </span>
+        {% endif %}
+    </div>
+</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+    <div class="site-footer__brand">
+        <div class="site-footer__title">TrustRoad © 2026</div>
+        <div class="site-footer__text">Курсы валют с ежедневным обновлением по Владивостоку.</div>
+    </div>
+
+    <div class="site-footer__meta">
+        <span class="footer-badge">Монголбанк</span>
+        <span class="footer-badge">Capitron Bank</span>
+        <span class="footer-badge">ЦБ РФ</span>
+        <span class="footer-badge">Автообновление 12:00</span>
+    </div>
+</footer>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const openBtn = document.getElementById("datePickerOpen");
+    const modal = document.getElementById("dateModal");
+    const okBtn = document.getElementById("dateModalOk");
+    const options = document.querySelectorAll(".date-option");
+    const wrap = document.getElementById("datePickerWrap");
+    const converterRows = {{ data.rows | tojson }};
+const convertFrom = document.getElementById("convertFrom");
+const convertTo = document.getElementById("convertTo");
+const convertAmount = document.getElementById("convertAmount");
+
+const mongolResult = document.getElementById("mongolResult");
+const capitronResult = document.getElementById("capitronResult");
+const cbrResult = document.getElementById("cbrResult");
+
+const mongolResultCard = document.getElementById("mongolResultCard");
+const capitronResultCard = document.getElementById("capitronResultCard");
+const cbrResultCard = document.getElementById("cbrResultCard");
+const converterResults = document.getElementById("converterResults");
+const converterSubtitle = document.getElementById("converterSubtitle");
+
+const currencyChips = document.querySelectorAll(".currency-chip");
+const modeButtons = document.querySelectorAll(".converter-mode-button");
+
+let converterMode = "mng";
+
+function parseRate(value) {
+    if (value === null || value === undefined) return null;
+
+    const normalized = String(value)
+        .replace(/\s/g, "")
+        .replace(/,/g, "");
+
+    const num = Number(normalized);
+    return Number.isFinite(num) ? num : null;
+}
+
+function buildRateMap() {
+    const map = {};
+
+    converterRows.forEach((row) => {
+        map[row.code] = {
+            mongol: row.code === "MNT" ? 1 : parseRate(row.mongol_bank_mnt),
+            capitron: row.code === "MNT" ? 1 : parseRate(row.capitron_mnt),
+            cbr: row.code === "RUB" ? 1 : parseRate(row.cbr_rate_rub)
+        };
+    });
+
+    if (!map.MNT) {
+        map.MNT = {
+            mongol: 1,
+            capitron: 1,
+            cbr: null
+        };
+    } else {
+        map.MNT.mongol = 1;
+        map.MNT.capitron = 1;
+    }
+
+    if (!map.RUB) {
+        map.RUB = {
+            mongol: null,
+            capitron: null,
+            cbr: 1
+        };
+    } else {
+        map.RUB.cbr = 1;
+    }
+
+    return map;
+}
+
+const rateMap = buildRateMap();
+
+function formatResult(value, currency) {
+    if (!Number.isFinite(value)) return "—";
+
+    const formatted = value.toLocaleString("ru-RU", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 6
+    });
+
+    return `${formatted} ${currency}`;
+}
+
+function convertByRate(amount, fromRate, toRate) {
+    if (!Number.isFinite(amount) || amount < 0) return null;
+    if (!Number.isFinite(fromRate) || !Number.isFinite(toRate) || toRate === 0) return null;
+
+    return amount * fromRate / toRate;
+}
+
+function setChipValue(target, code) {
+    const input = target === "from" ? convertFrom : convertTo;
+    input.value = code;
+
+    document.querySelectorAll(`.currency-chip[data-target="${target}"]`).forEach((chip) => {
+        chip.classList.toggle("currency-chip--active", chip.dataset.code === code);
+    });
+}
+
+function resetResults() {
+    mongolResult.textContent = "—";
+    capitronResult.textContent = "—";
+    cbrResult.textContent = "—";
+}
+
+function setConverterMode(mode) {
+    converterMode = mode;
+
+    modeButtons.forEach((button) => {
+        button.classList.toggle("converter-mode-button--active", button.dataset.mode === mode);
+    });
+
+    if (mode === "cbr") {
+        mongolResultCard.classList.add("is-hidden");
+        capitronResultCard.classList.add("is-hidden");
+        cbrResultCard.classList.remove("is-hidden");
+        converterResults.classList.add("converter-results--single");
+
+        converterSubtitle.textContent = "Расчёт по выбранной дате. Используются курсы ЦБ РФ. Курс указан за 1 единицу валюты в RUB.";
+
+        if (convertTo.value === "MNT" && !Number.isFinite(rateMap.MNT?.cbr)) {
+            setChipValue("to", "RUB");
+        }
+
+        if (convertFrom.value === "RUB" && convertTo.value === "RUB") {
+            setChipValue("from", "USD");
+        }
+
+        if (convertTo.value !== "RUB" && convertFrom.value !== "RUB") {
+            setChipValue("to", "RUB");
+        }
+    } else {
+        mongolResultCard.classList.remove("is-hidden");
+        capitronResultCard.classList.remove("is-hidden");
+        cbrResultCard.classList.add("is-hidden");
+        converterResults.classList.remove("converter-results--single");
+
+        converterSubtitle.textContent = "Расчёт по выбранной дате. Используются курсы Монголбанка и Capitron.";
+
+        if (convertFrom.value === "RUB" && convertTo.value === "RUB") {
+            setChipValue("to", "USD");
+        }
+    }
+
+    resetResults();
+    updateConverter();
+}
+
+function updateConverter() {
+    const fromCode = convertFrom.value;
+    const toCode = convertTo.value;
+    const amountRaw = convertAmount.value.trim().replace(",", ".");
+    const amount = Number(amountRaw);
+
+    const fromRates = rateMap[fromCode];
+    const toRates = rateMap[toCode];
+
+    resetResults();
+
+    if (!amountRaw) return;
+    if (!fromRates || !toRates || !Number.isFinite(amount)) return;
+
+    if (converterMode === "cbr") {
+        const cbrValue = convertByRate(amount, fromRates.cbr, toRates.cbr);
+        cbrResult.textContent = formatResult(cbrValue, toCode);
+        return;
+    }
+
+    const mongolValue = convertByRate(amount, fromRates.mongol, toRates.mongol);
+    const capitronValue = convertByRate(amount, fromRates.capitron, toRates.capitron);
+
+    mongolResult.textContent = formatResult(mongolValue, toCode);
+    capitronResult.textContent = formatResult(capitronValue, toCode);
+}
+
+currencyChips.forEach((chip) => {
+    chip.addEventListener("click", function () {
+        const target = chip.dataset.target;
+        const code = chip.dataset.code;
+
+        document.querySelectorAll(`.currency-chip[data-target="${target}"]`).forEach((item) => {
+            item.classList.remove("currency-chip--active");
+        });
+
+        chip.classList.add("currency-chip--active");
+
+        if (target === "from") {
+            convertFrom.value = code;
+        } else {
+            convertTo.value = code;
+        }
+
+        updateConverter();
+    });
+});
+
+modeButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+        setConverterMode(button.dataset.mode);
+    });
+});
+
+convertAmount.addEventListener("input", updateConverter);
+
+setConverterMode("mng");
+
+
+
+    let selectedUrl = null;
+
+    const activeOption = document.querySelector(".date-option--active");
+    if (activeOption) {
+        selectedUrl = activeOption.dataset.url;
+    }
+
+    function openModal() {
+        modal.hidden = false;
+    }
+
+    function closeModal() {
+        modal.hidden = true;
+    }
+
+    function toggleModal() {
+        modal.hidden = !modal.hidden;
+    }
+
+    openBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+        toggleModal();
+    });
+
+    options.forEach((option) => {
+        option.addEventListener("click", function () {
+            options.forEach((item) => item.classList.remove("date-option--active"));
+            option.classList.add("date-option--active");
+            selectedUrl = option.dataset.url;
+        });
+    });
+
+    okBtn.addEventListener("click", function () {
+        if (selectedUrl) {
+            window.location.href = selectedUrl;
+        } else {
+            closeModal();
+        }
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!wrap.contains(event.target)) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeModal();
+        }
+    });
+});
+</script>
+
+</body>
+</html>
