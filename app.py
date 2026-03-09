@@ -22,8 +22,12 @@ RU_MONTHS = [
 
 RU_WEEKDAYS_SHORT = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
 
+
 app = Flask(__name__)
-app.secret_key = "trustroad-secret-key"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+
+if not app.config["SECRET_KEY"]:
+    raise RuntimeError("SECRET_KEY не задан")
 
 scheduler = BackgroundScheduler(timezone="Asia/Vladivostok")
 
