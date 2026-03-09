@@ -22,20 +22,22 @@
     <div class="page-shell">
         <header class="hero">
     <div class="hero__top">
-        <div>
+        <div class="hero__main">
             <h1>Курсы валют</h1>
+            <p class="hero__text">
+                Монголбанк и Capitron — в MNT, ЦБ РФ — в RUB.
+            </p>
         </div>
-        <div class="hero__update">
-    <div>Обновлено: {{ data.updated_at_vladivostok }}</div>
-    <div>Автообновление каждый день в 12:00 по Владивостоку</div>
 
-    <div class="hero__update-logo">
-        <img src="{{ url_for('static', filename='icons/trustroad-logo-white.png') }}" alt="ТрастРоуд">
+        <div class="hero__update">
+            <div>Обновлено: {{ data.updated_at_vladivostok }}</div>
+            <div>Автообновление каждый день в 12:00 по Владивостоку</div>
+
+            <div class="hero__update-logo">
+                <img src="{{ url_for('static', filename='icons/trustroad-logo-white.png') }}" alt="ТрастРоуд">
+            </div>
+        </div>
     </div>
-</div>
-    <p class="hero__text">
-        Монголбанк и Capitron — в MNT, ЦБ РФ — в RUB.
-    </p>
 </header>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
