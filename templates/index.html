@@ -163,6 +163,8 @@
                 <div>
                     <h2>Общая таблица</h2>
                     <p>Актуальные курсы из трёх источников.</p>
+                    {% if show_changes and previous_date %}
+                    <p class="table-card__hint">Изменение относительно {{ previous_date }}</p>
                     {% endif %}
                 </div>
             </div>
