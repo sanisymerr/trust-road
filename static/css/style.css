@@ -562,6 +562,15 @@ tbody tr:hover {
         flex-direction: column;
         gap: 16px;
     }
+    .currency-chip {
+    width: 44px;
+    height: 38px;
+}
+
+.currency-chip__flag {
+    width: 22px;
+    height: 15px;
+}
 
     .hero__update {
         min-width: 0;
@@ -844,6 +853,79 @@ tbody tr:hover {
 .converter-field input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
+}
+
+.currency-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.currency-flag {
+    display: block;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.currency-flag--table {
+    width: 22px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.currency-chip {
+    position: relative;
+    width: 48px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.currency-chip__flag {
+    width: 24px;
+    height: 16px;
+    border-radius: 4px;
+    object-fit: cover;
+    pointer-events: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.currency-chip::after {
+    content: attr(data-code);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    transform: translateX(-50%) translateY(4px);
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: rgba(7, 17, 31, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: #eef4ff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+    z-index: 20;
+}
+
+.currency-chip:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.currency-chip--active .currency-chip__flag {
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.22),
+        0 6px 16px rgba(59,130,246,0.28);
 }
 
 .is-hidden {

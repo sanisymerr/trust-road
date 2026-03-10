@@ -71,13 +71,17 @@
         <div class="converter-field">
             <span>Из валюты</span>
             <div class="currency-chip-grid" id="fromCurrencyGrid">
-                <button type="button" class="currency-chip currency-chip--active" data-target="from" data-code="MNT">MNT</button>
-                {% for row in data.rows %}
-                    {% if row.code != 'MNT' %}
-                        <button type="button" class="currency-chip" data-target="from" data-code="{{ row.code }}">{{ row.code }}</button>
-                    {% endif %}
-                {% endfor %}
-            </div>
+    <button type="button" class="currency-chip currency-chip--active" data-target="from" data-code="MNT" aria-label="MNT">
+        <img class="currency-chip__flag" src="{{ url_for('static', filename='flags/mnt.png') }}" alt="MNT">
+    </button>
+    {% for row in data.rows %}
+        {% if row.code != 'MNT' %}
+            <button type="button" class="currency-chip" data-target="from" data-code="{{ row.code }}" aria-label="{{ row.code }}">
+                <img class="currency-chip__flag" src="{{ url_for('static', filename='flags/' ~ row.code|lower ~ '.png') }}" alt="{{ row.code }}">
+            </button>
+        {% endif %}
+    {% endfor %}
+</div>
             <input type="hidden" id="convertFrom" value="MNT">
         </div>
 
@@ -89,13 +93,23 @@
         <div class="converter-field">
             <span>В валюту</span>
             <div class="currency-chip-grid" id="toCurrencyGrid">
-                {% for row in data.rows %}
-                    {% if row.code != 'MNT' %}
-                        <button type="button" class="currency-chip {% if row.code == 'USD' %}currency-chip--active{% endif %}" data-target="to" data-code="{{ row.code }}">{{ row.code }}</button>
-                    {% endif %}
-                {% endfor %}
-                <button type="button" class="currency-chip" data-target="to" data-code="MNT">MNT</button>
-            </div>
+    {% for row in data.rows %}
+        {% if row.code != 'MNT' %}
+            <button
+                type="button"
+                class="currency-chip {% if row.code == 'USD' %}currency-chip--active{% endif %}"
+                data-target="to"
+                data-code="{{ row.code }}"
+                aria-label="{{ row.code }}"
+            >
+                <img class="currency-chip__flag" src="{{ url_for('static', filename='flags/' ~ row.code|lower ~ '.png') }}" alt="{{ row.code }}">
+            </button>
+        {% endif %}
+    {% endfor %}
+    <button type="button" class="currency-chip" data-target="to" data-code="MNT" aria-label="MNT">
+        <img class="currency-chip__flag" src="{{ url_for('static', filename='flags/mnt.png') }}" alt="MNT">
+    </button>
+</div>
             <input type="hidden" id="convertTo" value="USD">
         </div>
     </div>
@@ -184,7 +198,16 @@
                         {% for row in data.rows %}
                         <tr>
                             <td class="code">{{ row.code }}</td>
-                            <td>{{ row.name }}</td>
+<td>
+    <div class="currency-name-cell">
+        <img
+            class="currency-flag currency-flag--table"
+            src="{{ url_for('static', filename='flags/' ~ row.code|lower ~ '.png') }}"
+            alt="{{ row.code }}"
+        >
+        <span>{{ row.name }}</span>
+    </div>
+</td>
                             <td>
     <div class="rate-cell">
         <span class="rate-cell__value">{{ row.mongol_bank_mnt }}</span>
