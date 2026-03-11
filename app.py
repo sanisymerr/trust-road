@@ -350,7 +350,6 @@ def refresh():
         flash(f"Не удалось обновить курсы: {message}", "error")
     return redirect(url_for("index"))
 
-<<<<<<< HEAD
 @app.route("/api/rates", methods=["GET"])
 def api_rates():
     return jsonify(load_rates())
@@ -406,7 +405,7 @@ def download_history(selected_date: str):
         as_attachment=True,
         download_name=f"{selected_date}.json",
     )
-=======
+
 @app.route("/api/latest.json", methods=["GET"])
 def api_latest():
     return jsonify(load_rates())
@@ -438,7 +437,6 @@ def api_history_by_date(date_value: str):
         }), 404
 
     return jsonify(payload)
->>>>>>> 8f44f2a (Add Render history sync API)
 
 def start_scheduler() -> None:
     if scheduler.running:
