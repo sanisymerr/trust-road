@@ -341,8 +341,11 @@ def index():
     )
 
 
-@app.route("/refresh", methods=["POST"])
+@app.route("/refresh", methods=["GET", "POST"])
 def refresh():
+    if request.method == "GET":
+        return redirect(url_for("index"))
+
     ok, message = run_update()
     if ok:
         flash("Курсы успешно обновлены.", "success")
