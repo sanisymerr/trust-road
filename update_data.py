@@ -257,4 +257,10 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--save-history", action="store_true")
+    args = parser.parse_args()
+
+    main(save_history=args.save_history)

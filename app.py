@@ -117,6 +117,24 @@ def run_update() -> tuple[bool, str]:
     except Exception as exc:  # noqa: BLE001
         return False, str(exc)
 
+def run_archive_update() -> tuple[bool, str]:
+    try:
+        result = subprocess.run(
+            [sys.executable, str(BASE_DIR / "update_data.py"), "--save-history"],
+            cwd=BASE_DIR,
+            capture_output=True,
+            text=True,
+            timeout=240,
+            check=True,
+        )
+        message = result.stdout.strip() or "Архив успешно сохранён."
+        return True, message
+    except subprocess.CalledProcessError as exc:
+        error_text = exc.stderr.strip() or exc.stdout.strip() or str(exc)
+        return False, error_text
+    except Exception as exc:
+        return False, str(exc)
+
 def parse_rate(value):
     if value is None:
         return None
@@ -261,12 +279,20 @@ def start_scheduler() -> None:
     scheduler.add_job(
         func=run_update,
         trigger="cron",
-        hour=12,
-        minute=0,
-        id="daily_rates_update",
+        minute="0,30",
+        id="half_hour_rates_update",
         replace_existing=True,
     )
     scheduler.start()
+
+    scheduler.add_job(
+        func=run_archive_update,
+        trigger="cron",
+        hour=23,
+        minute=59,
+        id="daily_history_snapshot",
+        replace_existing=True,
+    )
 
 
 def ensure_initial_data() -> None:
