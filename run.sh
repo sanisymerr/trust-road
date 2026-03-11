@@ -6,4 +6,4 @@ source .venv/bin/activate
 pip install -r requirements.txt
 python -m playwright install chromium
 python update_data.py || true
-exec gunicorn -w 2 -b 127.0.0.1:5000 app:app
+exec gunicorn -w 2 -b 0.0.0.0:${PORT:-10000} app:app
