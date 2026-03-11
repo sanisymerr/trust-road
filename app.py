@@ -58,6 +58,12 @@ def load_available_dates() -> list[str]:
 
 
 def load_rates_by_date(selected_date: str | None) -> dict:
+    latest = load_rates()
+    latest_date = latest.get("date")
+
+    if selected_date and latest_date and selected_date == latest_date:
+        return latest
+
     if selected_date and DATE_RE.fullmatch(selected_date):
         history_file = (BASE_DIR / "data" / "history" / f"{selected_date}.json").resolve()
         history_root = (BASE_DIR / "data" / "history").resolve()
@@ -66,7 +72,7 @@ def load_rates_by_date(selected_date: str | None) -> dict:
             with history_file.open("r", encoding="utf-8") as f:
                 return json.load(f)
 
-    return load_rates()
+    return latest
 
 def load_history_by_date_strict(selected_date: str) -> dict | None:
     if not selected_date or not DATE_RE.fullmatch(selected_date):
