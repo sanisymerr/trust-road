@@ -109,15 +109,7 @@ def ensure_dirs() -> None:
     HISTORY_DIR.mkdir(parents=True, exist_ok=True)
 
 def cleanup_old_history(current_dt) -> None:
-    cutoff_date = current_dt.date() - timedelta(days=6)
-
-    for history_file in HISTORY_DIR.glob("*.json"):
-        try:
-            file_date = datetime.strptime(history_file.stem, "%Y-%m-%d").date()
-            if file_date < cutoff_date:
-                history_file.unlink()
-        except Exception:
-            continue
+    return
 
 
 def normalize_rate(value: str | None) -> str:

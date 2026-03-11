@@ -8,7 +8,8 @@ from pathlib import Path
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, flash, redirect, render_template, request, url_for
-from datetime import datetime
+from datetime import datetime, timedelta
+import calendar
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR / "data" / "latest_rates.json"
@@ -53,7 +54,7 @@ def load_available_dates() -> list[str]:
         dates.append(file.stem)
 
     dates.sort(reverse=True)
-    return dates[:7]
+    return dates
 
 
 def load_rates_by_date(selected_date: str | None) -> dict:
@@ -97,6 +98,62 @@ def get_month_title(selected_date: str | None, available_dates: list[str]) -> st
         return f"{RU_MONTHS[dt.month - 1]} {dt.year}"
     except Exception:
         return "Последние 7 дней"
+
+def normalize_month_cursor(month_cursor: str | None, selected_date: str | None, available_dates: list[str]) -> str:
+    base = selected_date or (available_dates[0] if available_dates else datetime.now().strftime("%Y-%m-%d"))
+
+    try:
+        if month_cursor:
+            dt = datetime.strptime(month_cursor, "%Y-%m")
+            return dt.strftime("%Y-%m")
+    except Exception:
+        pass
+
+    try:
+        dt = datetime.strptime(base, "%Y-%m-%d")
+        return dt.strftime("%Y-%m")
+    except Exception:
+        return datetime.now().strftime("%Y-%m")
+
+
+def build_calendar_days(month_cursor: str, available_dates: list[str], selected_date: str | None) -> list[dict]:
+    available_set = set(available_dates)
+    current = datetime.strptime(month_cursor, "%Y-%m")
+    cal = calendar.Calendar(firstweekday=0)
+    days = []
+
+    for week in cal.monthdatescalendar(current.year, current.month):
+        for day in week:
+            value = day.strftime("%Y-%m-%d")
+            in_current_month = day.month == current.month
+
+            days.append({
+                "value": value,
+                "day": f"{day.day:02d}" if in_current_month else "",
+                "weekday": RU_WEEKDAYS_SHORT[day.weekday()] if in_current_month else "",
+                "is_current_month": in_current_month,
+                "is_available": in_current_month and value in available_set,
+                "is_selected": value == selected_date,
+            })
+
+    return days
+
+
+def get_calendar_title(month_cursor: str) -> str:
+    dt = datetime.strptime(month_cursor, "%Y-%m")
+    return f"{RU_MONTHS[dt.month - 1]} {dt.year}"
+
+
+def get_prev_month(month_cursor: str) -> str:
+    dt = datetime.strptime(month_cursor, "%Y-%m")
+    prev_dt = (dt.replace(day=1) - timedelta(days=1)).replace(day=1)
+    return prev_dt.strftime("%Y-%m")
+
+
+def get_next_month(month_cursor: str) -> str:
+    dt = datetime.strptime(month_cursor, "%Y-%m")
+    next_dt = (dt.replace(day=28) + timedelta(days=4)).replace(day=1)
+    return next_dt.strftime("%Y-%m")
 
 
 def run_update() -> tuple[bool, str]:
@@ -227,6 +284,7 @@ def enrich_rows_with_deltas(current_rows, previous_rows, show_changes: bool):
 @app.route("/", methods=["GET"])
 def index():
     requested_date = request.args.get("date")
+    month_param = request.args.get("month")
     available_dates = load_available_dates()
 
     latest_date = available_dates[0] if available_dates else None
@@ -250,13 +308,19 @@ def index():
         show_changes
     )
 
+    month_cursor = normalize_month_cursor(month_param, selected_date, available_dates)
+    calendar_days = build_calendar_days(month_cursor, available_dates, selected_date)
+
     return render_template(
         "index.html",
         data=data,
         available_dates=available_dates,
         selected_date=selected_date,
-        date_items=build_date_items(available_dates),
-        month_title=get_month_title(selected_date, available_dates),
+        month_title=get_calendar_title(month_cursor),
+        calendar_days=calendar_days,
+        month_cursor=month_cursor,
+        prev_month=get_prev_month(month_cursor),
+        next_month=get_next_month(month_cursor),
         show_changes=show_changes,
         previous_date=previous_date,
     )

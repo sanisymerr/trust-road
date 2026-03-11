@@ -402,6 +402,116 @@ body {
     z-index: 200;
 }
 
+.date-modal__panel--calendar {
+    width: 360px;
+    background: #f8f8fb;
+    color: #3f4652;
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.date-modal__header--calendar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px 10px;
+}
+
+.date-nav {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #4b5563;
+    background: rgba(63, 160, 255, 0.08);
+    transition: background 0.15s ease, transform 0.15s ease;
+    font-size: 22px;
+    line-height: 1;
+}
+
+.date-nav:hover {
+    background: rgba(63, 160, 255, 0.16);
+    transform: translateY(-1px);
+}
+
+.date-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    padding: 0 18px 8px;
+    text-align: center;
+}
+
+.date-weekdays span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #98a1ad;
+}
+
+.date-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    padding: 0 18px 18px;
+}
+
+.date-cell {
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    color: #3f4652;
+    background: transparent;
+    transition: background 0.15s ease, transform 0.15s ease, color 0.15s ease;
+}
+
+.date-cell:hover {
+    background: rgba(63, 160, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+.date-cell--active {
+    background: #3fa0ff;
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(63, 160, 255, 0.24);
+}
+
+.date-cell--disabled {
+    color: #c1c7d0;
+    background: rgba(0, 0, 0, 0.03);
+    cursor: not-allowed;
+}
+
+.date-cell--outside {
+    background: transparent;
+    pointer-events: none;
+}
+
+@media (max-width: 700px) {
+    .date-modal__panel--calendar {
+        width: min(340px, calc(100vw - 24px));
+    }
+
+    .date-calendar-grid {
+        gap: 6px;
+    }
+
+    .date-cell {
+        height: 38px;
+        font-size: 13px;
+    }
+}
+
 .date-modal__panel {
     width: 360px;
     background: #f8f8fb;
@@ -423,42 +533,15 @@ body {
     color: #6d727c;
 }
 
-.date-modal__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    padding: 10px 18px 18px;
-}
 
-.date-option {
-    border: 0;
-    border-radius: 14px;
-    background: transparent;
-    padding: 10px 8px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: #40454f;
-    transition: background 0.15s ease, transform 0.15s ease;
-}
+
 
 .date-option:hover {
     background: rgba(59, 130, 246, 0.08);
     transform: translateY(-1px);
 }
 
-.date-option__weekday {
-    font-size: 12px;
-    color: #8a909a;
-}
 
-.date-option__day {
-    font-size: 28px;
-    line-height: 1;
-    font-weight: 500;
-}
 
 .date-option--active {
     background: #3fa0ff;
@@ -467,26 +550,6 @@ body {
 
 .date-option--active .date-option__weekday {
     color: rgba(255, 255, 255, 0.9);
-}
-
-.date-modal__footer {
-    display: flex;
-    justify-content: flex-end;
-    padding: 12px 16px 14px;
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
-    background: #f8f8fb;
-}
-
-.date-modal__ok {
-    border: 0;
-    border-radius: 12px;
-    padding: 8px 18px;
-    background: #3fa0ff;
-    color: white;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 8px 18px rgba(63, 160, 255, 0.24);
 }
 
 .date-modal__ok:hover {

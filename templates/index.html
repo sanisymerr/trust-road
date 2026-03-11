@@ -146,29 +146,55 @@
         </button>
 
         <div class="date-dropdown" id="dateModal" hidden>
-            <div class="date-modal__panel">
-                <div class="date-modal__header">
-                    <div class="date-modal__title">{{ month_title }}</div>
-                </div>
+    <div class="date-modal__panel date-modal__panel--calendar">
+        <div class="date-modal__header date-modal__header--calendar">
+            <a
+                class="date-nav"
+                href="{{ url_for('index', date=selected_date, month=prev_month) }}"
+                aria-label="Предыдущий месяц"
+            >
+                ‹
+            </a>
 
-                <div class="date-modal__grid">
-                    {% for item in date_items %}
-                        <button
-                            type="button"
-                            class="date-option {% if item.value == selected_date %}date-option--active{% endif %}"
-                            data-url="{{ url_for('index', date=item.value) }}"
-                        >
-                            <span class="date-option__weekday">{{ item.weekday }}</span>
-                            <span class="date-option__day">{{ item.day }}</span>
-                        </button>
-                    {% endfor %}
-                </div>
+            <div class="date-modal__title">{{ month_title }}</div>
 
-                <div class="date-modal__footer">
-                    <button type="button" class="date-modal__ok" id="dateModalOk">OK</button>
-                </div>
-            </div>
+            <a
+                class="date-nav"
+                href="{{ url_for('index', date=selected_date, month=next_month) }}"
+                aria-label="Следующий месяц"
+            >
+                ›
+            </a>
         </div>
+
+        <div class="date-weekdays">
+            <span>Пн</span>
+            <span>Вт</span>
+            <span>Ср</span>
+            <span>Чт</span>
+            <span>Пт</span>
+            <span>Сб</span>
+            <span>Вс</span>
+        </div>
+
+        <div class="date-calendar-grid">
+            {% for item in calendar_days %}
+                {% if item.is_current_month and item.is_available %}
+                    <a
+                        class="date-cell {% if item.is_selected %}date-cell--active{% endif %}"
+                        href="{{ url_for('index', date=item.value, month=month_cursor) }}"
+                    >
+                        {{ item.day }}
+                    </a>
+                {% elif item.is_current_month %}
+                    <div class="date-cell date-cell--disabled">{{ item.day }}</div>
+                {% else %}
+                    <div class="date-cell date-cell--outside"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
     </div>
 </section>
 
@@ -266,8 +292,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const openBtn = document.getElementById("datePickerOpen");
     const modal = document.getElementById("dateModal");
-    const okBtn = document.getElementById("dateModalOk");
-    const options = document.querySelectorAll(".date-option");
+
     const wrap = document.getElementById("datePickerWrap");
     const converterRows = {{ data.rows | tojson }};
 const convertFrom = document.getElementById("convertFrom");
@@ -472,14 +497,6 @@ convertAmount.addEventListener("input", updateConverter);
 setConverterMode("mng");
 
 
-
-    let selectedUrl = null;
-
-    const activeOption = document.querySelector(".date-option--active");
-    if (activeOption) {
-        selectedUrl = activeOption.dataset.url;
-    }
-
     function openModal() {
         modal.hidden = false;
     }
@@ -495,22 +512,6 @@ setConverterMode("mng");
     openBtn.addEventListener("click", function (event) {
         event.stopPropagation();
         toggleModal();
-    });
-
-    options.forEach((option) => {
-        option.addEventListener("click", function () {
-            options.forEach((item) => item.classList.remove("date-option--active"));
-            option.classList.add("date-option--active");
-            selectedUrl = option.dataset.url;
-        });
-    });
-
-    okBtn.addEventListener("click", function () {
-        if (selectedUrl) {
-            window.location.href = selectedUrl;
-        } else {
-            closeModal();
-        }
     });
 
     document.addEventListener("click", function (event) {
