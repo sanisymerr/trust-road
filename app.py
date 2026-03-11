@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, flash, redirect, render_template, request, url_for, jsonify, send_file
+from flask import Flask, flash, redirect, render_template, request, url_for, jsonify
 from datetime import datetime, timedelta
 import calendar
 
@@ -68,6 +68,21 @@ def load_rates_by_date(selected_date: str | None) -> dict:
 
     return load_rates()
 
+def load_history_by_date_strict(selected_date: str) -> dict | None:
+    if not selected_date or not DATE_RE.fullmatch(selected_date):
+        return None
+
+    history_root = HISTORY_DIR.resolve()
+    history_file = (HISTORY_DIR / f"{selected_date}.json").resolve()
+
+    if history_root not in history_file.parents:
+        return None
+
+    if not history_file.exists():
+        return None
+
+    with history_file.open("r", encoding="utf-8") as f:
+        return json.load(f)
 
 def build_date_items(dates: list[str]) -> list[dict]:
     items = []
@@ -335,6 +350,7 @@ def refresh():
         flash(f"Не удалось обновить курсы: {message}", "error")
     return redirect(url_for("index"))
 
+<<<<<<< HEAD
 @app.route("/api/rates", methods=["GET"])
 def api_rates():
     return jsonify(load_rates())
@@ -390,6 +406,39 @@ def download_history(selected_date: str):
         as_attachment=True,
         download_name=f"{selected_date}.json",
     )
+=======
+@app.route("/api/latest.json", methods=["GET"])
+def api_latest():
+    return jsonify(load_rates())
+
+
+@app.route("/api/history/dates", methods=["GET"])
+def api_history_dates():
+    latest = load_rates()
+    dates = load_available_dates()
+
+    return jsonify({
+        "available_dates": dates,
+        "count": len(dates),
+        "latest_date": latest.get("date"),
+        "updated_at_vladivostok": latest.get("updated_at_vladivostok"),
+        "rub_source_date": latest.get("rub_source_date"),
+    })
+
+
+@app.route("/api/history/<date_value>.json", methods=["GET"])
+def api_history_by_date(date_value: str):
+    payload = load_history_by_date_strict(date_value)
+
+    if payload is None:
+        return jsonify({
+            "ok": False,
+            "error": "date_not_found",
+            "date": date_value,
+        }), 404
+
+    return jsonify(payload)
+>>>>>>> 8f44f2a (Add Render history sync API)
 
 def start_scheduler() -> None:
     if scheduler.running:
