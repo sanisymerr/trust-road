@@ -360,10 +360,7 @@ def start_scheduler() -> None:
 
 
 def ensure_initial_data() -> None:
-    if DATA_PATH.exists():
-        return
     run_update()
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
