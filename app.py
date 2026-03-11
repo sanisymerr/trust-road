@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, flash, redirect, render_template, request, url_for
+from flask import Flask, flash, redirect, render_template, request, url_for, jsonify, send_file
 from datetime import datetime, timedelta
 import calendar
 
@@ -335,6 +335,61 @@ def refresh():
         flash(f"Не удалось обновить курсы: {message}", "error")
     return redirect(url_for("index"))
 
+@app.route("/api/rates", methods=["GET"])
+def api_rates():
+    return jsonify(load_rates())
+
+
+@app.route("/api/dates", methods=["GET"])
+def api_dates():
+    return jsonify({"dates": load_available_dates()})
+
+
+@app.route("/api/history/<selected_date>", methods=["GET"])
+def api_history(selected_date: str):
+    if not DATE_RE.fullmatch(selected_date):
+        return jsonify({"error": "Неверный формат даты. Используй YYYY-MM-DD"}), 400
+
+    history_file = (HISTORY_DIR / f"{selected_date}.json").resolve()
+    history_root = HISTORY_DIR.resolve()
+
+    if history_root not in history_file.parents or not history_file.exists():
+        return jsonify({"error": "Дата не найдена"}), 404
+
+    with history_file.open("r", encoding="utf-8") as f:
+        return jsonify(json.load(f))
+
+
+@app.route("/download/latest", methods=["GET"])
+def download_latest():
+    if not DATA_PATH.exists():
+        return jsonify({"error": "Файл latest_rates.json не найден"}), 404
+
+    return send_file(
+        DATA_PATH,
+        mimetype="application/json",
+        as_attachment=True,
+        download_name="latest_rates.json",
+    )
+
+
+@app.route("/download/history/<selected_date>", methods=["GET"])
+def download_history(selected_date: str):
+    if not DATE_RE.fullmatch(selected_date):
+        return jsonify({"error": "Неверный формат даты. Используй YYYY-MM-DD"}), 400
+
+    history_file = (HISTORY_DIR / f"{selected_date}.json").resolve()
+    history_root = HISTORY_DIR.resolve()
+
+    if history_root not in history_file.parents or not history_file.exists():
+        return jsonify({"error": "Дата не найдена"}), 404
+
+    return send_file(
+        history_file,
+        mimetype="application/json",
+        as_attachment=True,
+        download_name=f"{selected_date}.json",
+    )
 
 def start_scheduler() -> None:
     if scheduler.running:
