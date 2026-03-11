@@ -40,15 +40,39 @@ def get_currency_data() -> list[list[str]]:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
-        page.goto("https://www.capitronbank.mn/p/exchange?lang=&type=", timeout=60000)
-        page.wait_for_selector("table", timeout=60000)
+        page.goto(
+            "https://www.capitronbank.mn/p/exchange?lang=&type=",
+            wait_until="networkidle",
+            timeout=60000,
+        )
 
-        rows = page.query_selector_all("table tr")
+        page.wait_for_selector("table tbody tr", timeout=60000)
+
+        page.wait_for_function(
+            """
+            () => {
+                const rows = Array.from(document.querySelectorAll("table tbody tr"));
+                if (!rows.length) return false;
+
+                return rows.every((row) => {
+                    const cols = row.querySelectorAll("td");
+                    return cols.length >= 7 &&
+                           cols[2].textContent.trim() !== "" &&
+                           cols[6].textContent.trim() !== "";
+                });
+            }
+            """,
+            timeout=60000,
+        )
+
+        page.wait_for_timeout(1500)
+
+        rows = page.query_selector_all("table tbody tr")
         data: list[list[str]] = []
 
-        for row in rows[1:]:
+        for row in rows:
             cols = row.query_selector_all("td")
-            if len(cols) > 0:
+            if len(cols) >= 7:
                 currency = cols[0].text_content().strip()
                 bank_rate = cols[2].text_content().strip()
                 sell_rate = cols[6].text_content().strip()
