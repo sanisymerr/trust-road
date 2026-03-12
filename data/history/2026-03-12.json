@@ -9,56 +9,56 @@
       "name": "Доллар США"
     },
     {
-      "capitron_mnt": "4,276.00",
+      "capitron_mnt": "4,160.00",
       "cbr_rate_rub": "91.9378",
       "code": "EUR",
       "mongol_bank_mnt": "4,142.70",
       "name": "Евро"
     },
     {
-      "capitron_mnt": "523.50",
+      "capitron_mnt": "520.00",
       "cbr_rate_rub": "11.5051",
       "code": "CNY",
       "mongol_bank_mnt": "519.31",
       "name": "Китайский юань"
     },
     {
-      "capitron_mnt": "23.20",
+      "capitron_mnt": "22.72",
       "cbr_rate_rub": "0.499798",
       "code": "JPY",
       "mongol_bank_mnt": "22.54",
       "name": "Японская иена"
     },
     {
-      "capitron_mnt": "2.48",
+      "capitron_mnt": "2.47",
       "cbr_rate_rub": "0.0536855",
       "code": "KRW",
       "mongol_bank_mnt": "2.42",
       "name": "Южнокорейская вона"
     },
     {
-      "capitron_mnt": "4,972.00",
+      "capitron_mnt": "4,883.00",
       "cbr_rate_rub": "106.4097",
       "code": "GBP",
       "mongol_bank_mnt": "4,791.19",
       "name": "Фунт стерлингов"
     },
     {
-      "capitron_mnt": "4,833.00",
+      "capitron_mnt": "4,687.00",
       "cbr_rate_rub": "101.5515",
       "code": "CHF",
       "mongol_bank_mnt": "4,584.82",
       "name": "Швейцарский франк"
     },
     {
-      "capitron_mnt": "2,885.00",
+      "capitron_mnt": "2,832.00",
       "cbr_rate_rub": "62.1946",
       "code": "SGD",
       "mongol_bank_mnt": "2,802.74",
       "name": "Сингапурский доллар"
     },
     {
-      "capitron_mnt": "461.65",
+      "capitron_mnt": "459.65",
       "cbr_rate_rub": "10.1201",
       "code": "HKD",
       "mongol_bank_mnt": "455.59",
@@ -80,5 +80,5 @@
     }
   ],
   "rub_source_date": "2026/03/12",
-  "updated_at_vladivostok": "2026-03-12 10:00:02"
+  "updated_at_vladivostok": "2026-03-12 13:09:42"
 }
