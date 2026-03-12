@@ -1386,4 +1386,13 @@ body {
         font-size: 11px;
         padding: 7px 10px;
     }
+    .currency-chip {
+    box-shadow: none;
+}
+
+.currency-chip--active {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.28);
+}
 }
