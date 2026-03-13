@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, flash, redirect, render_template, request, url_for, jsonify
+from flask import Flask, flash, redirect, render_template, request, url_for, jsonify, send_file
 from datetime import datetime, timedelta
 import calendar
 
@@ -193,24 +193,6 @@ def run_update() -> tuple[bool, str]:
         error_text = exc.stderr.strip() or exc.stdout.strip() or str(exc)
         return False, error_text
     except Exception as exc:  # noqa: BLE001
-        return False, str(exc)
-
-def run_archive_update() -> tuple[bool, str]:
-    try:
-        result = subprocess.run(
-            [sys.executable, str(BASE_DIR / "update_data.py"), "--save-history"],
-            cwd=BASE_DIR,
-            capture_output=True,
-            text=True,
-            timeout=240,
-            check=True,
-        )
-        message = result.stdout.strip() or "Архив успешно сохранён."
-        return True, message
-    except subprocess.CalledProcessError as exc:
-        error_text = exc.stderr.strip() or exc.stdout.strip() or str(exc)
-        return False, error_text
-    except Exception as exc:
         return False, str(exc)
 
 def parse_rate(value):
@@ -454,20 +436,13 @@ def start_scheduler() -> None:
     scheduler.add_job(
         func=run_update,
         trigger="cron",
+        hour=10,
         minute=0,
-        id="hourly_rates_update",
+        id="daily_rates_update",
         replace_existing=True,
     )
-    scheduler.start()
 
-    scheduler.add_job(
-        func=run_archive_update,
-        trigger="cron",
-        hour=23,
-        minute=59,
-        id="daily_history_snapshot",
-        replace_existing=True,
-    )
+    scheduler.start()
 
 
 def ensure_initial_data() -> None:

@@ -1,9 +1,8 @@
 #!/bin/bash
 set -e
 cd "$(dirname "$0")"
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python -m playwright install chromium
+
+source .venv/bin/activate || true
 python update_data.py || true
+
 exec gunicorn -w 1 --timeout 300 -b 0.0.0.0:${PORT:-10000} app:app
