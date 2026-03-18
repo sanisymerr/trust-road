@@ -1039,6 +1039,14 @@ body.drawer-open {
     position: relative;
 }
 
+.catalog-content {
+    min-width: 0;
+}
+
+#catalog-grid {
+    min-width: 0;
+}
+
 .catalog-quick-tags {
     display: flex;
     flex-wrap: wrap;
@@ -1406,4 +1414,41 @@ body.drawer-open {
         height: 46px;
         font-size: 1.1rem;
     }
+    .catalog-layout-wrap,
+.catalog-layout,
+.catalog-content {
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+.catalog-quick-tags {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.product-grid {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: 1fr;
+}
+
+.product-card {
+    width: 100%;
+    min-width: 0;
+}
+
+.product-image-wrap {
+    width: 100%;
+    overflow: hidden;
+}
+
+.product-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
 }
