@@ -897,6 +897,27 @@ button {
 }
 
 @media (max-width: 760px) {
+.creators-panel {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.creators-panel > div:first-child {
+    width: 100%;
+}
+
+.creators-badges {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: 1fr;
+}
+
+.creators-badges span {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+}
+
     .nav-wrap,
     .section-heading,
     .catalog-toolbar {
@@ -1143,12 +1164,17 @@ body.drawer-open {
     }
 
     .main-nav {
-        width: 100%;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        padding-bottom: 2px;
-        scrollbar-width: none;
-    }
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+    padding-right: 8px;
+    scrollbar-width: none;
+}
+
+.main-nav a {
+    flex: 0 0 auto;
+}
 
     .main-nav::-webkit-scrollbar {
         display: none;

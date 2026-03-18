@@ -14,7 +14,7 @@
 </section>
 
 <section class="section section-tight">
-    <div class="container mobile-catalog-actions mobile-only reveal">
+    <div class="container mobile-catalog-actions mobile-only">
         <button class="btn btn-secondary" id="open-filters" type="button">Фильтры и сортировка</button>
         <a href="{{ url_for('cart') }}" class="btn btn-ghost">Открыть корзину</a>
     </div>
@@ -24,7 +24,7 @@
     <div class="container catalog-layout-wrap">
         <div class="filters-overlay" id="filters-overlay"></div>
         <div class="catalog-layout">
-            <aside class="filters-panel reveal" id="filters-panel">
+            <aside class="filters-panel" id="filters-panel">
                 <div class="filters-mobile-head">
                     <strong>Фильтры</strong>
                     <button class="close-panel-btn" id="close-filters" type="button">✕</button>
@@ -72,7 +72,7 @@
                 </div>
             </aside>
 
-            <div class="catalog-content reveal delay-1">
+            <div class="catalog-content">
                 <div class="catalog-toolbar">
                     <div>
                         <h2>Весь ассортимент</h2>
