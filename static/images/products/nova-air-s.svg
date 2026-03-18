@@ -1,0 +1,32 @@
+<svg width="800" height="620" viewBox="0 0 800 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="800" height="620" rx="32" fill="#0A1220"/>
+<circle cx="180" cy="120" r="160" fill="#6CE3FF" fill-opacity="0.18"/>
+<circle cx="640" cy="490" r="180" fill="#44C8FF" fill-opacity="0.16"/>
+<rect x="60" y="60" width="680" height="500" rx="34" fill="#0E1A2D" stroke="rgba(255,255,255,0.08)"/>
+<rect x="116" y="106" width="568" height="310" rx="28" fill="url(#g1)" fill-opacity="0.14" stroke="rgba(255,255,255,0.08)"/>
+<rect x="158" y="458" width="190" height="20" rx="10" fill="#EEF8FF" fill-opacity="0.88"/>
+<rect x="158" y="492" width="260" height="14" rx="7" fill="#A7BAD8" fill-opacity="0.55"/>
+<rect x="520" y="460" width="118" height="38" rx="19" fill="url(#g2)"/>
+<text x="158" y="174" fill="#F2F8FF" font-size="38" font-family="Arial, Helvetica, sans-serif" font-weight="700">Nova Air S</text>
+<text x="158" y="220" fill="#AFC3DF" font-size="22" font-family="Arial, Helvetica, sans-serif">Смартфон</text>
+<g>
+  <rect x="246" y="214" width="308" height="132" rx="26" fill="#111F38" stroke="rgba(255,255,255,0.09)"/>
+  <circle cx="400" cy="280" r="74" fill="url(#g3)"/>
+  <path d="M340 286C372 232 445 216 500 246" stroke="#F7FBFF" stroke-width="12" stroke-linecap="round"/>
+  <path d="M332 316C372 353 430 372 487 358" stroke="#C7F3FF" stroke-width="10" stroke-linecap="round"/>
+</g>
+<defs>
+<linearGradient id="g1" x1="116" y1="106" x2="684" y2="416" gradientUnits="userSpaceOnUse">
+<stop stop-color="#6CE3FF"/>
+<stop offset="1" stop-color="#44C8FF"/>
+</linearGradient>
+<linearGradient id="g2" x1="520" y1="460" x2="638" y2="498" gradientUnits="userSpaceOnUse">
+<stop stop-color="#6CE3FF"/>
+<stop offset="1" stop-color="#44C8FF"/>
+</linearGradient>
+<linearGradient id="g3" x1="326" y1="206" x2="474" y2="354" gradientUnits="userSpaceOnUse">
+<stop stop-color="#6CE3FF"/>
+<stop offset="1" stop-color="#44C8FF"/>
+</linearGradient>
+</defs>
+</svg>

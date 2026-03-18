@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>{% block title %}{{ store.name }}{% endblock %}</title>
+    <meta name="description" content="{{ store.description }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="page-shell"></div>
+    <header class="site-header">
+        <div class="container nav-wrap">
+            <a href="{{ url_for('index') }}" class="brand">
+                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="{{ store.name }}" class="brand-logo">
+                <div>
+                    <span class="brand-name">{{ store.name }}</span>
+                    <span class="brand-tag">{{ store.tagline }}</span>
+                </div>
+            </a>
+
+            <nav class="main-nav">
+                <a href="{{ url_for('index') }}" class="{% if request.path == '/' %}active{% endif %}">Главная</a>
+                <a href="{{ url_for('catalog') }}" class="{% if request.path.startswith('/catalog') or request.path.startswith('/product') %}active{% endif %}">Каталог</a>
+                <a href="{{ url_for('about') }}" class="{% if request.path == '/about' %}active{% endif %}">О проекте</a>
+                <a href="{{ url_for('cart') }}" class="cart-link {% if request.path == '/cart' %}active{% endif %}">
+                    Корзина
+                    <span class="cart-badge cart-count-value" id="cart-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <a href="{{ url_for('index') }}" class="brand footer-brand">
+                    <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="{{ store.name }}" class="brand-logo">
+                    <div>
+                        <span class="brand-name">{{ store.name }}</span>
+                        <span class="brand-tag">Маркетплейс электроники</span>
+                    </div>
+                </a>
+                <p class="footer-copy">Электроника, ноутбуки, аудио, товары для умного дома и gaming-устройства — в одном удобном каталоге.</p>
+            </div>
+            <div>
+                <h4>Разделы</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('index') }}">Главная</a></li>
+                    <li><a href="{{ url_for('catalog') }}">Каталог</a></li>
+                    <li><a href="{{ url_for('cart') }}">Корзина</a></li>
+                    <li><a href="{{ url_for('about') }}">О проекте</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Создатели</h4>
+                <ul class="footer-links creators-list">
+                    {% for creator in store.creators %}
+                    <li>{{ creator }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <nav class="mobile-bottom-nav" aria-label="Мобильная навигация">
+        <a href="{{ url_for('index') }}" class="{% if request.path == '/' %}active{% endif %}">
+            <span>⌂</span>
+            <small>Главная</small>
+        </a>
+        <a href="{{ url_for('catalog') }}" class="{% if request.path.startswith('/catalog') or request.path.startswith('/product') %}active{% endif %}">
+            <span>◫</span>
+            <small>Каталог</small>
+        </a>
+        <a href="{{ url_for('about') }}" class="{% if request.path == '/about' %}active{% endif %}">
+            <span>◎</span>
+            <small>О проекте</small>
+        </a>
+        <a href="{{ url_for('cart') }}" class="{% if request.path == '/cart' %}active{% endif %}">
+            <span>◉</span>
+            <small>Корзина</small>
+            <em class="mobile-nav-badge cart-count-value">0</em>
+        </a>
+    </nav>
+
+    <button class="back-to-top" id="back-to-top" type="button" aria-label="Наверх">↑</button>
+
+    <script>
+        window.APP_STORE = {
+            name: {{ store.name|tojson }},
+            apiUrl: {{ url_for('api_products')|tojson }}
+        };
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

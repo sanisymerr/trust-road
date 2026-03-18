@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ store.name }} — Каталог{% endblock %}
+
+{% block content %}
+<section class="section catalog-hero">
+    <div class="container section-heading">
+        <div>
+            <span class="eyebrow">Каталог</span>
+            <h1>Выбери технику под свой ритм жизни</h1>
+            <p class="section-subtitle">5 категорий, 15 товаров с реальными фото, удобный поиск, фильтрация и сортировка.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section section-tight">
+    <div class="container mobile-catalog-actions mobile-only reveal">
+        <button class="btn btn-secondary" id="open-filters" type="button">Фильтры и сортировка</button>
+        <a href="{{ url_for('cart') }}" class="btn btn-ghost">Открыть корзину</a>
+    </div>
+</section>
+
+<section class="section section-tight">
+    <div class="container catalog-layout-wrap">
+        <div class="filters-overlay" id="filters-overlay"></div>
+        <div class="catalog-layout">
+            <aside class="filters-panel reveal" id="filters-panel">
+                <div class="filters-mobile-head">
+                    <strong>Фильтры</strong>
+                    <button class="close-panel-btn" id="close-filters" type="button">✕</button>
+                </div>
+
+                <div class="panel-title-row">
+                    <h3>Фильтры</h3>
+                    <button class="text-button" id="reset-filters" type="button">Сбросить</button>
+                </div>
+
+                <label class="input-label">
+                    <span>Поиск по названию</span>
+                    <input type="text" id="search-input" placeholder="Например, iPhone, JBL или ноутбук">
+                </label>
+
+                <div class="filter-group">
+                    <span class="group-title">Категория</span>
+                    <div class="category-options">
+                        {% for category in categories %}
+                        <label class="checkbox-row">
+                            <input type="checkbox" class="category-checkbox" value="{{ category.slug }}">
+                            <span>{{ category.name }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <span class="group-title">Цена до</span>
+                    <input type="range" id="price-range" min="5000" max="130000" step="1000" value="130000">
+                    <div class="range-value" id="price-range-value">130 000 ₽</div>
+                </div>
+
+                <div class="filter-group">
+                    <span class="group-title">Сортировка</span>
+                    <div class="sort-pills" id="sort-pills">
+                        <button type="button" class="sort-pill active" data-sort="popular">Популярные</button>
+                        <button type="button" class="sort-pill" data-sort="price-asc">Сначала дешевле</button>
+                        <button type="button" class="sort-pill" data-sort="price-desc">Сначала дороже</button>
+                        <button type="button" class="sort-pill" data-sort="name-asc">Название А-Я</button>
+                        <button type="button" class="sort-pill" data-sort="name-desc">Название Я-А</button>
+                        <button type="button" class="sort-pill" data-sort="rating-desc">По рейтингу</button>
+                    </div>
+                    <input type="hidden" id="sort-select" value="popular">
+                </div>
+            </aside>
+
+            <div class="catalog-content reveal delay-1">
+                <div class="catalog-toolbar">
+                    <div>
+                        <h2>Весь ассортимент</h2>
+                        <p id="results-count">Найдено товаров: {{ products|length }}</p>
+                    </div>
+                    <a href="{{ url_for('cart') }}" class="btn btn-secondary desktop-cart-link">Открыть корзину</a>
+                </div>
+
+                <div class="catalog-quick-tags">
+                    <a href="{{ url_for('catalog') }}?category=smartphones" class="catalog-quick-tag">Смартфоны</a>
+                    <a href="{{ url_for('catalog') }}?category=laptops" class="catalog-quick-tag">Ноутбуки</a>
+                    <a href="{{ url_for('catalog') }}?category=audio" class="catalog-quick-tag">Аудио</a>
+                    <a href="{{ url_for('catalog') }}?category=smart-home" class="catalog-quick-tag">Умный дом</a>
+                    <a href="{{ url_for('catalog') }}?category=gaming" class="catalog-quick-tag">Гейминг</a>
+                </div>
+
+                <div class="product-grid" id="catalog-grid">
+                    {% for product in products %}
+                    <article class="product-card catalog-product"
+                             data-id="{{ product.id }}"
+                             data-name="{{ product.name|lower }}"
+                             data-display-name="{{ product.name }}"
+                             data-category="{{ product.category }}"
+                             data-price="{{ product.price }}"
+                             data-rating="{{ product.rating }}"
+                             data-image="{{ url_for('static', filename='images/' ~ product.image) }}"
+                             data-slug="{{ product.slug }}">
+                        <a href="{{ url_for('product_detail', slug=product.slug) }}" class="product-image-wrap">
+                            <img src="{{ url_for('static', filename='images/' ~ product.image) }}" alt="{{ product.name }}" class="product-image">
+                            <span class="product-badge">{{ product.badge }}</span>
+                        </a>
+                        <div class="product-body">
+                            <span class="product-category">{{ product.category_name }}</span>
+                            <a href="{{ url_for('product_detail', slug=product.slug) }}" class="product-title">{{ product.name }}</a>
+                            <p>{{ product.short_description }}</p>
+                            <div class="product-meta">
+                                <strong>{{ "{:,.0f}".format(product.price).replace(",", " ") }} ₽</strong>
+                                <span>★ {{ product.rating }}</span>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart"
+                                        data-id="{{ product.id }}"
+                                        data-name="{{ product.name }}"
+                                        data-price="{{ product.price }}"
+                                        data-image="{{ url_for('static', filename='images/' ~ product.image) }}"
+                                        data-slug="{{ product.slug }}">
+                                    В корзину
+                                </button>
+                                <a href="{{ url_for('product_detail', slug=product.slug) }}" class="btn btn-ghost">Подробнее</a>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+
+                <div class="empty-catalog hidden" id="empty-state">
+                    <h3>Ничего не найдено</h3>
+                    <p>Попробуй изменить фильтры или сбросить поиск.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
