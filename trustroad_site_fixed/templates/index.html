@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курсы валют</title>
+    <meta name="description" content="Курсы валют TrustRoad: Монголбанк, Capitron и ЦБ РФ с удобным конвертером и выбором только актуальных дат.">
+    <meta name="theme-color" content="#081426">
+    <link rel="icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='icons/favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='icons/favicon-16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="bg-scene" aria-hidden="true">
+    <div class="glow glow--one"></div>
+    <div class="glow glow--two"></div>
+    <div class="glow glow--three"></div>
+    <div class="mesh"></div>
+</div>
+
+<div class="page-shell">
+    <header class="hero-card">
+        <div class="hero-card__content">
+            <div class="eyebrow">TrustRoad • Валютная панель</div>
+            <h1>Курсы валют</h1>
+            <p class="hero-card__text">
+                На сайте остаются только рабочие даты без старого мусора. Конвертер считает по выбранному дню,
+                а таблица показывает курсы из трёх источников в одном аккуратном интерфейсе.
+            </p>
+
+            <div class="hero-stats">
+                <article class="stat-chip">
+                    <span class="stat-chip__label">Выбрано</span>
+                    <strong>{{ selected_date_label }}</strong>
+                    <small>{{ stats.selected_date }}</small>
+                </article>
+                <article class="stat-chip">
+                    <span class="stat-chip__label">Валют в таблице</span>
+                    <strong>{{ stats.currencies_count }}</strong>
+                    <small>основные направления</small>
+                </article>
+                <article class="stat-chip">
+                    <span class="stat-chip__label">Обновлено</span>
+                    <strong>{{ data.updated_at_vladivostok or '—' }}</strong>
+                    <small>Владивосток</small>
+                </article>
+            </div>
+        </div>
+
+        <div class="hero-card__side">
+            <div class="brand-panel">
+                <img src="{{ url_for('static', filename='icons/trustroad-logo-white.png') }}" alt="TrustRoad">
+                <div class="brand-panel__meta">
+                    <span class="source-badge">Монголбанк</span>
+                    <span class="source-badge">Capitron Bank</span>
+                    <span class="source-badge">ЦБ РФ</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <section class="alerts">
+                {% for category, message in messages %}
+                    <div class="alert alert--{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </section>
+        {% endif %}
+    {% endwith %}
+
+    <section class="toolbar-card">
+        <div class="toolbar-card__group">
+            <div>
+                <div class="section-kicker">Дата данных</div>
+                <h2>Сегодня / вчера</h2>
+            </div>
+            <div class="date-switcher">
+                {% for option in date_options %}
+                    <a class="date-option {% if option.is_selected %}date-option--active{% endif %}" href="{{ option.href }}">
+                        <span class="date-option__title">{{ option.label }}</span>
+                        <span class="date-option__value">{{ option.date_text }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="toolbar-card__group toolbar-card__group--right">
+            <form action="{{ url_for('refresh') }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="primary-button" type="submit">Обновить данные</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="converter-card">
+        <div class="card-head">
+            <div>
+                <div class="section-kicker">Конвертер</div>
+                <h2>Считай по нужному источнику</h2>
+                <p id="converterSubtitle">Режим Монголбанк + Capitron считает по выбранной дате и сразу показывает два результата.</p>
+            </div>
+            <div class="mode-switch" role="tablist" aria-label="Режим конвертера">
+                <button type="button" class="mode-switch__button mode-switch__button--active" data-mode="mng">Монголбанк + Capitron</button>
+                <button type="button" class="mode-switch__button" data-mode="cbr">ЦБ РФ</button>
+            </div>
+        </div>
+
+        <div class="converter-layout">
+            <div class="converter-side">
+                <label class="field-block">
+                    <span class="field-block__label">Сумма</span>
+                    <input id="convertAmount" class="field-input" type="number" min="0" step="any" inputmode="decimal" placeholder="Например: 1000">
+                </label>
+
+                <div class="swap-row">
+                    <div class="currency-picker">
+                        <div class="field-block__label">Из валюты</div>
+                        <div class="currency-grid" id="fromCurrencyGrid">
+                            {% for row in data.rows %}
+                                <button
+                                    type="button"
+                                    class="currency-chip {% if row.code == 'MNT' %}currency-chip--active{% endif %}"
+                                    data-target="from"
+                                    data-code="{{ row.code }}"
+                                    aria-label="{{ row.code }}"
+                                >
+                                    <img class="currency-chip__flag" src="{{ url_for('static', filename='flags/' ~ row.code|lower ~ '.png') }}" alt="{{ row.code }}">
+                                    <span>{{ row.code }}</span>
+                                </button>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" id="convertFrom" value="MNT">
+                    </div>
+
+                    <button type="button" class="swap-button" id="swapCurrencies" aria-label="Поменять валюты местами">⇄</button>
+
+                    <div class="currency-picker">
+                        <div class="field-block__label">В валюту</div>
+                        <div class="currency-grid" id="toCurrencyGrid">
+                            {% for row in data.rows %}
+                                <button
+                                    type="button"
+                                    class="currency-chip {% if row.code == 'USD' %}currency-chip--active{% endif %}"
+                                    data-target="to"
+                                    data-code="{{ row.code }}"
+                                    aria-label="{{ row.code }}"
+                                >
+                                    <img class="currency-chip__flag" src="{{ url_for('static', filename='flags/' ~ row.code|lower ~ '.png') }}" alt="{{ row.code }}">
+                                    <span>{{ row.code }}</span>
+                                </button>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" id="convertTo" value="USD">
+                    </div>
+                </div>
+            </div>
+
+            <div class="converter-results" id="converterResults">
+                <article class="result-card" id="mongolResultCard">
+                    <div class="result-card__label">Монголбанк</div>
+                    <strong class="result-card__value" id="mongolResult">—</strong>
+                    <span class="result-card__hint">Официальный курс в MNT</span>
+                </article>
+
+                <article class="result-card" id="capitronResultCard">
+                    <div class="result-card__label">Capitron</div>
+                    <strong class="result-card__value" id="capitronResult">—</strong>
+                    <span class="result-card__hint">Банковский курс в MNT</span>
+                </article>
+
+                <article class="result-card result-card--accent is-hidden" id="cbrResultCard">
+                    <div class="result-card__label">ЦБ РФ</div>
+                    <strong class="result-card__value" id="cbrResult">—</strong>
+                    <span class="result-card__hint">Курс в RUB за выбранную дату</span>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="table-card">
+        <div class="card-head card-head--table">
+            <div>
+                <div class="section-kicker">Таблица</div>
+                <h2>Все курсы в одном месте</h2>
+                <p>Для интерфейса оставлены только актуальные даты, чтобы таблица не разваливалась от старой истории.</p>
+            </div>
+            {% if show_changes and previous_date_text %}
+                <div class="delta-note">Сравнение с {{ previous_date_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="table-wrap">
+            <table class="rates-table">
+                <thead>
+                <tr>
+                    <th>Код</th>
+                    <th>Валюта</th>
+                    <th>Монголбанк (MNT)</th>
+                    <th>Capitron (MNT)</th>
+                    <th>ЦБ РФ (RUB)</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in data.rows %}
+                    <tr>
+                        <td class="code-cell" data-label="Код">{{ row.code }}</td>
+                        <td data-label="Валюта">
+                            <div class="currency-name-cell">
+                                <img class="currency-flag currency-flag--table" src="{{ url_for('static', filename='flags/' ~ row.code|lower ~ '.png') }}" alt="{{ row.code }}">
+                                <div>
+                                    <strong>{{ row.name }}</strong>
+                                    <span>{{ row.code }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-label="Монголбанк (MNT)">
+                            <div class="rate-cell">
+                                <span class="rate-cell__value">{{ row.mongol_bank_mnt }}</span>
+                                {% if show_changes and row.delta_mongol %}
+                                    <span class="rate-delta rate-delta--{{ row.delta_mongol.kind }}">{{ row.delta_mongol.text }}</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td data-label="Capitron (MNT)">
+                            <div class="rate-cell">
+                                <span class="rate-cell__value">{{ row.capitron_mnt }}</span>
+                                {% if show_changes and row.delta_capitron %}
+                                    <span class="rate-delta rate-delta--{{ row.delta_capitron.kind }}">{{ row.delta_capitron.text }}</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td data-label="ЦБ РФ (RUB)">
+                            <div class="rate-cell">
+                                <span class="rate-cell__value">{{ row.cbr_rate_rub }}</span>
+                                {% if show_changes and row.delta_cbr %}
+                                    <span class="rate-delta rate-delta--{{ row.delta_cbr.kind }}">{{ row.delta_cbr.text }}</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div>
+            <div class="site-footer__title">TrustRoad © 2026</div>
+            <div class="site-footer__text">Чистая история, аккуратный адаптив и быстрый доступ к сегодняшним и вчерашним данным.</div>
+        </div>
+        <div class="site-footer__meta">
+            <span class="footer-chip">Сегодня / вчера</span>
+            <span class="footer-chip">Конвертер по дате</span>
+            <span class="footer-chip">Мобильная версия</span>
+        </div>
+    </footer>
+</div>
+
+<script>
+    window.TRUSTROAD_ROWS = {{ data.rows | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
