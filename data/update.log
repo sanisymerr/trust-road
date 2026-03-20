@@ -1,0 +1,11 @@
+2026-03-19 18:58:33,807 [INFO] Старт обновления курсов за 2026-03-19
+2026-03-19 18:58:36,751 [INFO] Capitron attempt 1: https://www.capitronbank.mn/p/exchange?lang=&type=&_ts=1773910716751_1
+2026-03-19 18:58:56,705 [INFO] Capitron rows received: 9 (date=2026-03-19)
+2026-03-19 18:59:00,511 [INFO] Данные сохранены в /Users/apple/Downloads/trustroad_site_fixed 3/data/latest_rates.json
+2026-03-19 18:59:00,511 [INFO] История сохранена в /Users/apple/Downloads/trustroad_site_fixed 3/data/history/2026-03-19.json
+2026-03-20 10:10:55,941 [INFO] Старт обновления курсов за 2026-03-20
+2026-03-20 10:10:56,901 [INFO] Capitron attempt 1: https://www.capitronbank.mn/p/exchange?lang=&type=&_ts=1773965456901_1
+2026-03-20 10:11:26,984 [INFO] Capitron rows received: 9 (date=2026-03-20)
+2026-03-20 10:11:31,337 [INFO] Удаляю старую историю: 2026-03-18.json
+2026-03-20 10:11:31,338 [INFO] Данные сохранены в /Users/apple/Downloads/trustroad_site_fixed 3/data/latest_rates.json
+2026-03-20 10:11:31,338 [INFO] История сохранена в /Users/apple/Downloads/trustroad_site_fixed 3/data/history/2026-03-20.json

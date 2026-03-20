@@ -1,25 +1,33 @@
 {
+  "updated_at_vladivostok": "2026-03-19 18:58:33",
   "date": "2026-03-19",
+  "rub_source_date": "2026-03-19",
+  "cbr_source_date": "2026-03-19",
+  "source_dates": {
+    "capitron_checked_at": "2026-03-19 18:58:33",
+    "cbr": "2026-03-19",
+    "rub": "2026-03-19"
+  },
   "rows": [
     {
       "code": "USD",
       "name": "Доллар США",
-      "mongol_bank_mnt": "3,566.52",
-      "capitron_mnt": "3,567.00",
+      "mongol_bank_mnt": "3566.52",
+      "capitron_mnt": "3567",
       "cbr_rate_rub": "83.1259"
     },
     {
       "code": "EUR",
       "name": "Евро",
-      "mongol_bank_mnt": "4,111.84",
-      "capitron_mnt": "4,133.00",
+      "mongol_bank_mnt": "4111.84",
+      "capitron_mnt": "4133",
       "cbr_rate_rub": "94.6663"
     },
     {
       "code": "CNY",
       "name": "Китайский юань",
       "mongol_bank_mnt": "518.76",
-      "capitron_mnt": "518.40",
+      "capitron_mnt": "518.4",
       "cbr_rate_rub": "12.1155"
     },
     {
@@ -32,29 +40,29 @@
     {
       "code": "KRW",
       "name": "Южнокорейская вона",
-      "mongol_bank_mnt": "2.40",
+      "mongol_bank_mnt": "2.4",
       "capitron_mnt": "2.43",
-      "cbr_rate_rub": "0.0557294"
+      "cbr_rate_rub": "0.055729"
     },
     {
       "code": "GBP",
       "name": "Фунт стерлингов",
-      "mongol_bank_mnt": "4,765.41",
-      "capitron_mnt": "4,846.00",
+      "mongol_bank_mnt": "4765.41",
+      "capitron_mnt": "4846",
       "cbr_rate_rub": "110.9149"
     },
     {
       "code": "CHF",
       "name": "Швейцарский франк",
-      "mongol_bank_mnt": "4,534.38",
-      "capitron_mnt": "4,620.00",
+      "mongol_bank_mnt": "4534.38",
+      "capitron_mnt": "4620",
       "cbr_rate_rub": "105.7312"
     },
     {
       "code": "SGD",
       "name": "Сингапурский доллар",
-      "mongol_bank_mnt": "2,793.44",
-      "capitron_mnt": "2,816.00",
+      "mongol_bank_mnt": "2793.44",
+      "capitron_mnt": "2816",
       "cbr_rate_rub": "65.1202"
     },
     {
@@ -69,22 +77,14 @@
       "name": "Монгольский тугрик",
       "mongol_bank_mnt": "1",
       "capitron_mnt": "1",
-      "cbr_rate_rub": "0.0233073"
+      "cbr_rate_rub": "0.023307"
     },
     {
       "code": "RUB",
       "name": "Российский рубль",
-      "mongol_bank_mnt": "43.67",
-      "capitron_mnt": "43.67",
-      "cbr_rate_rub": "1.0000"
+      "mongol_bank_mnt": "42.91",
+      "capitron_mnt": "42.91",
+      "cbr_rate_rub": "1"
     }
-  ],
-  "rub_source_date": "2026-03-18",
-  "updated_at_vladivostok": "2026-03-19 18:19:20",
-  "cbr_source_date": "2026-03-19",
-  "source_dates": {
-    "capitron_checked_at": "2026-03-19 18:19:20",
-    "cbr": "2026-03-19",
-    "rub": "2026-03-18"
-  }
+  ]
 }
