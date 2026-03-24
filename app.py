@@ -1,14 +1,20 @@
 from __future__ import annotations
 
+import atexit
 import json
+import logging
 import os
 import re
 import secrets
 import subprocess
 import sys
+import threading
 from datetime import datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
 from flask import (
     Flask,
     abort,
@@ -25,16 +31,65 @@ from flask import (
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR / "data" / "latest_rates.json"
 HISTORY_DIR = BASE_DIR / "data" / "history"
+LOG_PATH = BASE_DIR / "data" / "update.log"
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-VLADIVOSTOK_OFFSET = timedelta(hours=10)
+VLADIVOSTOK_TZ = ZoneInfo("Asia/Vladivostok")
+VLADIVOSTOK_LABEL = "Asia/Vladivostok"
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "trustroad-local-dev-key")
+app.config["JSON_AS_ASCII"] = False
+
+LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler(LOG_PATH, encoding="utf-8"),
+        logging.StreamHandler(),
+    ],
+)
+logger = logging.getLogger(__name__)
+
+update_lock = threading.Lock()
+update_state_lock = threading.Lock()
+update_state = {
+    "is_running": False,
+    "last_status": "idle",
+    "last_message": "Система готова к обновлению.",
+    "last_started_at": None,
+    "last_finished_at": None,
+}
+
+scheduler: BackgroundScheduler | None = None
+scheduler_started = False
+
+
+CURRENCY_SYMBOLS = {
+    "USD": "$",
+    "EUR": "€",
+    "CNY": "¥",
+    "JPY": "¥",
+    "KRW": "₩",
+    "GBP": "£",
+    "CHF": "CHF",
+    "SGD": "S$",
+    "HKD": "HK$",
+    "MNT": "₮",
+    "RUB": "₽",
+}
 
 
 # ---------- helpers ----------
 def now_vladivostok() -> datetime:
-    return datetime.utcnow() + VLADIVOSTOK_OFFSET
+    return datetime.now(VLADIVOSTOK_TZ)
+
+
+def format_dt_for_ui(value: datetime | None) -> str:
+    if not value:
+        return "—"
+    return value.astimezone(VLADIVOSTOK_TZ).strftime("%Y-%m-%d %H:%M:%S")
 
 
 def parse_date(value: str | None) -> datetime | None:
@@ -67,97 +122,11 @@ def load_rates() -> dict:
     }
 
 
-def load_available_dates() -> list[str]:
-    if not HISTORY_DIR.exists():
-        return []
-
-    valid_dates: list[str] = []
-    for file in HISTORY_DIR.glob("*.json"):
-        if DATE_RE.fullmatch(file.stem):
-            valid_dates.append(file.stem)
-
-    valid_dates.sort(reverse=True)
-    return valid_dates
-
-
-def load_history_by_date(selected_date: str | None) -> dict | None:
-    if not selected_date:
-        return None
-
-    if not DATE_RE.fullmatch(selected_date):
-        return None
-
-    history_file = (HISTORY_DIR / f"{selected_date}.json").resolve()
-    history_root = HISTORY_DIR.resolve()
-
-    if history_root not in history_file.parents:
-        return None
-
-    return load_json(history_file)
-
-
-def keep_display_dates(available_dates: list[str], latest_payload: dict) -> list[str]:
-    available_set = set(available_dates)
-    latest_date = latest_payload.get("date") or (available_dates[0] if available_dates else None)
-    if not latest_date:
-        return []
-
-    display_dates = [latest_date]
-    latest_dt = parse_date(latest_date)
-    if latest_dt:
-        previous_candidate = (latest_dt - timedelta(days=1)).strftime("%Y-%m-%d")
-        if previous_candidate in available_set:
-            display_dates.append(previous_candidate)
-
-    return display_dates
-
-
-def normalize_selected_date(requested_date: str | None, display_dates: list[str], latest_payload: dict) -> str | None:
-    if requested_date in display_dates:
-        return requested_date
-
-    if latest_payload.get("date") in display_dates:
-        return latest_payload.get("date")
-
-    return display_dates[0] if display_dates else None
-
-
-def format_relative_label(value: str, base_date: datetime) -> str:
-    dt = parse_date(value)
-    if not dt:
-        return value
-
-    today = base_date.date()
-    target = dt.date()
-
-    if target == today:
-        return "Сегодня"
-    if target == today - timedelta(days=1):
-        return "Вчера"
-    return dt.strftime("%d.%m")
-
-
 def format_human_date(value: str | None) -> str:
     dt = parse_date(value)
     if not dt:
         return "—"
     return dt.strftime("%d.%m.%Y")
-
-
-def build_date_options(display_dates: list[str], selected_date: str | None) -> list[dict]:
-    base = now_vladivostok()
-    options = []
-    for value in display_dates:
-        options.append(
-            {
-                "value": value,
-                "label": format_relative_label(value, base),
-                "date_text": format_human_date(value),
-                "is_selected": value == selected_date,
-                "href": url_for("index", date=value),
-            }
-        )
-    return options
 
 
 def parse_rate(value: str | float | int | None) -> float | None:
@@ -191,6 +160,19 @@ def make_delta(current_value: str | None, previous_value: str | None, unit: str)
     }
 
 
+def load_previous_history_for_deltas(latest_date: str | None) -> dict | None:
+    if not latest_date:
+        return None
+
+    latest_dt = parse_date(latest_date)
+    if not latest_dt:
+        return None
+
+    previous_candidate = (latest_dt - timedelta(days=1)).strftime("%Y-%m-%d")
+    history_file = HISTORY_DIR / f"{previous_candidate}.json"
+    return load_json(history_file)
+
+
 def enrich_rows_with_deltas(current_rows: list[dict], previous_rows: list[dict], show_changes: bool) -> list[dict]:
     previous_map = {row.get("code"): row for row in previous_rows}
     enriched: list[dict] = []
@@ -215,7 +197,7 @@ def get_csrf_token() -> str:
     return token
 
 
-def run_update() -> tuple[bool, str]:
+def run_update_process() -> tuple[bool, str]:
     try:
         result = subprocess.run(
             [sys.executable, str(BASE_DIR / "update_data.py")],
@@ -225,13 +207,102 @@ def run_update() -> tuple[bool, str]:
             timeout=300,
             check=True,
         )
-        message = result.stdout.strip() or "Данные успешно обновлены."
-        return True, message
+        if result.stdout.strip():
+            logger.info("update_data.py stdout: %s", result.stdout.strip().replace("\n", " | "))
+        if result.stderr.strip():
+            logger.warning("update_data.py stderr: %s", result.stderr.strip().replace("\n", " | "))
+        return True, "Данные успешно обновлены."
     except subprocess.CalledProcessError as exc:
         error_text = exc.stderr.strip() or exc.stdout.strip() or str(exc)
-        return False, error_text
+        error_text = error_text.replace(str(BASE_DIR), "").replace("  ", " ").strip()
+        return False, error_text or "Обновление завершилось с ошибкой."
     except Exception as exc:  # noqa: BLE001
         return False, str(exc)
+
+
+def _set_update_state(**changes) -> None:
+    with update_state_lock:
+        update_state.update(changes)
+
+
+def get_update_status_payload() -> dict:
+    with update_state_lock:
+        state_copy = dict(update_state)
+
+    payload = load_rates()
+    state_copy["latest_data_date"] = payload.get("date")
+    state_copy["latest_updated_at_vladivostok"] = payload.get("updated_at_vladivostok")
+    state_copy["last_started_at"] = format_dt_for_ui(state_copy.get("last_started_at"))
+    state_copy["last_finished_at"] = format_dt_for_ui(state_copy.get("last_finished_at"))
+    return state_copy
+
+
+def _run_update_with_reserved_lock(trigger: str) -> None:
+    started_at = now_vladivostok()
+    _set_update_state(
+        is_running=True,
+        last_status="running",
+        last_message="Идёт обновление курсов…",
+        last_started_at=started_at,
+    )
+    logger.info("Запущено обновление (%s)", trigger)
+
+    try:
+        ok, message = run_update_process()
+        finished_at = now_vladivostok()
+        _set_update_state(
+            is_running=False,
+            last_status="success" if ok else "error",
+            last_message=message,
+            last_finished_at=finished_at,
+        )
+        if ok:
+            logger.info("Обновление завершено успешно (%s)", trigger)
+        else:
+            logger.error("Обновление завершено с ошибкой (%s): %s", trigger, message)
+    finally:
+        update_lock.release()
+
+
+def start_background_update(trigger: str = "manual") -> bool:
+    if not update_lock.acquire(blocking=False):
+        return False
+
+    worker = threading.Thread(target=_run_update_with_reserved_lock, args=(trigger,), daemon=True)
+    worker.start()
+    return True
+
+
+def run_scheduled_update() -> None:
+    started = start_background_update(trigger="scheduled")
+    if not started:
+        logger.info("Плановое обновление пропущено: уже идёт другой запуск")
+
+
+
+def start_scheduler_once() -> None:
+    global scheduler, scheduler_started
+
+    if scheduler_started or os.environ.get("DISABLE_AUTO_SCHEDULER") == "1":
+        return
+
+    scheduler = BackgroundScheduler(timezone=VLADIVOSTOK_TZ)
+    scheduler.add_job(
+        run_scheduled_update,
+        trigger=CronTrigger(hour=10, minute=0, timezone=VLADIVOSTOK_TZ),
+        id="daily-rates-update",
+        replace_existing=True,
+        max_instances=1,
+        coalesce=True,
+        misfire_grace_time=3600,
+    )
+    scheduler.start()
+    scheduler_started = True
+    logger.info("Планировщик запущен: ежедневное обновление в 10:00 Asia/Vladivostok")
+    atexit.register(lambda: scheduler.shutdown(wait=False) if scheduler else None)
+
+
+start_scheduler_once()
 
 
 # ---------- security headers ----------
@@ -258,59 +329,52 @@ def add_security_headers(response):
 # ---------- routes ----------
 @app.route("/", methods=["GET"])
 def index():
-    latest_payload = load_rates()
-    available_dates = load_available_dates()
-    display_dates = keep_display_dates(available_dates, latest_payload)
-    requested_date = request.args.get("date")
-    selected_date = normalize_selected_date(requested_date, display_dates, latest_payload)
+    payload = load_rates()
+    previous_payload = load_previous_history_for_deltas(payload.get("date"))
+    show_changes = previous_payload is not None
 
-    selected_payload = latest_payload if selected_date == latest_payload.get("date") else load_history_by_date(selected_date)
-    if not selected_payload:
-        selected_payload = latest_payload
-        selected_date = latest_payload.get("date")
-
-    previous_date = display_dates[1] if len(display_dates) > 1 else None
-    show_changes = bool(selected_date and display_dates and selected_date == display_dates[0] and previous_date)
-    previous_payload = load_history_by_date(previous_date) if previous_date else None
-
-    data = dict(selected_payload)
+    data = dict(payload)
     data["rows"] = enrich_rows_with_deltas(
-        selected_payload.get("rows", []),
+        payload.get("rows", []),
         previous_payload.get("rows", []) if previous_payload else [],
         show_changes,
     )
+    for row in data["rows"]:
+        row["symbol"] = CURRENCY_SYMBOLS.get(row.get("code"), row.get("code") or "—")
 
-    rows = data.get("rows", [])
-    stats = {
-        "currencies_count": len(rows),
-        "selected_date": format_human_date(selected_date),
-        "updated_at": data.get("updated_at_vladivostok", "—"),
-        "show_changes": show_changes,
-    }
+    update_status = get_update_status_payload()
 
     return render_template(
         "index.html",
         data=data,
-        selected_date=selected_date,
-        selected_date_label=format_relative_label(selected_date, now_vladivostok()) if selected_date else "—",
-        date_options=build_date_options(display_dates, selected_date),
-        show_changes=show_changes,
-        previous_date=previous_date,
-        previous_date_text=format_human_date(previous_date) if previous_date else None,
         csrf_token=get_csrf_token(),
-        stats=stats,
+        show_changes=show_changes,
+        update_status=update_status,
     )
 
 
 @app.route("/refresh", methods=["POST"])
 def refresh():
-    form_token = request.form.get("csrf_token", "")
+    form_token = request.form.get("csrf_token", "") or request.headers.get("X-CSRF-Token", "")
     if not secrets.compare_digest(form_token, session.get("csrf_token", "")):
         abort(400, description="Неверный токен формы")
 
-    ok, message = run_update()
-    flash("Курсы успешно обновлены." if ok else f"Не удалось обновить курсы: {message}", "success" if ok else "error")
+    started = start_background_update(trigger="manual")
+    if request.accept_mimetypes.best == "application/json" or request.headers.get("X-Requested-With") == "fetch":
+        if started:
+            return jsonify({"ok": True, "message": "Обновление запущено."})
+        return jsonify({"ok": False, "message": "Обновление уже выполняется."}), 409
+
+    if started:
+        flash("Обновление запущено.", "success")
+    else:
+        flash("Обновление уже выполняется.", "error")
     return redirect(url_for("index"))
+
+
+@app.route("/api/update-status", methods=["GET"])
+def api_update_status():
+    return jsonify(get_update_status_payload())
 
 
 @app.route("/health", methods=["GET"])
@@ -321,7 +385,8 @@ def health():
             "ok": True,
             "latest_date": payload.get("date"),
             "updated_at_vladivostok": payload.get("updated_at_vladivostok"),
-            "history_dates": load_available_dates(),
+            "scheduler_enabled": scheduler_started,
+            "update_status": get_update_status_payload(),
         }
     )
 
@@ -336,35 +401,6 @@ def api_latest():
     return jsonify(load_rates())
 
 
-@app.route("/api/dates", methods=["GET"])
-def api_dates():
-    payload = load_rates()
-    available_dates = load_available_dates()
-    return jsonify(
-        {
-            "dates": keep_display_dates(available_dates, payload),
-            "latest_date": payload.get("date"),
-        }
-    )
-
-
-@app.route("/api/history/<selected_date>", methods=["GET"])
-def api_history(selected_date: str):
-    if not DATE_RE.fullmatch(selected_date):
-        return jsonify({"error": "Неверный формат даты. Используй YYYY-MM-DD"}), 400
-
-    payload = load_history_by_date(selected_date)
-    if payload is None:
-        return jsonify({"error": "Дата не найдена"}), 404
-
-    return jsonify(payload)
-
-
-@app.route("/api/history/<selected_date>.json", methods=["GET"])
-def api_history_json(selected_date: str):
-    return api_history(selected_date)
-
-
 @app.route("/download/latest", methods=["GET"])
 def download_latest():
     if not DATA_PATH.exists():
@@ -375,23 +411,6 @@ def download_latest():
         mimetype="application/json",
         as_attachment=True,
         download_name="latest_rates.json",
-    )
-
-
-@app.route("/download/history/<selected_date>", methods=["GET"])
-def download_history(selected_date: str):
-    if not DATE_RE.fullmatch(selected_date):
-        return jsonify({"error": "Неверный формат даты. Используй YYYY-MM-DD"}), 400
-
-    history_file = HISTORY_DIR / f"{selected_date}.json"
-    if not history_file.exists():
-        return jsonify({"error": "Дата не найдена"}), 404
-
-    return send_file(
-        history_file,
-        mimetype="application/json",
-        as_attachment=True,
-        download_name=f"{selected_date}.json",
     )
 
 

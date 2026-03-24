@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Курсы валют</title>
-    <meta name="description" content="Курсы валют TrustRoad: Монголбанк, Capitron и ЦБ РФ с удобным конвертером и выбором только актуальных дат.">
+    <meta name="description" content="Курсы валют TrustRoad: Монголбанк, Capitron и ЦБ РФ с удобным конвертером и автоматическим ежедневным обновлением.">
     <meta name="theme-color" content="#081426">
     <link rel="icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='icons/favicon-32.png') }}">
@@ -25,28 +25,9 @@
         <div class="hero-card__content">
             <div class="eyebrow">TrustRoad • Валютная панель</div>
             <h1>Курсы валют</h1>
-            <p class="hero-card__text">
-                На сайте остаются только рабочие даты без старого мусора. Конвертер считает по выбранному дню,
-                а таблица показывает курсы из трёх источников в одном аккуратном интерфейсе.
+            <p class="hero-card__text" id="heroComplimentText">
+                Я минималистичный конвертер, а вы сегодня выглядите так, будто весь день решил быть на вашей стороне.
             </p>
-
-            <div class="hero-stats">
-                <article class="stat-chip">
-                    <span class="stat-chip__label">Выбрано</span>
-                    <strong>{{ selected_date_label }}</strong>
-                    <small>{{ stats.selected_date }}</small>
-                </article>
-                <article class="stat-chip">
-                    <span class="stat-chip__label">Валют в таблице</span>
-                    <strong>{{ stats.currencies_count }}</strong>
-                    <small>основные направления</small>
-                </article>
-                <article class="stat-chip">
-                    <span class="stat-chip__label">Обновлено</span>
-                    <strong>{{ data.updated_at_vladivostok or '—' }}</strong>
-                    <small>Владивосток</small>
-                </article>
-            </div>
         </div>
 
         <div class="hero-card__side">
@@ -71,27 +52,53 @@
         {% endif %}
     {% endwith %}
 
-    <section class="toolbar-card">
-        <div class="toolbar-card__group">
+    <section class="toolbar-card toolbar-card--button-only">
+        <form action="{{ url_for('refresh') }}" method="post" id="refreshForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button class="primary-button" id="refreshButton" type="submit">Обновить данные</button>
+        </form>
+    </section>
+
+    <section class="status-card status-card--compact" id="updateStatusCard">
+        <div class="status-card__main">
             <div>
-                <div class="section-kicker">Дата данных</div>
-                <h2>Сегодня / вчера</h2>
+                <div class="section-kicker">Статус обновления</div>
+                <h2 id="updateStatusTitle">
+                    {% if update_status.is_running %}
+                        Идёт обновление
+                    {% elif update_status.last_status == 'success' %}
+                        Последнее обновление прошло успешно
+                    {% elif update_status.last_status == 'error' %}
+                        Последнее обновление завершилось с ошибкой
+                    {% else %}
+                        Система готова к обновлению
+                    {% endif %}
+                </h2>
+                <p id="updateStatusMessage">{{ update_status.last_message }}</p>
             </div>
-            <div class="date-switcher">
-                {% for option in date_options %}
-                    <a class="date-option {% if option.is_selected %}date-option--active{% endif %}" href="{{ option.href }}">
-                        <span class="date-option__title">{{ option.label }}</span>
-                        <span class="date-option__value">{{ option.date_text }}</span>
-                    </a>
-                {% endfor %}
+            <div class="status-pill status-pill--{{ update_status.last_status }}" id="updateStatusBadge">
+                {% if update_status.is_running %}в процессе{% elif update_status.last_status == 'success' %}успешно{% elif update_status.last_status == 'error' %}ошибка{% else %}ожидание{% endif %}
             </div>
         </div>
-
-        <div class="toolbar-card__group toolbar-card__group--right">
-            <form action="{{ url_for('refresh') }}" method="post">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <button class="primary-button" type="submit">Обновить данные</button>
-            </form>
+        <div class="status-grid">
+            <div class="status-item">
+                <span>Результат</span>
+                <strong id="statusResult">
+                    {% if update_status.is_running %}в процессе{% elif update_status.last_status == 'success' %}успешно{% elif update_status.last_status == 'error' %}неуспешно{% else %}ожидание{% endif %}
+                </strong>
+            </div>
+            <div class="status-item">
+                <span>Последний старт</span>
+                <strong id="statusStartedAt">{{ update_status.last_started_at }}</strong>
+            </div>
+            <div class="status-item">
+                <span>Последнее завершение</span>
+                <strong id="statusFinishedAt">{{ update_status.last_finished_at }}</strong>
+            </div>
+            <div class="status-item">
+                <span>Данные на сайте</span>
+                <strong id="statusLatestUpdate">{{ update_status.latest_updated_at_vladivostok or '—' }}</strong>
+            </div>
         </div>
     </section>
 
@@ -100,7 +107,7 @@
             <div>
                 <div class="section-kicker">Конвертер</div>
                 <h2>Считай по нужному источнику</h2>
-                <p id="converterSubtitle">Режим Монголбанк + Capitron считает по выбранной дате и сразу показывает два результата.</p>
+                <p id="converterSubtitle">Сравнивайте итог по официальному курсу Монголбанка и по банковскому курсу Capitron для одной и той же суммы.</p>
             </div>
             <div class="mode-switch" role="tablist" aria-label="Режим конвертера">
                 <button type="button" class="mode-switch__button mode-switch__button--active" data-mode="mng">Монголбанк + Capitron</button>
@@ -162,19 +169,19 @@
                 <article class="result-card" id="mongolResultCard">
                     <div class="result-card__label">Монголбанк</div>
                     <strong class="result-card__value" id="mongolResult">—</strong>
-                    <span class="result-card__hint">Официальный курс в MNT</span>
+                    <span class="result-card__hint">Результат по официальному курсу Монголбанка</span>
                 </article>
 
                 <article class="result-card" id="capitronResultCard">
                     <div class="result-card__label">Capitron</div>
                     <strong class="result-card__value" id="capitronResult">—</strong>
-                    <span class="result-card__hint">Банковский курс в MNT</span>
+                    <span class="result-card__hint">Результат по курсу Capitron Bank</span>
                 </article>
 
                 <article class="result-card result-card--accent is-hidden" id="cbrResultCard">
                     <div class="result-card__label">ЦБ РФ</div>
                     <strong class="result-card__value" id="cbrResult">—</strong>
-                    <span class="result-card__hint">Курс в RUB за выбранную дату</span>
+                    <span class="result-card__hint">Результат по курсам ЦБ РФ, включая расчёты с MNT</span>
                 </article>
             </div>
         </div>
@@ -182,14 +189,15 @@
 
     <section class="table-card">
         <div class="card-head card-head--table">
-            <div>
+            <div class="table-card__eyebrow">
                 <div class="section-kicker">Таблица</div>
-                <h2>Все курсы в одном месте</h2>
-                <p>Для интерфейса оставлены только актуальные даты, чтобы таблица не разваливалась от старой истории.</p>
             </div>
-            {% if show_changes and previous_date_text %}
-                <div class="delta-note">Сравнение с {{ previous_date_text }}</div>
-            {% endif %}
+            <div class="table-card__title-wrap">
+                <h2 class="table-title">Я теперь не знаю, упал курс или нет <img class="table-title__emoji" src="{{ url_for('static', filename='icons/crying-emoji.png') }}" alt="Плачущий смайлик"></h2>
+                {% if show_changes %}
+                    <div class="delta-note">Дельты считаются только при наличии вчерашнего файла</div>
+                {% endif %}
+            </div>
         </div>
 
         <div class="table-wrap">
@@ -198,6 +206,7 @@
                 <tr>
                     <th>Код</th>
                     <th>Валюта</th>
+                    <th>Символ</th>
                     <th>Монголбанк (MNT)</th>
                     <th>Capitron (MNT)</th>
                     <th>ЦБ РФ (RUB)</th>
@@ -206,16 +215,16 @@
                 <tbody>
                 {% for row in data.rows %}
                     <tr>
-                        <td class="code-cell" data-label="Код">{{ row.code }}</td>
+                        <td data-label="Код"><strong>{{ row.code }}</strong></td>
                         <td data-label="Валюта">
-                            <div class="currency-name-cell">
-                                <img class="currency-flag currency-flag--table" src="{{ url_for('static', filename='flags/' ~ row.code|lower ~ '.png') }}" alt="{{ row.code }}">
+                            <div class="currency-name">
+                                <img class="currency-flag" src="{{ url_for('static', filename='flags/' ~ row.code|lower ~ '.png') }}" alt="{{ row.code }}">
                                 <div>
                                     <strong>{{ row.name }}</strong>
-                                    <span>{{ row.code }}</span>
                                 </div>
                             </div>
                         </td>
+                        <td data-label="Символ"><span class="currency-symbol">{{ row.symbol }}</span></td>
                         <td data-label="Монголбанк (MNT)">
                             <div class="rate-cell">
                                 <span class="rate-cell__value">{{ row.mongol_bank_mnt }}</span>
@@ -247,21 +256,14 @@
         </div>
     </section>
 
-    <footer class="site-footer">
-        <div>
-            <div class="site-footer__title">TrustRoad © 2026</div>
-            <div class="site-footer__text">Чистая история, аккуратный адаптив и быстрый доступ к сегодняшним и вчерашним данным.</div>
-        </div>
-        <div class="site-footer__meta">
-            <span class="footer-chip">Сегодня / вчера</span>
-            <span class="footer-chip">Конвертер по дате</span>
-            <span class="footer-chip">Мобильная версия</span>
-        </div>
+    <footer class="site-footer site-footer--simple">
+        <div class="site-footer__title">Траст Роуд 2026 • автообновление в 10:00</div>
     </footer>
 </div>
 
 <script>
     window.TRUSTROAD_ROWS = {{ data.rows | tojson }};
+    window.TRUSTROAD_CSRF = {{ csrf_token | tojson }};
 </script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>

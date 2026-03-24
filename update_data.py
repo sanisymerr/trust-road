@@ -13,6 +13,8 @@ from zoneinfo import ZoneInfo
 
 import requests
 from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
@@ -47,6 +49,16 @@ CURRENCY_NAMES = {
 
 session = requests.Session()
 session.headers.update({"User-Agent": "Mozilla/5.0 (TrustRoad rates updater)"})
+retry_strategy = Retry(
+    total=3,
+    connect=3,
+    read=3,
+    backoff_factor=1,
+    status_forcelist=(429, 500, 502, 503, 504),
+    allowed_methods=frozenset(["GET"]),
+)
+session.mount("https://", HTTPAdapter(max_retries=retry_strategy))
+session.mount("http://", HTTPAdapter(max_retries=retry_strategy))
 
 
 def setup_logging() -> None:
@@ -83,6 +95,78 @@ def load_existing_latest() -> dict | None:
         return None
     with JSON_PATH.open("r", encoding="utf-8") as fh:
         return json.load(fh)
+
+
+def is_numeric_string(value: str | None) -> bool:
+    if not value or value == "—":
+        return False
+    return bool(re.fullmatch(r"\d+(?:\.\d+)?", normalize_numeric_string(value)))
+
+
+def validate_rows(rows: list[dict[str, str]]) -> None:
+    expected_codes = set(TRACKED)
+    codes = [row.get("code") for row in rows]
+    code_set = set(codes)
+
+    if len(rows) != len(TRACKED):
+        raise RuntimeError(f"Ожидалось {len(TRACKED)} валют, получено {len(rows)}")
+
+    if code_set != expected_codes:
+        missing = sorted(expected_codes - code_set)
+        extra = sorted(code_set - expected_codes)
+        raise RuntimeError(f"Неверный набор валют. Отсутствуют: {missing or '—'}, лишние: {extra or '—'}")
+
+    if len(codes) != len(code_set):
+        raise RuntimeError("В итоговых данных обнаружены дубли кодов валют")
+
+    required_market_codes = ["USD", "EUR", "CNY", "JPY", "KRW", "GBP", "CHF", "SGD", "HKD", "RUB"]
+    for code in required_market_codes:
+        row = next((item for item in rows if item.get("code") == code), None)
+        if not row:
+            raise RuntimeError(f"Не найдена обязательная валюта {code}")
+        if not is_numeric_string(row.get("mongol_bank_mnt")):
+            raise RuntimeError(f"Пустой или некорректный курс Монголбанка для {code}")
+        if not is_numeric_string(row.get("capitron_mnt")):
+            raise RuntimeError(f"Пустой или некорректный курс Capitron для {code}")
+        if not is_numeric_string(row.get("cbr_rate_rub")):
+            raise RuntimeError(f"Пустой или некорректный курс ЦБ РФ для {code}")
+
+    mnt_row = next((item for item in rows if item.get("code") == "MNT"), None)
+    if not mnt_row or mnt_row.get("mongol_bank_mnt") != "1" or mnt_row.get("capitron_mnt") != "1":
+        raise RuntimeError("Для MNT должны сохраняться единичные значения")
+
+    rub_row = next((item for item in rows if item.get("code") == "RUB"), None)
+    if not rub_row or rub_row.get("cbr_rate_rub") != "1":
+        raise RuntimeError("Для RUB курс ЦБ РФ должен быть равен 1")
+
+
+def validate_payload(payload: dict) -> None:
+    updated_at = payload.get("updated_at_vladivostok")
+    payload_date = payload.get("date")
+    rows = payload.get("rows")
+
+    if not updated_at:
+        raise RuntimeError("Не заполнено время обновления")
+    if not payload_date or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", payload_date):
+        raise RuntimeError("Дата обновления имеет неверный формат")
+    if not isinstance(rows, list) or not rows:
+        raise RuntimeError("Список курсов пуст")
+
+    validate_rows(rows)
+
+
+def validate_source_dates(current_date: str, cbr_source_date: str | None, rub_date: str | None) -> None:
+    acceptable_dates = {current_date}
+    try:
+        previous_business = (datetime.strptime(current_date, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")
+        acceptable_dates.add(previous_business)
+    except ValueError:
+        pass
+
+    if cbr_source_date and cbr_source_date not in acceptable_dates:
+        raise RuntimeError(f"ЦБ РФ вернул подозрительную дату источника: {cbr_source_date}")
+    if rub_date and rub_date not in acceptable_dates:
+        raise RuntimeError(f"gogo.mn вернул подозрительную дату RUB: {rub_date}")
 
 
 def normalize_numeric_string(value: str | None) -> str:
@@ -601,10 +685,7 @@ def save_snapshot_txt(filename: Path, currency_data: list[list[str]], cbr_rates:
 
 
 def cleanup_old_history(current_dt: datetime) -> None:
-    keep = {
-        current_dt.strftime("%Y-%m-%d"),
-        (current_dt - timedelta(days=1)).strftime("%Y-%m-%d"),
-    }
+    keep = {current_dt.strftime("%Y-%m-%d")}
 
     for file in HISTORY_DIR.glob("*.json"):
         if file.stem not in keep:
@@ -634,6 +715,7 @@ def main() -> None:
     rub_rate, rub_date = get_rub_rate_and_date()
 
     rows = build_rows(currency_data, cbr_rates, rub_rate)
+    validate_source_dates(current_date=current_date, cbr_source_date=cbr_source_date, rub_date=rub_date)
 
     payload = {
         "updated_at_vladivostok": current_dt.strftime("%Y-%m-%d %H:%M:%S"),
@@ -648,15 +730,16 @@ def main() -> None:
         "rows": rows,
     }
 
+    validate_payload(payload)
+
     atomic_write_json(JSON_PATH, payload)
     atomic_write_json(HISTORY_DIR / f"{current_date}.json", payload)
     cleanup_old_history(current_dt)
     save_snapshot_txt(snapshot_path, currency_data, cbr_rates, rub_rate, rub_date)
 
-    logger.info("Данные сохранены в %s", JSON_PATH)
-    logger.info("История сохранена в %s", HISTORY_DIR / f"{current_date}.json")
-    print(f"Данные сохранены в {JSON_PATH}")
-    print(f"История сохранена в {HISTORY_DIR / f'{current_date}.json'}")
+    logger.info("Данные обновлены и сохранены")
+    logger.info("Актуальная история пересобрана")
+    print("Данные успешно обновлены")
 
 
 if __name__ == "__main__":
