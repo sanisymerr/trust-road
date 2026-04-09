@@ -1,0 +1,19 @@
+<svg width="220" height="64" viewBox="0 0 220 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#7C4DFF"/>
+      <stop offset="1" stop-color="#1EC8FF"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFD84D"/>
+      <stop offset="1" stop-color="#FF8A3D"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="6" width="52" height="52" rx="18" fill="url(#g1)"/>
+  <circle cx="28" cy="28" r="12" fill="white" fill-opacity="0.96"/>
+  <path d="M20 28h16M28 20v16" stroke="#7C4DFF" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="42" cy="18" r="8" fill="url(#g2)"/>
+  <path d="M39 18l2 2 4-4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="68" y="31" font-size="25" font-family="Arial, sans-serif" font-weight="800" fill="#101828">КидВест</text>
+  <text x="68" y="50" font-size="13" font-family="Arial, sans-serif" font-weight="600" fill="#475467">трекер задач для детей</text>
+</svg>
