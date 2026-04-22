@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% set page_title = 'Корзина' %}
+{% block content %}
+<section class="section-block compact-top tone-soft">
+  <div class="section-head section-head-tight">
+    <div>
+      <div class="eyebrow">Корзина</div>
+      <h1>Проверьте подарок перед оформлением</h1>
+      <p class="lead">Здесь собран состав заказа: выбранные позиции, параметры, количество и итоговая сумма.</p>
+    </div>
+  </div>
+</section>
+
+{% if items %}
+  <div class="stack-grid">
+    {% for item in items %}
+      <article class="cart-card accent-{{ item.accent or 'blush' }}">
+        <div class="cart-main">
+          <div class="product-thumb accent-{{ item.accent or 'blush' }}">{{ item.emoji }}</div>
+          <div class="cart-copy">
+            <div class="cart-head">
+              <div>
+                <span class="type-pill">{{ 'Коллекция' if item.category == 'Товар' else 'Сервис' }}</span>
+                <h3>{{ item.name }}</h3>
+              </div>
+              <strong class="cart-line-price">{{ (item.price * item.quantity)|int }} ₽</strong>
+            </div>
+            <div class="tag-row option-pill-row">
+              {% for key, value in item.options.items() if value and value not in ['Без комментария', 'Без подписи'] %}
+                <span class="chip chip-soft"><strong>{{ key }}:</strong> {{ value }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="cart-actions cart-actions-wide">
+          <form method="post" action="{{ url_for('update_cart_item', cart_id=item.cart_id) }}" class="qty-form qty-form-rich">
+            <div class="qty-control" data-qty-control>
+              <button class="qty-btn" type="button" data-qty-action="decrease">−</button>
+              <input class="qty-input" type="number" name="quantity" value="{{ item.quantity }}" min="1" max="20" data-qty-input>
+              <button class="qty-btn" type="button" data-qty-action="increase">+</button>
+            </div>
+            <button class="btn btn-ghost btn-sm" type="submit">Обновить</button>
+          </form>
+          <form method="post" action="{{ url_for('remove_from_cart', cart_id=item.cart_id) }}">
+            <button class="btn btn-secondary btn-sm" type="submit">Удалить</button>
+          </form>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+  <aside class="checkout-summary sticky-summary summary-hero">
+    <div class="summary-row"><span>Состав корзины</span><strong>{{ subtotal|int }} ₽</strong></div>
+    <div class="summary-row"><span>Подарочная подача</span><strong>{{ service_fee|int }} ₽</strong></div>
+    <div class="summary-row total"><span>К оплате</span><strong>{{ grand_total|int }} ₽</strong></div>
+    <p class="muted-line">Итог уже учитывает аккуратную подготовку заказа и понятную упаковку для вручения.</p>
+    <a class="btn btn-primary btn-block" href="{{ url_for('checkout') }}">Перейти к оформлению</a>
+  </aside>
+{% else %}
+  <div class="empty-state">
+    <div class="product-thumb accent-blush">🧺</div>
+    <h3>Пока ничего не выбрано</h3>
+    <p class="muted-line">Начните с каталога — там уже есть мягкие игрушки, подарочные сеты и дополнительные сервисы для персонализации.</p>
+    <a class="btn btn-primary" href="{{ url_for('catalog') }}">Открыть каталог</a>
+  </div>
+{% endif %}
+{% endblock %}

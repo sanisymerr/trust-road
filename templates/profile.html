@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% set page_title = 'Профиль' %}
+{% block content %}
+<section class="section-block profile-head tone-soft">
+  <div class="profile-avatar">{{ current_user['full_name'][0] }}</div>
+  <div>
+    <div class="eyebrow">Личный кабинет</div>
+    <h1>{{ current_user['full_name'] }}</h1>
+    <p class="lead">{{ current_user['email'] }} · {{ current_user['phone'] }}</p>
+  </div>
+</section>
+
+<div class="stack-grid">
+  <section class="balance-box">
+    <span class="info-label">Баланс профиля</span>
+    <strong>{{ current_user['balance']|int }} ₽</strong>
+    <p class="muted-line">Баланс можно использовать при оформлении заказа внутри приложения.</p>
+    <div class="hero-actions profile-actions">
+      <a class="btn btn-primary btn-sm" href="{{ url_for('catalog') }}">Новый заказ</a>
+      {% if current_user['role'] == 'admin' %}<a class="btn btn-ghost btn-sm" href="{{ url_for('admin') }}">Заказы</a>{% endif %}
+      <a class="btn btn-secondary btn-sm" href="{{ url_for('logout') }}">Выйти</a>
+    </div>
+  </section>
+
+  <section class="section-block">
+    <div class="section-head section-head-tight">
+      <div>
+        <div class="eyebrow">История покупок</div>
+        <h2>Ваши заказы</h2>
+      </div>
+    </div>
+    {% if orders %}
+      <div class="stack-grid">
+        {% for order in orders %}
+          <article class="access-card order-card order-card-rich">
+            <div>
+              <h3>Заказ №{{ order['id'] }}</h3>
+              <p class="muted-line">{{ order['created_at'] }} · {{ order['payment_method'] }}</p>
+            </div>
+            <div class="order-side">
+              <span class="status-pill status-{{ 'active' if order['status'] in ['Новый', 'В работе', 'Готовится'] else 'done' }}">{{ order['status'] }}</span>
+              <strong>{{ order['total']|int }} ₽</strong>
+              <a class="btn btn-ghost btn-sm" href="{{ url_for('order_detail', order_id=order['id']) }}">Подробнее</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state compact-empty">
+        <div class="product-thumb accent-blush">🧸</div>
+        <h3>У вас пока нет заказов</h3>
+        <p class="muted-line">Начните с каталога — там уже есть готовые подарки и сервисы для персонализации.</p>
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

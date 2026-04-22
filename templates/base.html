@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#d890a8">
+  <meta name="description" content="Медведь и точка — персональные подарки с историей.">
+  <title>{% if page_title %}{{ page_title }} · {% endif %}Медведь и точка</title>
+  <link rel="manifest" href="{{ url_for('manifest') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="app-stage">
+    <div class="phone-shell">
+      <div class="app-shell">
+        <header class="topbar">
+          <a class="brand" href="{{ url_for('home') }}" aria-label="Медведь и точка">
+            <span class="brand-mark">🧸</span>
+            <span class="brand-copy">
+              <strong>Медведь и точка</strong>
+              <small>{{ brand_tagline }}</small>
+            </span>
+          </a>
+          <div class="topbar-actions">
+            {% if current_user %}
+              <a class="top-link" href="{{ url_for('profile_gate') }}">{{ current_user['full_name'].split(' ')[0] }}</a>
+            {% endif %}
+            <a class="icon-btn" href="{{ url_for('cart') }}" aria-label="Корзина">
+              <span class="icon-btn-symbol">🧺</span>
+              {% if cart_count %}<span class="badge">{{ cart_count }}</span>{% endif %}
+            </a>
+          </div>
+        </header>
+
+        <main class="page-content">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <div class="flash-stack">
+                {% for category, message in messages %}
+                  <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </main>
+
+        <nav class="bottom-nav" aria-label="Основная навигация">
+          <a class="nav-item {% if request.endpoint == 'home' %}is-active{% endif %}" href="{{ url_for('home') }}">
+            <span class="nav-icon">🏠</span>
+            <span>Главная</span>
+          </a>
+          <a class="nav-item {% if request.endpoint in ['catalog', 'product_detail', 'cart', 'checkout'] %}is-active{% endif %}" href="{{ url_for('catalog') }}">
+            <span class="nav-icon">🛍️</span>
+            <span>Каталог</span>
+          </a>
+          <a class="nav-item {% if request.endpoint == 'company' %}is-active{% endif %}" href="{{ url_for('company') }}">
+            <span class="nav-icon">✨</span>
+            <span>О бренде</span>
+          </a>
+          <a class="nav-item {% if request.endpoint in ['profile_gate', 'order_detail', 'admin'] %}is-active{% endif %}" href="{{ url_for('profile_gate') }}">
+            <span class="nav-icon">👤</span>
+            <span>Профиль</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

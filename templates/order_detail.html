@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% set page_title = 'Заказ' %}
+{% block content %}
+<section class="section-block compact-top tone-soft">
+  <div class="section-head section-head-tight">
+    <div>
+      <div class="eyebrow">Заказ №{{ order['id'] }}</div>
+      <h1>Состав заказа</h1>
+      <p class="lead">{{ order['created_at'] }} · {{ order['payment_method'] }} · {{ order['status'] }}</p>
+    </div>
+  </div>
+</section>
+
+<div class="stack-grid">
+  {% for item in items %}
+    <article class="cart-card">
+      <div class="cart-main">
+        <div class="product-thumb accent-blush">{{ item.image_emoji }}</div>
+        <div class="cart-copy">
+          <div class="cart-head">
+            <div>
+              <h3>{{ item.name }}</h3>
+              <p class="muted-line">{{ item.quantity }} шт. · {{ item.unit_price|int }} ₽</p>
+            </div>
+          </div>
+          <div class="tag-row option-pill-row">
+            {% for key, value in item.options.items() %}
+              <span class="chip chip-soft"><strong>{{ key }}:</strong> {{ value }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+</div>
+{% endblock %}

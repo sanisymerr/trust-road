@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% set page_title = 'Каталог' %}
+{% block content %}
+<section class="section-block compact-top tone-soft">
+  <div class="section-head section-head-tight">
+    <div>
+      <div class="eyebrow">Каталог</div>
+      <h1>Подарки и сервисы для красивой персонализации</h1>
+      <p class="lead">Готовые модели, подарочные опции и дополнительные услуги — всё, чтобы собрать заказ под конкретный момент.</p>
+    </div>
+  </div>
+  <div class="filter-row">
+    {% for tab in ['Все', 'Товар', 'Услуга'] %}
+      <a class="filter-chip {% if category == tab or (category == 'Все' and tab == 'Все') %}is-active{% endif %}" href="{{ url_for('catalog', category=tab) }}">
+        {{ 'Все' if tab == 'Все' else 'Товары' if tab == 'Товар' else 'Услуги' }}
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="stack-grid">
+  {% for product in products %}
+    <article class="product-card product-card-premium accent-{{ product.accent }}">
+      <div class="product-main product-main-top">
+        <div class="product-visual">
+          <div class="product-thumb accent-{{ product.accent }}">{{ product.image_emoji }}</div>
+          <span class="type-pill">{{ 'Коллекция' if product.category == 'Товар' else 'Сервис' }}</span>
+        </div>
+        <div class="product-copy product-copy-wide">
+          <h3>{{ product.name }}</h3>
+          <p class="muted-line">{{ product.short_description }}</p>
+          <div class="tag-row compact-tags">
+            {% for feature in product.features[:4] %}
+              <span class="chip">{{ feature }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="price-block price-block-column">
+          <strong>{{ product.price|int }} ₽</strong>
+          <a class="btn btn-primary btn-sm" href="{{ url_for('product_detail', product_id=product.id) }}">Открыть</a>
+        </div>
+      </div>
+    </article>
+  {% else %}
+    <div class="empty-state">
+      <div class="product-thumb accent-blush">✨</div>
+      <h3>Пока нет позиций в этой категории</h3>
+      <p class="muted-line">Переключитесь на весь каталог — там уже собраны готовые модели и полезные сервисы.</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

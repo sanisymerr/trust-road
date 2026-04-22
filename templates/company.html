@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% set page_title = 'О бренде' %}
+{% block content %}
+<section class="hero-card hero-card-compact tone-soft">
+  <div class="eyebrow">О бренде</div>
+  <h1>«Медведь и точка» — студия подарков, которые хочется оставить на память</h1>
+  <p class="lead">Мы работаем на стыке предмета и эмоции: собираем мягкие игрушки и подарочную подачу так, чтобы жест выглядел личным, красивым и очень продуманным.</p>
+</section>
+
+<section class="section-block">
+  <div class="card-grid card-grid-3">
+    {% for stat in stats %}
+      <article class="stat-card">
+        <span class="stat-label">{{ stat.label }}</span>
+        <strong>{{ stat.value }}</strong>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block tone-soft">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Что делает подарок особенным</div>
+      <h2>Нежная персонализация, эстетика вручения и понятный сервис</h2>
+    </div>
+  </div>
+  <div class="brand-grid">
+    <article class="feature-card feature-card-highlight"><div class="feature-icon">🎀</div><div><h3>Персональные детали</h3><p class="muted-line">Имя, открытка, оттенок, аксессуар и упаковка собираются под конкретного человека и повод.</p></div></article>
+    <article class="feature-card feature-card-highlight"><div class="feature-icon">🤍</div><div><h3>Мягкая эстетика</h3><p class="muted-line">Подарок выглядит цельно и деликатно: его не нужно дооформлять, можно сразу вручать.</p></div></article>
+    <article class="feature-card feature-card-highlight"><div class="feature-icon">✨</div><div><h3>Заботливый путь</h3><p class="muted-line">От выбора до корзины и подтверждения заказа — всё устроено спокойно, понятно и без лишней сложности.</p></div></article>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Как мы работаем</div>
+      <h2>Мини-презентация бренда прямо внутри приложения</h2>
+    </div>
+  </div>
+  <div class="process-list process-list-rich">
+    {% for title, text in steps %}
+      <article class="process-item"><span class="process-step">{{ loop.index }}</span><div><strong>{{ title }}</strong><p>{{ text }}</p></div></article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block tone-soft">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Для кого это</div>
+      <h2>Когда нужен не просто предмет, а мягкий и запоминающийся жест</h2>
+    </div>
+  </div>
+  <p class="lead">Для пары, ребёнка, дня рождения, памятной даты, благодарности или небольшого корпоративного подарка. Мы собираем заказ так, чтобы он выглядел личным и уместным в конкретный момент.</p>
+</section>
+{% endblock %}

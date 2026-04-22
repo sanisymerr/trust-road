@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% set page_title = 'Заказ принят' %}
+{% block content %}
+<div class="empty-state success-state">
+  <div class="product-thumb accent-rose">✨</div>
+  <h1>Заказ принят</h1>
+  <p class="lead">Мы сохранили заказ №{{ order['id'] }}. Дальше его можно открыть в профиле и следить за статусом.</p>
+  <div class="success-actions">
+    <a class="btn btn-primary" href="{{ url_for('profile_gate') }}">Открыть профиль</a>
+    <a class="btn btn-secondary" href="{{ url_for('catalog') }}">Вернуться в каталог</a>
+  </div>
+</div>
+{% endblock %}

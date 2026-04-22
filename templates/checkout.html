@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% set page_title = 'Оформление' %}
+{% block content %}
+<section class="section-block compact-top tone-soft">
+  <div class="section-head section-head-tight">
+    <div>
+      <div class="eyebrow">Оформление</div>
+      <h1>Подтверждение заказа</h1>
+      <p class="lead">Проверьте данные профиля, способ оплаты и финальную стоимость перед подтверждением.</p>
+    </div>
+  </div>
+</section>
+
+<div class="stack-grid">
+  <section class="checkout-box">
+    <div class="info-card info-card-strong">
+      <span class="info-label">Профиль получателя</span>
+      <strong>{{ current_user['full_name'] }}</strong>
+      <p class="muted-line">{{ current_user['email'] }} · {{ current_user['phone'] }}</p>
+      <div class="balance-chip">Баланс: {{ current_user['balance']|int }} ₽</div>
+    </div>
+
+    <form method="post" class="product-form checkout-form">
+      <label class="field field-full">
+        <span>Способ оплаты</span>
+        <select name="payment_method">
+          {% for option in payment_options %}<option>{{ option }}</option>{% endfor %}
+        </select>
+      </label>
+      <button class="btn btn-primary btn-block" type="submit">Подтвердить заказ</button>
+    </form>
+  </section>
+
+  <aside class="checkout-summary summary-hero">
+    <div class="section-head section-head-tight small-gap">
+      <div>
+        <div class="eyebrow">Состав заказа</div>
+        <h3>Что войдёт в покупку</h3>
+      </div>
+    </div>
+    {% for item in items %}
+      <div class="summary-mini">
+        <div class="summary-mini-head"><span>{{ item.name }}</span><strong>x{{ item.quantity }}</strong></div>
+        <p>{{ item.options['Упаковка'] }} · {{ item.options['Повод'] }}</p>
+      </div>
+    {% endfor %}
+    <div class="summary-row"><span>Промежуточный итог</span><strong>{{ subtotal|int }} ₽</strong></div>
+    <div class="summary-row"><span>Подарочная подача</span><strong>{{ service_fee|int }} ₽</strong></div>
+    <div class="summary-row total"><span>К оплате</span><strong>{{ grand_total|int }} ₽</strong></div>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% set page_title = product.name %}
+{% block content %}
+<section class="section-block product-detail-shell accent-{{ product.accent }}">
+  <div class="product-hero product-hero-rich">
+    <div class="product-hero-visual">
+      <div class="product-thumb product-thumb-lg accent-{{ product.accent }}">{{ product.image_emoji }}</div>
+    </div>
+    <div class="product-hero-copy">
+      <span class="type-pill">{{ 'Коллекция' if product.category == 'Товар' else 'Сервис' }}</span>
+      <h1>{{ product.name }}</h1>
+      <p class="lead">{{ product.description }}</p>
+      <div class="product-price-line">{{ product.price|int }} ₽</div>
+      <div class="tag-row compact-tags">
+        {% for feature in product.features %}
+          <span class="chip">{{ feature }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="order-form">
+  <div class="section-head section-head-tight">
+    <div>
+      <div class="eyebrow">Настройка заказа</div>
+      <h2>Соберите подарок под конкретного человека</h2>
+      <p class="lead">Выберите оттенок, детали оформления и личные акценты — так подарок будет выглядеть действительно вашим.</p>
+    </div>
+  </div>
+
+  <form method="post" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="product-form">
+    <div class="field-grid">
+      <label class="field field-full">
+        <span>{{ options['tag_name']['label'] }}</span>
+        <input type="text" name="tag_name" placeholder="{{ options['tag_name']['placeholder'] }}">
+      </label>
+
+      <label class="field">
+        <span>{{ options['color']['label'] }}</span>
+        <select name="color">
+          {% for option in options['color']['values'] %}<option>{{ option }}</option>{% endfor %}
+        </select>
+      </label>
+
+      <label class="field">
+        <span>{{ options['accessory']['label'] }}</span>
+        <select name="accessory">
+          {% for option in options['accessory']['values'] %}<option>{{ option }}</option>{% endfor %}
+        </select>
+      </label>
+
+      <label class="field">
+        <span>{{ options['packaging']['label'] }}</span>
+        <select name="packaging">
+          {% for option in options['packaging']['values'] %}<option>{{ option }}</option>{% endfor %}
+        </select>
+      </label>
+
+      <label class="field">
+        <span>{{ options['occasion']['label'] }}</span>
+        <select name="occasion">
+          {% for option in options['occasion']['values'] %}<option>{{ option }}</option>{% endfor %}
+        </select>
+      </label>
+
+      <label class="field">
+        <span>{{ options['card']['label'] }}</span>
+        <select name="card">
+          {% for option in options['card']['values'] %}<option>{{ option }}</option>{% endfor %}
+        </select>
+      </label>
+
+      <div class="field field-qty">
+        <span>{{ options['quantity']['label'] }}</span>
+        <div class="qty-control" data-qty-control>
+          <button class="qty-btn" type="button" data-qty-action="decrease" aria-label="Уменьшить количество">−</button>
+          <input class="qty-input" type="number" min="1" max="20" step="1" name="quantity" value="1" data-qty-input>
+          <button class="qty-btn" type="button" data-qty-action="increase" aria-label="Увеличить количество">+</button>
+        </div>
+      </div>
+
+      <label class="field field-full">
+        <span>{{ options['comment']['label'] }}</span>
+        <textarea name="comment" rows="4" placeholder="{{ options['comment']['placeholder'] }}"></textarea>
+      </label>
+    </div>
+
+    <div class="cta-panel cta-panel-strong">
+      <div>
+        <span class="summary-label">Итог за позицию</span>
+        <div class="summary-price">{{ product.price|int }} ₽</div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Добавить в корзину</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

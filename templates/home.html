@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% set page_title = 'Главная' %}
+{% block content %}
+<section class="hero-card hero-primary accent-blush">
+  <div class="eyebrow">Студия персональных подарков</div>
+  <h1>Подарок, который хочется открыть ещё до вручения</h1>
+  <p class="lead">Мягкие игрушки, деликатная кастомизация и подарочная подача — чтобы важный жест выглядел продуманным, тёплым и очень личным.</p>
+
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{{ url_for('catalog') }}">Выбрать подарок</a>
+    <a class="btn btn-secondary" href="{{ url_for('company') }}">О бренде</a>
+  </div>
+
+  <div class="hero-showcase">
+    <div class="hero-note-card">
+      <span class="visual-badge">собрать заказ за 2 минуты</span>
+      <div class="hero-bubble-grid">
+        {% for item in moments %}
+          <span class="hero-bubble">{{ item }}</span>
+        {% endfor %}
+      </div>
+      <p class="hero-note-copy">Вы выбираете модель, добавляете имя, оттенок, упаковку и открытку — остальное мы берём на себя.</p>
+    </div>
+    <div class="hero-visual-panel">
+      <div class="mascot mascot-hero">🧸</div>
+      <div class="floating-card">
+        <strong>ready-to-gift</strong>
+        <span>сразу красиво и без лишних шагов</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-block tone-soft">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Почему выбирают нас</div>
+      <h2>Мягкая эстетика, живая персонализация и понятный сервис</h2>
+    </div>
+  </div>
+  <div class="card-grid card-grid-3">
+    {% for item in benefits %}
+      <article class="feature-card feature-card-highlight">
+        <div class="feature-icon">{{ item.icon }}</div>
+        <div>
+          <h3>{{ item.title }}</h3>
+          <p class="muted-line">{{ item.text }}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Как это работает</div>
+      <h2>Спокойный путь от идеи до красивого заказа</h2>
+    </div>
+  </div>
+  <div class="process-list process-list-rich">
+    <article class="process-item"><span class="process-step">1</span><div><strong>Выбираете модель</strong><p>Открываете каталог и находите подарок по настроению, поводу и бюджету.</p></div></article>
+    <article class="process-item"><span class="process-step">2</span><div><strong>Настраиваете детали</strong><p>Добавляете имя, оттенок, аксессуар, упаковку и короткое послание.</p></div></article>
+    <article class="process-item"><span class="process-step">3</span><div><strong>Сохраняете в корзину</strong><p>Сразу видите состав заказа, стоимость и все выбранные параметры.</p></div></article>
+    <article class="process-item"><span class="process-step">4</span><div><strong>Оформляете покупку</strong><p>Переходите в профиль, подтверждаете заказ и отслеживаете его историю.</p></div></article>
+  </div>
+</section>
+
+<section class="section-block collections-strip">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Подборки</div>
+      <h2>Сценарии, с которых чаще всего начинают</h2>
+    </div>
+  </div>
+  <div class="mini-collections">
+    <article class="mini-collection accent-rose"><strong>Для пары</strong><span>романтичные детали и история подарка</span></article>
+    <article class="mini-collection accent-pearl"><strong>На день рождения</strong><span>яркая подача, открытка и эффект вручения</span></article>
+    <article class="mini-collection accent-sand"><strong>Для ребёнка</strong><span>мягкие оттенки, безопасная эстетика и уют</span></article>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Популярные позиции</div>
+      <h2>То, что чаще всего выбирают первым заказом</h2>
+    </div>
+    <a class="section-link" href="{{ url_for('catalog') }}">Весь каталог</a>
+  </div>
+  <div class="stack-grid">
+    {% for product in featured %}
+      <article class="product-card product-card-premium accent-{{ product.accent }}">
+        <div class="product-main product-main-top">
+          <div class="product-visual">
+            <div class="product-thumb accent-{{ product.accent }}">{{ product.image_emoji }}</div>
+            <span class="type-pill">{{ product.category }}</span>
+          </div>
+          <div class="product-copy product-copy-wide">
+            <h3>{{ product.name }}</h3>
+            <p class="muted-line">{{ product.short_description }}</p>
+            <div class="tag-row compact-tags">
+              {% for feature in product.features[:3] %}
+                <span class="chip">{{ feature }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="price-block price-block-column">
+            <strong>{{ product.price|int }} ₽</strong>
+            <a class="btn btn-ghost btn-sm" href="{{ url_for('product_detail', product_id=product.id) }}">Открыть</a>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
