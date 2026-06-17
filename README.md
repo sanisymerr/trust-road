@@ -1,39 +1,66 @@
-# Медведь и точка — mobile web app
+# Trust Road — QR Payment Portal
 
-Обновлённая версия mobile-first приложения на Flask.
+Рабочее Flask-приложение для создания QR-кодов с двуязычными банковскими реквизитами.
 
-## Что внутри
-- брендовая главная страница
-- каталог товаров и услуг
-- карточка товара с настройкой заказа
-- корзина с обновлением количества и summary-блоком
-- оформление заказа
-- страница о бренде
-- профиль, история заказов, баланс
-- админ-панель для смены статусов
-- адаптив под телефон + аккуратный phone-frame на ПК
+## Администратор
 
-## Быстрый запуск
+- Логин: `trust`
+- Пароль: `binance`
+- Локальный адрес: `http://127.0.0.1:5001/admin`
+- Рабочий адрес: `https://trust-road.onrender.com/admin`
+
+## Стандартные поля
+
+При создании карточки форма уже содержит названия полей, но значения остаются пустыми:
+
+- Получатель / Beneficiary
+- Юридический или фактический адрес / Legal or actual address
+- Телефон / Telephone
+- E-mail
+- Банк / Bank
+- Адрес банка / Bank address
+- Номер счёта или IBAN / Account number or IBAN
+- SWIFT или BIC
+- Директор или контактное лицо / Director or contact person
+
+Пустые поля не отображаются клиенту.
+
+## Возможности
+
+- создание, редактирование, отключение и удаление карточек;
+- русский и английский язык;
+- копирование отдельных реквизитов и всей карточки;
+- QR в PNG, SVG и PDF;
+- адаптация под iPhone, Android, iPad, macOS и Windows;
+- SQLite локально и PostgreSQL на Render.
+
+## Локальный запуск на Mac
+
 ```bash
-cd medved_app_v3
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-python app.py
+python3 -m pip install -r requirements.txt
+PORT=5001 python3 app.py
 ```
 
-Открыть в браузере:
-```bash
-http://127.0.0.1:5000
+Открыть: `http://127.0.0.1:5001/admin`
+
+## Настройки существующего сервиса Render
+
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `gunicorn --bind 0.0.0.0:$PORT app:app`
+- Health Check Path: `/health`
+
+Переменные окружения:
+
+```text
+ADMIN_USERNAME=trust
+ADMIN_PASSWORD=binance
+PUBLIC_BASE_URL=https://trust-road.onrender.com
+FLASK_DEBUG=0
+SESSION_COOKIE_SECURE=1
+SECRET_KEY=<длинная случайная строка>
+DATABASE_URL=<Internal Database URL из Render Postgres>
 ```
 
-## Демо-аккаунты
-- alex@medved.app / 123456
-- sofia@medved.app / 123456
-- admin@medved.app / 123456
-
-## Если раньше запускали старую версию
-Удалите старую базу `medved.db`, чтобы пересоздать наполненную новую базу:
-```bash
-rm -f medved.db
-```
+Без `DATABASE_URL` приложение запустится на SQLite, но на Render данные могут исчезнуть после пересборки или перезапуска сервиса.

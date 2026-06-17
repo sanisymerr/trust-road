@@ -1,52 +1,29 @@
-{% extends 'base.html' %}
-{% set page_title = 'Профиль' %}
-{% block content %}
-<section class="section-block compact-top tone-soft">
-  <div class="section-head section-head-tight">
-    <div>
-      <div class="eyebrow">Профиль</div>
-      <h1>Вход в личный кабинет</h1>
-      <p class="lead">Внутри — история заказов, баланс профиля и быстрый переход к оформлению новых покупок.</p>
-    </div>
-  </div>
-</section>
+{% extends "base.html" %}
+{% block title %}Вход администратора{% endblock %}
+{% block body_class %}admin-body{% endblock %}
+{% block body %}
+<main class="auth-shell">
+  <section class="auth-card">
+    <div class="brand-badge">QR</div>
+    <p class="eyebrow">Административная панель</p>
+    <h1>Вход в систему</h1>
+    <p class="muted">Создание двуязычных страниц с реквизитами и QR-кодов.</p>
 
-<div class="stack-grid">
-  <section class="profile-card">
-    <form method="post" action="{{ url_for('login') }}" class="product-form login-form">
-      <label class="field field-full">
-        <span>Email</span>
-        <input type="email" name="email" placeholder="alex@medved.app" required>
+    {% include "_flashes.html" %}
+
+    <form method="post" class="stack-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label>
+        <span>Логин</span>
+        <input name="username" autocomplete="username" required>
       </label>
-      <label class="field field-full">
+      <label>
         <span>Пароль</span>
-        <input type="password" name="password" placeholder="Введите пароль" required>
+        <input name="password" type="password" autocomplete="current-password" required>
       </label>
-      <button class="btn btn-primary btn-block" type="submit">Войти в профиль</button>
+      <button class="button primary wide" type="submit">Войти</button>
     </form>
-  </section>
 
-  <section class="section-block tone-soft">
-    <div class="section-head section-head-tight">
-      <div>
-        <div class="eyebrow">Быстрый доступ</div>
-        <h2>Готовые профили для показа сценариев</h2>
-      </div>
-    </div>
-    <div class="stack-grid">
-      {% for user in demo_users %}
-        <article class="access-card access-card-rich">
-          <div>
-            <h3>{{ user.label }}</h3>
-            <p class="muted-line">{{ user.description }}</p>
-          </div>
-          <div class="access-meta">
-            <strong>{{ user.email }}</strong>
-            <span>Пароль: {{ user.password }}</span>
-          </div>
-        </article>
-      {% endfor %}
-    </div>
   </section>
-</div>
+</main>
 {% endblock %}

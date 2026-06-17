@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block body_class %}admin-body{% endblock %}
+{% block body %}
+<div class="admin-layout">
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="{{ url_for('admin_dashboard') }}">
+      <span class="brand-badge small">QR</span>
+      <span>
+        <strong>Payment Portal</strong>
+        <small>Admin</small>
+      </span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('admin_dashboard') }}">Все QR-страницы</a>
+      <a href="{{ url_for('admin_create') }}">Создать новую</a>
+    </nav>
+
+    <form method="post" action="{{ url_for('admin_logout') }}" class="sidebar-footer">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button class="button ghost wide" type="submit">Выйти</button>
+    </form>
+  </aside>
+
+  <main class="admin-main">
+    <header class="mobile-admin-header">
+      <a class="sidebar-brand" href="{{ url_for('admin_dashboard') }}">
+        <span class="brand-badge small">QR</span>
+        <strong>Payment Portal</strong>
+      </a>
+      <nav class="mobile-admin-nav" aria-label="Навигация администратора">
+        <a href="{{ url_for('admin_dashboard') }}">Список</a>
+        <a href="{{ url_for('admin_create') }}">Создать</a>
+        <form method="post" action="{{ url_for('admin_logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit">Выйти</button>
+        </form>
+      </nav>
+    </header>
+
+    {% include "_flashes.html" %}
+    {% block admin_content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}

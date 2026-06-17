@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ code }} — {{ title }}{% endblock %}
+{% block body_class %}public-body{% endblock %}
+{% block body %}
+<main class="public-shell center-shell">
+  <section class="not-found-card">
+    <div class="empty-icon">{{ code }}</div>
+    <h1>{{ title }}</h1>
+    <p>{{ message }}</p>
+  </section>
+</main>
+{% endblock %}

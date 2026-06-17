@@ -1,722 +1,608 @@
+import io
 import json
 import os
-import sqlite3
-from contextlib import closing
-from datetime import datetime
+import re
+import secrets
+from datetime import datetime, timezone
 from functools import wraps
 from pathlib import Path
 
+import qrcode
+import qrcode.image.svg
 from flask import (
     Flask,
+    abort,
     flash,
-    g,
-    jsonify,
     redirect,
     render_template,
     request,
+    send_file,
     session,
     url_for,
 )
-from werkzeug.security import check_password_hash, generate_password_hash
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "medved.db"
+DATA_DIR = BASE_DIR / "data"
+DATA_DIR.mkdir(exist_ok=True)
+
+
+def normalize_database_url(value: str) -> str:
+    """Convert legacy postgres:// URLs and provide a local SQLite fallback."""
+    if not value:
+        return f"sqlite:///{DATA_DIR / 'app.db'}"
+    if value.startswith("postgres://"):
+        return "postgresql+psycopg://" + value[len("postgres://"):]
+    if value.startswith("postgresql://"):
+        return "postgresql+psycopg://" + value[len("postgresql://"):]
+    return value
+
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "medved-soft-gifts-secret-key")
-app.config["DATABASE"] = str(DB_PATH)
+app.secret_key = os.getenv("SECRET_KEY", "local-development-secret-change-on-render")
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+app.config.update(
+    SQLALCHEMY_DATABASE_URI=normalize_database_url(os.getenv("DATABASE_URL", "")),
+    SQLALCHEMY_TRACK_MODIFICATIONS=False,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+)
 
-PRODUCTS = [
-    {
-        "name": "Мишка Classic",
-        "category": "Товар",
-        "price": 2500,
-        "short_description": "Мягкий подарок с именной биркой и деликатной упаковкой.",
-        "description": "Нежный базовый медведь ручной работы для первого заказа, дня рождения или тёплого знака внимания. Хорошо подходит для персональной бирки, выбора оттенка и лаконичного оформления.",
-        "image_emoji": "🧸",
-        "features": ["ручная работа", "именная бирка", "мягкая палитра", "подарочная упаковка"],
-        "accent": "blush",
-    },
-    {
-        "name": "Мишка Premium",
-        "category": "Товар",
-        "price": 3900,
-        "short_description": "Подарок с аксессуарами, открыткой и расширенной кастомизацией.",
-        "description": "Премиальная версия для важной даты: можно выбрать цвет, аксессуар, открытку с посланием и более выразительную упаковку. Идеально для вау-эффекта при вручении.",
-        "image_emoji": "🎁",
-        "features": ["выбор цвета", "аксессуары", "открытка", "премиум упаковка"],
-        "accent": "rose",
-    },
-    {
-        "name": "Мишка Love Story",
-        "category": "Товар",
-        "price": 4700,
-        "short_description": "Романтичный подарок для пары, годовщины или памятной даты.",
-        "description": "Модель с романтичной эстетикой: персональная надпись, декоративная лента, тематическое оформление и возможность добавить послание с историей вашего события.",
-        "image_emoji": "💗",
-        "features": ["романтичный стиль", "индивидуальная надпись", "лента", "история подарка"],
-        "accent": "pearl",
-    },
-    {
-        "name": "Подарочный сет для малыша",
-        "category": "Товар",
-        "price": 5200,
-        "short_description": "Нежный набор для ребёнка: игрушка, карточка и мягкая подарочная подача.",
-        "description": "Комплект с безопасной эстетикой и спокойной палитрой. Подходит для рождения малыша, крестин, первого дня рождения и памятных семейных моментов.",
-        "image_emoji": "🍼",
-        "features": ["семейный подарок", "спокойные оттенки", "карточка", "упаковка"],
-        "accent": "sand",
-    },
-    {
-        "name": "Срочный заказ 48 часов",
-        "category": "Услуга",
-        "price": 1200,
-        "short_description": "Приоритет в производстве и согласовании заказа.",
-        "description": "Ускорим подготовку подарка, если он нужен к конкретной дате. Подходит, когда важен дедлайн и нужен приоритет в очереди производства.",
-        "image_emoji": "⚡",
-        "features": ["приоритетный пошив", "быстрое согласование", "ускоренная упаковка"],
-        "accent": "blush",
-    },
-    {
-        "name": "Подарочная упаковка Deluxe",
-        "category": "Услуга",
-        "price": 700,
-        "short_description": "Коробка, лента, карточка и аккуратная подарочная подача.",
-        "description": "Дополнительная упаковка для тех, кто хочет готовый к вручению подарок с мягким вау-эффектом и эстетичной презентацией.",
-        "image_emoji": "🎀",
-        "features": ["коробка", "карточка", "лента", "эффект"],
-        "accent": "rose",
-    },
-    {
-        "name": "Корпоративный заказ",
-        "category": "Услуга",
-        "price": 5500,
-        "short_description": "Индивидуальный расчёт для брендов, мероприятий и команд.",
-        "description": "Подберём тираж в фирменной эстетике: оттенки, карточки, брендированные элементы, единый стиль упаковки и аккуратную подачу для партнёров или команды.",
-        "image_emoji": "🏷️",
-        "features": ["брендирование", "партия изделий", "единый стиль", "индивидуальный расчёт"],
-        "accent": "pearl",
-    },
-    {
-        "name": "Персональная открытка",
-        "category": "Услуга",
-        "price": 450,
-        "short_description": "Короткое послание, которое делает подарок по-настоящему личным.",
-        "description": "Поможем оформить мини-послание в красивой карточке: от нежной подписи до истории памятной даты. Отлично дополняет основной подарок.",
-        "image_emoji": "💌",
-        "features": ["тёплый текст", "аккуратный дизайн", "готово к вручению"],
-        "accent": "sand",
-    },
+if os.getenv("SESSION_COOKIE_SECURE", "0") == "1":
+    app.config["SESSION_COOKIE_SECURE"] = True
+
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "trust")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "binance")
+
+
+STANDARD_FIELDS = [
+    {"label_ru": "Получатель", "label_en": "Beneficiary", "value_ru": "", "value_en": ""},
+    {"label_ru": "Юридический / фактический адрес", "label_en": "Legal / actual address", "value_ru": "", "value_en": ""},
+    {"label_ru": "Телефон", "label_en": "Telephone", "value_ru": "", "value_en": ""},
+    {"label_ru": "E-mail", "label_en": "E-mail", "value_ru": "", "value_en": ""},
+    {"label_ru": "Банк", "label_en": "Bank", "value_ru": "", "value_en": ""},
+    {"label_ru": "Адрес банка", "label_en": "Bank address", "value_ru": "", "value_en": ""},
+    {"label_ru": "Номер счёта / IBAN", "label_en": "Account number / IBAN", "value_ru": "", "value_en": ""},
+    {"label_ru": "SWIFT / BIC", "label_en": "SWIFT / BIC", "value_ru": "", "value_en": ""},
+    {"label_ru": "Директор / контактное лицо", "label_en": "Director / contact person", "value_ru": "", "value_en": ""},
 ]
 
-COLOR_OPTIONS = ["Кремовый", "Пудрово-розовый", "Молочный", "Карамельный", "Светло-бежевый", "Нежно-серый"]
-ACCESSORY_OPTIONS = [
-    "Без аксессуара",
-    "Атласный бант",
-    "Шёлковая лента",
-    "Мини-букет",
-    "Сердечко из фетра",
-    "Именная подвеска",
-    "Колпачок ко дню рождения",
-]
-PACKAGING_OPTIONS = [
-    "Стандартная",
-    "Подарочная коробка",
-    "Deluxe с лентой",
-    "Праздничный пакет",
-    "Романтичная подача",
-]
-OCCASION_OPTIONS = [
-    "Без повода",
-    "День рождения",
-    "Годовщина",
-    "Свидание",
-    "Для ребёнка",
-    "Благодарность",
-    "Корпоративный подарок",
-]
-CARD_OPTIONS = [
-    "Без открытки",
-    "Короткое послание",
-    "Именная карточка",
-    "Открытка с историей",
-]
-PAYMENT_OPTIONS = ["Баланс", "Оплата при получении"]
+
+def standard_fields():
+    return [dict(field) for field in STANDARD_FIELDS]
+
+db = SQLAlchemy(app)
 
 
-def get_db() -> sqlite3.Connection:
-    if "db" not in g:
-        g.db = sqlite3.connect(app.config["DATABASE"])
-        g.db.row_factory = sqlite3.Row
-    return g.db
+class PaymentPage(db.Model):
+    __tablename__ = "payment_pages"
+
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(60), unique=True, nullable=False, index=True)
+    company = db.Column(db.String(300), nullable=False)
+    title_ru = db.Column(db.String(300), nullable=False)
+    title_en = db.Column(db.String(300), nullable=False)
+    subtitle_ru = db.Column(db.Text, nullable=False, default="")
+    subtitle_en = db.Column(db.Text, nullable=False, default="")
+    fields_json = db.Column(db.Text, nullable=False)
+    note_ru = db.Column(db.Text, nullable=False, default="")
+    note_en = db.Column(db.Text, nullable=False, default="")
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    updated_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+    @property
+    def fields(self):
+        try:
+            value = json.loads(self.fields_json)
+            return value if isinstance(value, list) else []
+        except (TypeError, json.JSONDecodeError):
+            return []
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "slug": self.slug,
+            "company": self.company,
+            "title_ru": self.title_ru,
+            "title_en": self.title_en,
+            "subtitle_ru": self.subtitle_ru or "",
+            "subtitle_en": self.subtitle_en or "",
+            "fields": self.fields,
+            "note_ru": self.note_ru or "",
+            "note_en": self.note_en or "",
+            "is_active": bool(self.is_active),
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+        }
 
 
-@app.teardown_appcontext
-def close_db(exception=None):
-    db = g.pop("db", None)
-    if db is not None:
-        db.close()
+with app.app_context():
+    db.create_all()
 
 
-def query_db(query, args=(), one=False):
-    cur = get_db().execute(query, args)
-    rows = cur.fetchall()
-    cur.close()
-    return (rows[0] if rows else None) if one else rows
+def utc_now():
+    return datetime.now(timezone.utc)
 
 
-def login_required(view):
+def admin_required(view):
     @wraps(view)
-    def wrapped_view(**kwargs):
-        if session.get("user_id") is None:
-            flash("Сначала войдите в профиль, чтобы продолжить.", "warning")
-            return redirect(url_for("login", next=request.path))
-        return view(**kwargs)
+    def wrapped(*args, **kwargs):
+        if not session.get("admin_logged_in"):
+            return redirect(url_for("admin_login", next=request.path))
+        return view(*args, **kwargs)
 
-    return wrapped_view
-
-
-def init_db():
-    db = sqlite3.connect(app.config["DATABASE"])
-    with closing(db.cursor()) as cur:
-        cur.executescript(
-            """
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                full_name TEXT NOT NULL,
-                email TEXT NOT NULL UNIQUE,
-                password_hash TEXT NOT NULL,
-                phone TEXT,
-                balance REAL NOT NULL DEFAULT 0,
-                role TEXT NOT NULL DEFAULT 'client'
-            );
-
-            CREATE TABLE IF NOT EXISTS products (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                category TEXT NOT NULL,
-                price REAL NOT NULL,
-                short_description TEXT NOT NULL,
-                description TEXT NOT NULL,
-                image_emoji TEXT NOT NULL,
-                features_json TEXT NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS orders (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER NOT NULL,
-                total REAL NOT NULL,
-                payment_method TEXT NOT NULL,
-                status TEXT NOT NULL,
-                created_at TEXT NOT NULL,
-                FOREIGN KEY (user_id) REFERENCES users(id)
-            );
-
-            CREATE TABLE IF NOT EXISTS order_items (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                order_id INTEGER NOT NULL,
-                product_id INTEGER NOT NULL,
-                quantity INTEGER NOT NULL,
-                unit_price REAL NOT NULL,
-                options_json TEXT NOT NULL,
-                FOREIGN KEY (order_id) REFERENCES orders(id),
-                FOREIGN KEY (product_id) REFERENCES products(id)
-            );
-            """
-        )
-        db.commit()
-
-    seed_db(db)
-    db.close()
+    return wrapped
 
 
-def seed_db(db: sqlite3.Connection):
-    cur = db.cursor()
+def make_slug():
+    return secrets.token_urlsafe(9).replace("-", "").replace("_", "")[:12].lower()
 
-    cur.execute("SELECT COUNT(*) FROM users")
-    if cur.fetchone()[0] == 0:
-        users = [
-            (
-                "Александр Зейда",
-                "alex@medved.app",
-                generate_password_hash("123456"),
-                "+7 914 680-06-20",
-                15000,
-                "client",
-            ),
-            (
-                "София Чукина",
-                "sofia@medved.app",
-                generate_password_hash("123456"),
-                "+7 900 000-00-01",
-                8000,
-                "client",
-            ),
-            (
-                "Менеджер проекта",
-                "admin@medved.app",
-                generate_password_hash("123456"),
-                "+7 900 000-00-99",
-                0,
-                "admin",
-            ),
-        ]
-        cur.executemany(
-            "INSERT INTO users (full_name, email, password_hash, phone, balance, role) VALUES (?, ?, ?, ?, ?, ?)",
-            users,
+
+def clean_slug(value):
+    cleaned = re.sub(r"[^a-zA-Z0-9_-]+", "-", value.strip()).strip("-").lower()
+    return cleaned[:60]
+
+
+def get_page_or_404(slug):
+    page = db.session.execute(
+        db.select(PaymentPage).where(PaymentPage.slug == slug)
+    ).scalar_one_or_none()
+    if page is None:
+        abort(404)
+    return page
+
+
+def parse_fields_from_form():
+    labels_ru = request.form.getlist("label_ru[]")
+    labels_en = request.form.getlist("label_en[]")
+    values_ru = request.form.getlist("value_ru[]")
+    values_en = request.form.getlist("value_en[]")
+
+    count = max(len(labels_ru), len(labels_en), len(values_ru), len(values_en), 0)
+    fields = []
+
+    for index in range(count):
+        label_ru = labels_ru[index].strip() if index < len(labels_ru) else ""
+        label_en = labels_en[index].strip() if index < len(labels_en) else ""
+        value_ru = values_ru[index].strip() if index < len(values_ru) else ""
+        value_en = values_en[index].strip() if index < len(values_en) else ""
+
+        # Предустановленные строки с пустыми значениями не попадают на публичную страницу.
+        if not (value_ru or value_en):
+            continue
+
+        if not (label_ru or label_en):
+            raise ValueError("У заполненного поля должно быть название хотя бы на одном языке.")
+
+        fields.append(
+            {
+                "label_ru": label_ru or label_en,
+                "label_en": label_en or label_ru,
+                "value_ru": value_ru or value_en,
+                "value_en": value_en or value_ru,
+            }
         )
 
-    cur.execute("SELECT COUNT(*) FROM products")
-    if cur.fetchone()[0] == 0:
-        cur.executemany(
-            "INSERT INTO products (name, category, price, short_description, description, image_emoji, features_json) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [
-                (
-                    item["name"],
-                    item["category"],
-                    item["price"],
-                    item["short_description"],
-                    item["description"],
-                    item["image_emoji"],
-                    json.dumps(item["features"], ensure_ascii=False),
-                )
-                for item in PRODUCTS
-            ],
-        )
-
-    cur.execute("SELECT COUNT(*) FROM orders")
-    if cur.fetchone()[0] == 0:
-        cur.execute(
-            "INSERT INTO orders (user_id, total, payment_method, status, created_at) VALUES (?, ?, ?, ?, ?)",
-            (1, 4600, "Баланс", "В работе", datetime.now().strftime("%d.%m.%Y %H:%M")),
-        )
-        order_id = cur.lastrowid
-        cur.execute(
-            "INSERT INTO order_items (order_id, product_id, quantity, unit_price, options_json) VALUES (?, ?, ?, ?, ?)",
-            (
-                order_id,
-                2,
-                1,
-                3900,
-                json.dumps(
-                    {
-                        "Имя на бирке": "Анна",
-                        "Цвет": "Пудрово-розовый",
-                        "Аксессуар": "Атласный бант",
-                        "Упаковка": "Deluxe с лентой",
-                        "Повод": "День рождения",
-                        "Открытка": "Короткое послание",
-                        "Комментарий": "Нежная подача, мягкая палитра.",
-                    },
-                    ensure_ascii=False,
-                ),
-            ),
-        )
-        cur.execute(
-            "INSERT INTO order_items (order_id, product_id, quantity, unit_price, options_json) VALUES (?, ?, ?, ?, ?)",
-            (
-                order_id,
-                6,
-                1,
-                700,
-                json.dumps(
-                    {"Упаковка": "Deluxe с лентой", "Комментарий": "Добавить открытку с поздравлением."},
-                    ensure_ascii=False,
-                ),
-            ),
-        )
-
-    db.commit()
+    return fields
 
 
-def load_current_user():
-    user_id = session.get("user_id")
-    if not user_id:
-        return None
-    return query_db("SELECT * FROM users WHERE id = ?", (user_id,), one=True)
+def absolute_public_url(slug):
+    configured = os.getenv("PUBLIC_BASE_URL", "").strip().rstrip("/")
+    if configured:
+        return f"{configured}{url_for('public_page', slug=slug)}"
+    return url_for("public_page", slug=slug, _external=True)
 
 
-def get_products():
-    rows = query_db("SELECT * FROM products ORDER BY id")
-    accent_map = {item["name"]: item.get("accent", "blush") for item in PRODUCTS}
-    products = []
-    for row in rows:
-        item = dict(row)
-        item["features"] = json.loads(item["features_json"])
-        item["accent"] = accent_map.get(item["name"], "blush")
-        products.append(item)
-    return products
+def create_qr(slug, *, box_size=14):
+    target_url = absolute_public_url(slug)
+    qr = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=box_size,
+        border=4,
+    )
+    qr.add_data(target_url)
+    qr.make(fit=True)
+    return qr
 
 
-def get_product(product_id: int):
-    row = query_db("SELECT * FROM products WHERE id = ?", (product_id,), one=True)
-    if not row:
-        return None
-    item = dict(row)
-    item["features"] = json.loads(item["features_json"])
-    item["accent"] = next((p.get("accent", "blush") for p in PRODUCTS if p["name"] == item["name"]), "blush")
-    return item
+@app.before_request
+def csrf_protection():
+    if "csrf_token" not in session:
+        session["csrf_token"] = secrets.token_urlsafe(32)
 
-
-def build_product_options(product):
-    is_service = product["category"] == "Услуга"
-    return {
-        "tag_name": {"label": "Имя на бирке или короткая подпись", "placeholder": "Например, Анна", "default": ""},
-        "color": {"label": "Цвет", "values": COLOR_OPTIONS if not is_service else ["Не требуется", "Кремовый", "Пудровый", "Бежевый"]},
-        "accessory": {"label": "Аксессуар", "values": ACCESSORY_OPTIONS if not is_service else ["Без аксессуара", "Лента", "Карточка", "Наклейка бренда"]},
-        "packaging": {"label": "Упаковка", "values": PACKAGING_OPTIONS},
-        "occasion": {"label": "Повод", "values": OCCASION_OPTIONS},
-        "card": {"label": "Открытка", "values": CARD_OPTIONS},
-        "quantity": {"label": "Количество", "default": 1},
-        "comment": {"label": "Пожелания к оформлению", "placeholder": "Опишите настроение подарка, повод, цветовую гамму или важные детали"},
-    }
-
-
-def cart_totals(items):
-    subtotal = sum(item["price"] * item["quantity"] for item in items)
-    service_fee = 0 if subtotal >= 5000 or subtotal == 0 else 290
-    grand_total = subtotal + service_fee
-    return subtotal, service_fee, grand_total
-
-
-def merge_cart_item(cart, new_item):
-    for item in cart:
-        if item["product_id"] == new_item["product_id"] and item["options"] == new_item["options"]:
-            item["quantity"] += new_item["quantity"]
-            return cart
-    cart.append(new_item)
-    return cart
+    if request.method == "POST":
+        submitted = request.form.get("csrf_token", "")
+        expected = session.get("csrf_token", "")
+        if not submitted or not secrets.compare_digest(submitted, expected):
+            abort(400, description="Сессия формы устарела. Обновите страницу и повторите действие.")
 
 
 @app.context_processor
-def inject_globals():
-    current_user = load_current_user()
-    cart_items = session.get("cart", [])
-    return {
-        "current_user": current_user,
-        "cart_count": sum(item["quantity"] for item in cart_items),
-        "brand_tagline": "персональные подарки с историей",
-    }
+def inject_csrf_token():
+    return {"csrf_token": session.get("csrf_token", "")}
 
 
 @app.route("/")
 def home():
-    featured = get_products()[:4]
-    benefits = [
-        {"icon": "🤍", "title": "Тонкая персонализация", "text": "Имя, оттенок, открытка и аксессуары собираются под конкретного человека и его историю."},
-        {"icon": "🪄", "title": "Ручная подача", "text": "Каждый подарок оформляется мягко и аккуратно, чтобы его хотелось сразу вручить."},
-        {"icon": "🎀", "title": "Готово к моменту", "text": "Получатель видит не просто игрушку, а цельный подарок с продуманной эстетикой."},
-    ]
-    moments = ["Для пары", "На день рождения", "Для ребёнка", "На памятную дату"]
-    return render_template("home.html", featured=featured, benefits=benefits, moments=moments)
+    return redirect(url_for("admin_dashboard"))
 
 
-@app.route("/company")
-def company():
-    stats = [
-        {"label": "Средний чек", "value": "2 500–5 000 ₽"},
-        {"label": "Темп на старте", "value": "5–10 заказов в месяц"},
-        {"label": "Формат", "value": "Студия персональных подарков"},
-    ]
-    steps = [
-        ("Выбираете модель", "Подбираете подарок, который подходит по настроению и поводу."),
-        ("Настраиваете детали", "Указываете оттенок, аксессуары, открытку и пожелания."),
-        ("Мы собираем подарок", "Аккуратно готовим изделие, проверяем подачу и согласовываем детали."),
-        ("Получаете ready-to-gift заказ", "Подарок приезжает уже в красивой и понятной упаковке."),
-    ]
-    return render_template("company.html", stats=stats, steps=steps)
+@app.route("/health")
+def health():
+    return {"status": "ok"}, 200
 
 
-@app.route("/catalog")
-def catalog():
-    category = request.args.get("category", "Все")
-    products = get_products()
-    if category != "Все":
-        products = [p for p in products if p["category"] == category]
-    return render_template("catalog.html", products=products, category=category)
-
-
-@app.route("/product/<int:product_id>")
-def product_detail(product_id):
-    product = get_product(product_id)
-    if not product:
-        flash("Позиция не найдена.", "danger")
-        return redirect(url_for("catalog"))
-    options = build_product_options(product)
-    return render_template("product_detail.html", product=product, options=options)
-
-
-@app.post("/add-to-cart/<int:product_id>")
-def add_to_cart(product_id):
-    product = get_product(product_id)
-    if not product:
-        flash("Позиция не найдена.", "danger")
-        return redirect(url_for("catalog"))
-
-    cart = session.get("cart", [])
-    quantity = max(1, int(request.form.get("quantity", 1) or 1))
-    options = {
-        "Имя или подпись": request.form.get("tag_name", "").strip() or "Без подписи",
-        "Цвет": request.form.get("color", "Кремовый"),
-        "Аксессуар": request.form.get("accessory", "Без аксессуара"),
-        "Упаковка": request.form.get("packaging", "Стандартная"),
-        "Повод": request.form.get("occasion", "Без повода"),
-        "Открытка": request.form.get("card", "Без открытки"),
-        "Пожелания": request.form.get("comment", "").strip() or "Без комментария",
-    }
-
-    cart_item = {
-        "cart_id": f"{product_id}-{datetime.utcnow().timestamp()}",
-        "product_id": product_id,
-        "name": product["name"],
-        "price": product["price"],
-        "quantity": quantity,
-        "emoji": product["image_emoji"],
-        "accent": product.get("accent", "blush"),
-        "category": product["category"],
-        "options": options,
-    }
-
-    session["cart"] = merge_cart_item(cart, cart_item)
-    session.modified = True
-    flash("Позиция добавлена в корзину.", "success")
-    return redirect(url_for("cart"))
-
-
-@app.route("/cart")
-def cart():
-    items = session.get("cart", [])
-    subtotal, service_fee, grand_total = cart_totals(items)
-    return render_template(
-        "cart.html",
-        items=items,
-        subtotal=subtotal,
-        service_fee=service_fee,
-        grand_total=grand_total,
-    )
-
-
-@app.post("/cart/update/<cart_id>")
-def update_cart_item(cart_id):
-    quantity = max(1, int(request.form.get("quantity", 1) or 1))
-    cart = session.get("cart", [])
-    for item in cart:
-        if item["cart_id"] == cart_id:
-            item["quantity"] = quantity
-            break
-    session["cart"] = cart
-    session.modified = True
-    flash("Количество обновлено.", "success")
-    return redirect(url_for("cart"))
-
-
-@app.post("/cart/remove/<cart_id>")
-def remove_from_cart(cart_id):
-    cart = [item for item in session.get("cart", []) if item["cart_id"] != cart_id]
-    session["cart"] = cart
-    session.modified = True
-    flash("Позиция удалена из корзины.", "info")
-    return redirect(url_for("cart"))
-
-
-@app.route("/checkout", methods=["GET", "POST"])
-@login_required
-def checkout():
-    items = session.get("cart", [])
-    if not items:
-        flash("Сначала добавьте что-нибудь в корзину.", "warning")
-        return redirect(url_for("catalog"))
-
-    current_user = load_current_user()
-    subtotal, service_fee, grand_total = cart_totals(items)
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    if session.get("admin_logged_in"):
+        return redirect(url_for("admin_dashboard"))
 
     if request.method == "POST":
-        payment_method = request.form.get("payment_method", "Баланс")
-        db = get_db()
-        if payment_method == "Баланс" and current_user["balance"] < grand_total:
-            flash("На балансе недостаточно средств. Выберите оплату при получении.", "danger")
-            return redirect(url_for("checkout"))
-
-        if payment_method == "Баланс":
-            db.execute(
-                "UPDATE users SET balance = balance - ? WHERE id = ?",
-                (grand_total, current_user["id"]),
-            )
-
-        created_at = datetime.now().strftime("%d.%m.%Y %H:%M")
-        cur = db.execute(
-            "INSERT INTO orders (user_id, total, payment_method, status, created_at) VALUES (?, ?, ?, ?, ?)",
-            (current_user["id"], grand_total, payment_method, "Новый", created_at),
-        )
-        order_id = cur.lastrowid
-
-        for item in items:
-            db.execute(
-                "INSERT INTO order_items (order_id, product_id, quantity, unit_price, options_json) VALUES (?, ?, ?, ?, ?)",
-                (
-                    order_id,
-                    item["product_id"],
-                    item["quantity"],
-                    item["price"],
-                    json.dumps(item["options"], ensure_ascii=False),
-                ),
-            )
-
-        db.commit()
-        session["cart"] = []
-        session.modified = True
-        flash("Заказ оформлен. Его можно открыть в профиле.", "success")
-        return redirect(url_for("order_success", order_id=order_id))
-
-    return render_template(
-        "checkout.html",
-        items=items,
-        subtotal=subtotal,
-        service_fee=service_fee,
-        grand_total=grand_total,
-        current_user=current_user,
-        payment_options=PAYMENT_OPTIONS,
-    )
-
-
-@app.route("/order-success/<int:order_id>")
-@login_required
-def order_success(order_id):
-    order = query_db("SELECT * FROM orders WHERE id = ? AND user_id = ?", (order_id, session["user_id"]), one=True)
-    if not order:
-        return redirect(url_for("profile"))
-    return render_template("order_success.html", order=order)
-
-
-@app.route("/profile")
-def profile_gate():
-    current_user = load_current_user()
-    if current_user:
-        orders = query_db(
-            "SELECT * FROM orders WHERE user_id = ? ORDER BY id DESC",
-            (current_user["id"],),
-        )
-        return render_template("profile.html", orders=orders, current_user=current_user)
-
-    demo_users = [
-        {
-            "email": "alex@medved.app",
-            "password": "123456",
-            "label": "Клиент с историей заказов",
-            "description": "Баланс профиля, оформленный заказ и готовая история покупок.",
-        },
-        {
-            "email": "sofia@medved.app",
-            "password": "123456",
-            "label": "Новый клиентский профиль",
-            "description": "Чистый сценарий входа, чтобы показать интерфейс без заказов.",
-        },
-        {
-            "email": "admin@medved.app",
-            "password": "123456",
-            "label": "Панель менеджера",
-            "description": "Список заказов и работа со статусами внутри приложения.",
-        },
-    ]
-    return render_template("login.html", demo_users=demo_users)
-
-
-@app.route("/order/<int:order_id>")
-@login_required
-def order_detail(order_id):
-    order = query_db("SELECT * FROM orders WHERE id = ? AND user_id = ?", (order_id, session["user_id"]), one=True)
-    if not order:
-        flash("Заказ не найден.", "danger")
-        return redirect(url_for("profile_gate"))
-    items = query_db(
-        """
-        SELECT oi.*, p.name, p.image_emoji
-        FROM order_items oi
-        JOIN products p ON p.id = oi.product_id
-        WHERE oi.order_id = ?
-        """,
-        (order_id,),
-    )
-    parsed_items = []
-    for item in items:
-        d = dict(item)
-        d["options"] = json.loads(d["options_json"])
-        parsed_items.append(d)
-    return render_template("order_detail.html", order=order, items=parsed_items)
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        email = request.form.get("email", "").strip().lower()
+        username = request.form.get("username", "")
         password = request.form.get("password", "")
-        user = query_db("SELECT * FROM users WHERE lower(email) = ?", (email,), one=True)
-        if user and check_password_hash(user["password_hash"], password):
+
+        valid_username = secrets.compare_digest(username, ADMIN_USERNAME)
+        valid_password = secrets.compare_digest(password, ADMIN_PASSWORD)
+
+        if valid_username and valid_password:
+            csrf_token = session.get("csrf_token")
             session.clear()
-            session["user_id"] = user["id"]
-            flash("Вы вошли в профиль.", "success")
-            next_page = request.args.get("next") or url_for("profile_gate")
-            return redirect(next_page)
-        flash("Проверьте email и пароль.", "danger")
-    return redirect(url_for("profile_gate"))
+            session["csrf_token"] = csrf_token or secrets.token_urlsafe(32)
+            session["admin_logged_in"] = True
+            flash("Вход выполнен.", "success")
+
+            next_url = request.args.get("next", "")
+            if next_url.startswith("/") and not next_url.startswith("//"):
+                return redirect(next_url)
+            return redirect(url_for("admin_dashboard"))
+
+        flash("Неверный логин или пароль.", "error")
+
+    return render_template("login.html")
 
 
-@app.route("/logout")
-def logout():
+@app.post("/admin/logout")
+@admin_required
+def admin_logout():
     session.clear()
-    flash("Вы вышли из профиля.", "info")
-    return redirect(url_for("home"))
+    return redirect(url_for("admin_login"))
 
 
 @app.route("/admin")
-def admin():
-    current_user = load_current_user()
-    if not current_user or current_user["role"] != "admin":
-        flash("Раздел заказов доступен менеджеру проекта.", "warning")
-        return redirect(url_for("profile_gate"))
-    orders = query_db(
-        """
-        SELECT o.*, u.full_name
-        FROM orders o
-        JOIN users u ON u.id = o.user_id
-        ORDER BY o.id DESC
-        """
+@admin_required
+def admin_dashboard():
+    pages = db.session.execute(
+        db.select(PaymentPage).order_by(PaymentPage.id.desc())
+    ).scalars().all()
+    return render_template(
+        "admin_dashboard.html",
+        pages=[page.to_dict() for page in pages],
     )
-    return render_template("admin.html", orders=orders)
 
 
-@app.post("/admin/order/<int:order_id>/status")
-def admin_update_status(order_id):
-    current_user = load_current_user()
-    if not current_user or current_user["role"] != "admin":
-        return redirect(url_for("profile_gate"))
-    status = request.form.get("status", "Новый")
-    get_db().execute("UPDATE orders SET status = ? WHERE id = ?", (status, order_id))
-    get_db().commit()
-    flash("Статус обновлён.", "success")
-    return redirect(url_for("admin"))
-
-
-@app.route("/manifest.json")
-def manifest():
-    return jsonify(
-        {
-            "name": "Медведь и точка",
-            "short_name": "Медведь",
-            "start_url": "/",
-            "display": "standalone",
-            "background_color": "#fff8fa",
-            "theme_color": "#e4a3b6",
-            "icons": [],
+def form_values(page=None):
+    if request.method == "POST":
+        return {
+            "company": request.form.get("company", ""),
+            "title_ru": request.form.get("title_ru", ""),
+            "title_en": request.form.get("title_en", ""),
+            "subtitle_ru": request.form.get("subtitle_ru", ""),
+            "subtitle_en": request.form.get("subtitle_en", ""),
+            "note_ru": request.form.get("note_ru", ""),
+            "note_en": request.form.get("note_en", ""),
+            "slug": request.form.get("slug", ""),
         }
+    if page:
+        return page.to_dict()
+    return {
+        "company": "",
+        "title_ru": "Реквизиты для перевода",
+        "title_en": "Payment details",
+        "subtitle_ru": "Данные для банковского перевода",
+        "subtitle_en": "Bank transfer details",
+        "note_ru": "Перед отправкой перевода проверьте получателя, номер счёта и SWIFT / BIC.",
+        "note_en": "Before sending the transfer, verify the beneficiary, account number and SWIFT / BIC.",
+        "slug": "",
+    }
+
+
+@app.route("/admin/new", methods=["GET", "POST"])
+@admin_required
+def admin_create():
+    fields = standard_fields()
+
+    if request.method == "POST":
+        try:
+            fields = parse_fields_from_form()
+        except ValueError as error:
+            flash(str(error), "error")
+            return render_template(
+                "admin_form.html",
+                mode="create",
+                page=None,
+                values=form_values(),
+                fields=fields,
+            )
+
+        values = form_values()
+        company = values["company"].strip()
+        title_ru = values["title_ru"].strip()
+        title_en = values["title_en"].strip()
+        custom_slug = clean_slug(values["slug"])
+        slug = custom_slug or make_slug()
+
+        if not company or not title_ru or not title_en:
+            flash("Заполните компанию и заголовки на русском и английском.", "error")
+            return render_template(
+                "admin_form.html",
+                mode="create",
+                page=None,
+                values=values,
+                fields=fields or standard_fields(),
+            )
+
+        if not fields:
+            flash("Добавьте хотя бы одно поле с реквизитами.", "error")
+            return render_template(
+                "admin_form.html",
+                mode="create",
+                page=None,
+                values=values,
+                fields=standard_fields(),
+            )
+
+        now = utc_now()
+        page = PaymentPage(
+            slug=slug,
+            company=company,
+            title_ru=title_ru,
+            title_en=title_en,
+            subtitle_ru=values["subtitle_ru"].strip(),
+            subtitle_en=values["subtitle_en"].strip(),
+            fields_json=json.dumps(fields, ensure_ascii=False),
+            note_ru=values["note_ru"].strip(),
+            note_en=values["note_en"].strip(),
+            is_active=True,
+            created_at=now,
+            updated_at=now,
+        )
+        db.session.add(page)
+
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash("Такой короткий адрес уже используется. Укажите другой.", "error")
+            return render_template(
+                "admin_form.html",
+                mode="create",
+                page=None,
+                values=values,
+                fields=fields,
+            )
+
+        flash("QR-страница создана.", "success")
+        return redirect(url_for("admin_result", slug=page.slug))
+
+    return render_template(
+        "admin_form.html",
+        mode="create",
+        page=None,
+        values=form_values(),
+        fields=fields,
     )
 
 
-@app.route("/service-worker.js")
-def service_worker():
-    return app.send_static_file("js/service-worker.js")
+@app.route("/admin/<slug>/edit", methods=["GET", "POST"])
+@admin_required
+def admin_edit(slug):
+    page = get_page_or_404(slug)
+    fields = page.fields
+
+    if request.method == "POST":
+        try:
+            fields = parse_fields_from_form()
+        except ValueError as error:
+            flash(str(error), "error")
+            return render_template(
+                "admin_form.html",
+                mode="edit",
+                page=page.to_dict(),
+                values=form_values(page),
+                fields=fields,
+            )
+
+        values = form_values(page)
+        company = values["company"].strip()
+        title_ru = values["title_ru"].strip()
+        title_en = values["title_en"].strip()
+
+        if not company or not title_ru or not title_en or not fields:
+            flash("Заполните обязательные поля и добавьте реквизиты.", "error")
+            return render_template(
+                "admin_form.html",
+                mode="edit",
+                page=page.to_dict(),
+                values=values,
+                fields=fields or standard_fields(),
+            )
+
+        page.company = company
+        page.title_ru = title_ru
+        page.title_en = title_en
+        page.subtitle_ru = values["subtitle_ru"].strip()
+        page.subtitle_en = values["subtitle_en"].strip()
+        page.fields_json = json.dumps(fields, ensure_ascii=False)
+        page.note_ru = values["note_ru"].strip()
+        page.note_en = values["note_en"].strip()
+        page.is_active = request.form.get("is_active") == "on"
+        page.updated_at = utc_now()
+        db.session.commit()
+
+        flash("Изменения сохранены.", "success")
+        return redirect(url_for("admin_result", slug=slug))
+
+    return render_template(
+        "admin_form.html",
+        mode="edit",
+        page=page.to_dict(),
+        values=form_values(page),
+        fields=fields,
+    )
+
+
+@app.route("/admin/<slug>/result")
+@admin_required
+def admin_result(slug):
+    page = get_page_or_404(slug).to_dict()
+    return render_template(
+        "admin_result.html",
+        page=page,
+        public_url=absolute_public_url(slug),
+    )
+
+
+@app.post("/admin/<slug>/toggle")
+@admin_required
+def admin_toggle(slug):
+    page = get_page_or_404(slug)
+    page.is_active = not page.is_active
+    page.updated_at = utc_now()
+    db.session.commit()
+    flash("Статус страницы изменён.", "success")
+    return redirect(url_for("admin_dashboard"))
+
+
+@app.post("/admin/<slug>/delete")
+@admin_required
+def admin_delete(slug):
+    page = get_page_or_404(slug)
+    db.session.delete(page)
+    db.session.commit()
+    flash("Страница удалена.", "success")
+    return redirect(url_for("admin_dashboard"))
+
+
+@app.route("/p/<slug>")
+def public_page(slug):
+    page = get_page_or_404(slug)
+    if not page.is_active:
+        abort(404)
+    return render_template("public_page.html", page=page.to_dict())
+
+
+def qr_access_allowed(page):
+    return page.is_active or session.get("admin_logged_in")
+
+
+@app.route("/qr/<slug>.png")
+def qr_png(slug):
+    page = get_page_or_404(slug)
+    if not qr_access_allowed(page):
+        abort(404)
+
+    image = create_qr(slug, box_size=16).make_image(
+        fill_color="#0f172a", back_color="white"
+    ).convert("RGB")
+    buffer = io.BytesIO()
+    image.save(buffer, "PNG", optimize=True)
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        mimetype="image/png",
+        as_attachment=request.args.get("download") == "1",
+        download_name=f"{slug}-qr.png",
+        max_age=0,
+    )
+
+
+@app.route("/qr/<slug>.svg")
+def qr_svg(slug):
+    page = get_page_or_404(slug)
+    if not qr_access_allowed(page):
+        abort(404)
+
+    target_url = absolute_public_url(slug)
+    image = qrcode.make(
+        target_url,
+        image_factory=qrcode.image.svg.SvgPathImage,
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        border=4,
+    )
+    buffer = io.BytesIO()
+    image.save(buffer)
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        mimetype="image/svg+xml",
+        as_attachment=request.args.get("download") == "1",
+        download_name=f"{slug}-qr.svg",
+        max_age=0,
+    )
+
+
+@app.route("/qr/<slug>.pdf")
+def qr_pdf(slug):
+    page = get_page_or_404(slug)
+    if not qr_access_allowed(page):
+        abort(404)
+
+    image = create_qr(slug, box_size=24).make_image(
+        fill_color="black", back_color="white"
+    ).convert("RGB")
+    buffer = io.BytesIO()
+    image.save(buffer, "PDF", resolution=300.0)
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        mimetype="application/pdf",
+        as_attachment=True,
+        download_name=f"{slug}-qr.pdf",
+        max_age=0,
+    )
+
+
+@app.errorhandler(400)
+def bad_request(error):
+    return render_template(
+        "error.html",
+        code=400,
+        title="Не удалось выполнить действие",
+        message=getattr(error, "description", "Обновите страницу и повторите попытку."),
+    ), 400
+
+
+@app.errorhandler(404)
+def not_found(_error):
+    return render_template(
+        "error.html",
+        code=404,
+        title="Страница недоступна",
+        message="QR-ссылка не найдена или была отключена администратором.",
+    ), 404
+
+
+@app.errorhandler(500)
+def server_error(_error):
+    db.session.rollback()
+    return render_template(
+        "error.html",
+        code=500,
+        title="Внутренняя ошибка",
+        message="Попробуйте обновить страницу. Если ошибка повторяется, проверьте журнал сервера.",
+    ), 500
 
 
 if __name__ == "__main__":
-    init_db()
-    app.run(debug=True)
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "5001"))
+    debug = os.getenv("FLASK_DEBUG", "1") == "1"
+    app.run(host=host, port=port, debug=debug)

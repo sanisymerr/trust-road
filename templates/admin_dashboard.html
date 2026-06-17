@@ -1,0 +1,59 @@
+{% extends "admin_layout.html" %}
+{% block title %}QR-страницы{% endblock %}
+{% block admin_content %}
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">Управление</p>
+    <h1>QR-страницы</h1>
+    <p class="muted">Создавайте ссылки с реквизитами на русском и английском.</p>
+  </div>
+  <a class="button primary" href="{{ url_for('admin_create') }}">+ Создать QR</a>
+</section>
+
+{% if pages %}
+  <section class="admin-grid">
+    {% for page in pages %}
+      <article class="admin-card">
+        <div class="admin-card-top">
+          <div>
+            <span class="status {{ 'active' if page.is_active else 'inactive' }}">
+              {{ 'Активна' if page.is_active else 'Отключена' }}
+            </span>
+            <h2>{{ page.company }}</h2>
+            <p>{{ page.title_ru }}</p>
+          </div>
+          <img src="{{ url_for('qr_png', slug=page.slug) }}" alt="QR">
+        </div>
+
+        <div class="mini-url">{{ request.host_url.rstrip('/') }}{{ url_for('public_page', slug=page.slug) }}</div>
+
+        <div class="card-actions">
+          <a class="button secondary" href="{{ url_for('admin_result', slug=page.slug) }}">QR и ссылка</a>
+          <a class="button secondary" href="{{ url_for('admin_edit', slug=page.slug) }}">Редактировать</a>
+          <a class="button ghost" href="{{ url_for('public_page', slug=page.slug) }}" target="_blank">Открыть</a>
+        </div>
+
+        <div class="danger-actions">
+          <form method="post" action="{{ url_for('admin_toggle', slug=page.slug) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button class="text-button" type="submit">
+              {{ 'Отключить' if page.is_active else 'Включить' }}
+            </button>
+          </form>
+          <form method="post" action="{{ url_for('admin_delete', slug=page.slug) }}" data-confirm="Удалить эту QR-страницу?">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button class="text-button danger" type="submit">Удалить</button>
+          </form>
+        </div>
+      </article>
+    {% endfor %}
+  </section>
+{% else %}
+  <section class="empty-state">
+    <div class="empty-icon">⌁</div>
+    <h2>Пока нет ни одной страницы</h2>
+    <p>Создайте первую карточку реквизитов и получите QR-код.</p>
+    <a class="button primary" href="{{ url_for('admin_create') }}">Создать первую страницу</a>
+  </section>
+{% endif %}
+{% endblock %}

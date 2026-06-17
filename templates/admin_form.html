@@ -1,0 +1,177 @@
+{% extends "admin_layout.html" %}
+{% block title %}{{ 'Новая QR-страница' if mode == 'create' else 'Редактирование' }}{% endblock %}
+{% block admin_content %}
+<section class="page-heading compact">
+  <div>
+    <p class="eyebrow">{{ 'Создание' if mode == 'create' else 'Редактирование' }}</p>
+    <h1>{{ 'Новая QR-страница' if mode == 'create' else page.company }}</h1>
+    <p class="muted">Стандартные названия уже подготовлены. Заполняйте только нужные значения — пустые строки автоматически не появятся у клиента.</p>
+  </div>
+</section>
+
+<form method="post" class="editor-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+  <section class="form-card">
+    <div class="section-title">
+      <span>1</span>
+      <div>
+        <h2>Основная информация</h2>
+        <p>Эти данные будут отображаться в верхней части публичной страницы.</p>
+      </div>
+    </div>
+
+    <div class="form-grid two">
+      <label>
+        <span>Название компании или получателя *</span>
+        <input name="company" autocomplete="organization" autocapitalize="words" required value="{{ values.company|e }}" placeholder="Введите название">
+      </label>
+
+      {% if mode == 'create' %}
+      <label>
+        <span>Короткий адрес страницы</span>
+        <input name="slug" autocapitalize="none" spellcheck="false" value="{{ values.slug|e }}" placeholder="Можно оставить пустым">
+      </label>
+      {% else %}
+      <label>
+        <span>Короткий адрес страницы</span>
+        <input value="{{ page.slug }}" disabled>
+      </label>
+      {% endif %}
+
+      <label>
+        <span>Заголовок на русском *</span>
+        <input name="title_ru" required value="{{ values.title_ru|e }}" placeholder="Например: Реквизиты для перевода">
+      </label>
+
+      <label>
+        <span>Title in English *</span>
+        <input name="title_en" required value="{{ values.title_en|e }}" placeholder="For example: Payment details">
+      </label>
+
+      <label>
+        <span>Подзаголовок на русском</span>
+        <input name="subtitle_ru" value="{{ values.subtitle_ru|e }}" placeholder="Короткое пояснение для клиента">
+      </label>
+
+      <label>
+        <span>Subtitle in English</span>
+        <input name="subtitle_en" value="{{ values.subtitle_en|e }}" placeholder="A short explanation for the customer">
+      </label>
+    </div>
+  </section>
+
+  <section class="form-card">
+    <div class="section-title with-action">
+      <div class="section-title-left">
+        <span>2</span>
+        <div>
+          <h2>Реквизиты и другие данные</h2>
+          <p>Получатель, адрес, банк, счёт, SWIFT, e-mail и другие стандартные строки уже добавлены. Ненужные оставляйте пустыми.</p>
+        </div>
+      </div>
+      <div class="section-actions">
+        <button class="button secondary" type="button" id="fillEnglishButton">RU → EN для значений</button>
+        <button class="button secondary" type="button" id="addFieldButton">+ Добавить своё поле</button>
+      </div>
+    </div>
+
+    <div class="form-hint">
+      <strong>Как заполнять:</strong> введите значение на русском и английском. Если реквизит пишется одинаково, нажмите «RU → EN» в строке или общую кнопку сверху.
+    </div>
+
+    <div id="fieldsContainer" class="field-editor-list">
+      {% for field in fields %}
+        <div class="field-editor-row">
+          <div class="row-number">{{ loop.index }}</div>
+          <div class="field-editor-grid">
+            <label>
+              <span>Название RU</span>
+              <input name="label_ru[]" value="{{ field.label_ru|e }}" placeholder="Например: Номер счёта">
+            </label>
+            <label>
+              <span>Label EN</span>
+              <input name="label_en[]" value="{{ field.label_en|e }}" placeholder="For example: Account number">
+            </label>
+            <label>
+              <span>Значение RU</span>
+              <textarea name="value_ru[]" rows="2" placeholder="Введите значение">{{ field.value_ru|e }}</textarea>
+            </label>
+            <label>
+              <span>Value EN</span>
+              <textarea name="value_en[]" rows="2" placeholder="Enter the value">{{ field.value_en|e }}</textarea>
+            </label>
+          </div>
+          <div class="field-row-actions">
+            <button class="copy-language-field" type="button" title="Скопировать русское значение в английское">RU → EN</button>
+            <button class="remove-field" type="button" aria-label="Удалить поле" title="Удалить строку">×</button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="form-card">
+    <div class="section-title">
+      <span>3</span>
+      <div>
+        <h2>Примечание</h2>
+        <p>Необязательная инструкция или предупреждение под реквизитами.</p>
+      </div>
+    </div>
+
+    <div class="form-grid two">
+      <label>
+        <span>Примечание на русском</span>
+        <textarea name="note_ru" rows="5" placeholder="Введите текст на русском">{{ values.note_ru|e }}</textarea>
+      </label>
+      <label>
+        <span>Note in English</span>
+        <textarea name="note_en" rows="5" placeholder="Enter the text in English">{{ values.note_en|e }}</textarea>
+      </label>
+    </div>
+
+    {% if mode == 'edit' %}
+    <label class="checkbox-row">
+      <input type="checkbox" name="is_active" {% if page.is_active %}checked{% endif %}>
+      <span>Страница активна и доступна по QR-коду</span>
+    </label>
+    {% endif %}
+  </section>
+
+  <div class="sticky-actions">
+    <a class="button ghost" href="{{ url_for('admin_dashboard') }}">Отмена</a>
+    <button class="button primary" type="submit">
+      {{ 'Создать страницу и QR' if mode == 'create' else 'Сохранить изменения' }}
+    </button>
+  </div>
+</form>
+
+<template id="fieldRowTemplate">
+  <div class="field-editor-row">
+    <div class="row-number"></div>
+    <div class="field-editor-grid">
+      <label>
+        <span>Название RU</span>
+        <input name="label_ru[]" placeholder="Например: Номер счёта">
+      </label>
+      <label>
+        <span>Label EN</span>
+        <input name="label_en[]" placeholder="For example: Account number">
+      </label>
+      <label>
+        <span>Значение RU</span>
+        <textarea name="value_ru[]" rows="2" placeholder="Введите значение"></textarea>
+      </label>
+      <label>
+        <span>Value EN</span>
+        <textarea name="value_en[]" rows="2" placeholder="Enter the value"></textarea>
+      </label>
+    </div>
+    <div class="field-row-actions">
+      <button class="copy-language-field" type="button" title="Скопировать русское значение в английское">RU → EN</button>
+      <button class="remove-field" type="button" aria-label="Удалить поле" title="Удалить строку">×</button>
+    </div>
+  </div>
+</template>
+{% endblock %}
