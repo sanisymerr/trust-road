@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "testType": "Pure Node vm with mocked DOM/Canvas2D/timer/rAF; no browser automation",
+  "cases": [
+    "normal visible rotation",
+    "button pause/resume",
+    "intersection offscreen stops scheduler",
+    "visibilitychange stops scheduler",
+    "reduced-motion initial stop",
+    "preference change true/false",
+    "explicit opt-in with reduced-motion",
+    "Canvas2D unsupported SVG fallback"
+  ],
+  "geometryPoints": 5143,
+  "periodSeconds": 180,
+  "maxFps": 20,
+  "totalTestWallMs": 334.85,
+  "displayAttributes": [
+    "data-motion-state",
+    "data-frame-count"
+  ]
+}

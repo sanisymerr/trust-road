@@ -1,0 +1,12 @@
+{
+  "keyboard_controls": "PASS: arrows, Home/End, Enter/Space, Escape, reopen, Tab",
+  "inverse_range": "PASS: both values, message and cards synchronized",
+  "presets": "PASS: 2019–2021, RF70.15 and change -3.19",
+  "district_scope": "PASS: full names, removal notice, empty-selection CSV scope",
+  "regional_empty_period": "PASS: 2024 anchor disabled and absence explained",
+  "csv_all_dfo": "PASS: 33 rows, 11 territories, 2015/2019/2021",
+  "mobile_320_390": "PASS: no horizontal page overflow; menus within viewport; last district scrolls into view",
+  "globe_actual_page": "PASS: longitude and frames change; pause frame719 stays fixed; resume and offscreen stop",
+  "globe_unit_lifecycle": "PASS: 8 mocked lifecycle scenarios, reduced motion, visibility, pause/resume and fallback",
+  "scope": "Expert and browser checks; no certification or claim of real screen-reader testing"
+}
