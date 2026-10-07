@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "source": "work/deploy/trust-road",
+  "currentApplicationEmbedded": true,
+  "groups": [
+    "55 valid year ranges × all 9 district scopes: state, anchors, finite source values, original null traces, national/region CSV and independent row aggregates",
+    "all 64 metric subsets, including none: plotted trace alignment, disabled empty export, exact selected CSV rows",
+    "one/five selected territories across every district: CSV scope and comparison trace count",
+    "both inverted bound directions commit atomic valid ranges",
+    "presets, district pruning announcement and reset remain synchronized",
+    "metric change events synchronize summary, empty message and export availability",
+    "invalid URL fallback and all-field valid URL round-trip",
+    "tool validation follows the same no-anchor range behavior",
+    "five-territory cap, out-of-district rejection and search affects displayed list only",
+    "sparkline joins eight real points at original year coordinates; missing values create no point and no new path segment; Plotly line keeps null",
+    "all calculations and UI state changes leave source dataset and CSV files unchanged"
+  ],
+  "rangeDistrictScenarios": 495,
+  "csvExportsChecked": 954,
+  "metricSubsetsChecked": 64,
+  "selectionScopesChecked": 18,
+  "sourceLongRows": 399,
+  "sourceLongAvailable": 393,
+  "allPeriodNaturalChange": -4084326,
+  "templateSha256": "b4fb935beed8df50c89756aab6e81d207b509d13504606293e6ac1b48be5eccb",
+  "semanticsReferences": [
+    "https://plotly.com/javascript/reference/scatter/#scatter-connectgaps",
+    "https://github.com/plotly/plotly.js/blob/v4.1.1/src/traces/scatter/calc.js",
+    "https://github.com/plotly/plotly.js/blob/v4.1.1/src/traces/scatter/plot.js",
+    "https://github.com/plotly/plotly.js/blob/v4.1.1/src/components/drawing/index.js"
+  ],
+  "limits": "App JS executed with mock DOM/Plotly calls; actual marker removal confirmed by official Plotly v4.1.1 source. Browser pixels tested separately by root."
+}

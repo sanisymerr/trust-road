@@ -262,7 +262,7 @@ elif page == "Россия":
         values = period_rf[metric] / divisor
         custom = [["предварительные / текущий учет" if y in preliminary_years else "исходная опубликованная версия"] for y in period_rf.year]
         if metric == "opzh":
-            fig.add_trace(go.Scatter(x=period_rf.year, y=values, mode="lines+markers", name="Россия", connectgaps=False,
+            fig.add_trace(go.Scatter(x=period_rf.year, y=values, mode="lines+markers", name="Россия", connectgaps=True,
                 marker=dict(color=BLUE, size=8), line=dict(color=BLUE, width=3), customdata=custom,
                 hovertemplate="%{x}: %{y:.2f} лет<br>%{customdata[0]}<extra></extra>"))
             prelim = period_rf[period_rf.year.isin(preliminary_years)]
@@ -281,7 +281,7 @@ elif page == "Россия":
             if not available.empty:
                 gender = go.Figure()
                 for col,label,color in [("opzh_m","Мужчины",BLUE),("opzh_f","Женщины",ORANGE)]:
-                    gender.add_trace(go.Scatter(x=period_rf.year,y=period_rf[col],mode="lines+markers",name=label,connectgaps=False,line=dict(color=color,width=2.5),hovertemplate="%{x}: %{y:.2f} лет<extra>%{fullData.name}</extra>"))
+                    gender.add_trace(go.Scatter(x=period_rf.year,y=period_rf[col],mode="lines+markers",name=label,connectgaps=True,line=dict(color=color,width=2.5),hovertemplate="%{x}: %{y:.2f} лет<extra>%{fullData.name}</extra>"))
                 gender.update_xaxes(dtick=1)
                 chart(layout(gender,"ОПЖ мужчин и женщин", "лет"),"national_gender")
                 row = available.iloc[-1]
@@ -390,7 +390,7 @@ elif page == "Регионы":
                 if not fo.empty:
                     dumbbell=go.Figure()
                     for _,row in fo.sort_values("2021").iterrows():
-                        dumbbell.add_trace(go.Scatter(x=[row["2019"],row["2021"]],y=[row.district,row.district],mode="lines",line=dict(color="#bbc5d0",width=4),showlegend=False,hoverinfo="skip"))
+                        dumbbell.add_trace(go.Scatter(x=[row["2019"],row["2021"]],y=[row.district,row.district],mode="lines",connectgaps=True,line=dict(color="#bbc5d0",width=4),showlegend=False,hoverinfo="skip"))
                     for year,color in [("2019",BLUE),("2021",RED)]:
                         dumbbell.add_trace(go.Scatter(x=fo[year],y=fo.district,mode="markers",name=year,marker=dict(size=11,color=color),hovertemplate="%{y}: %{x:.2f} лет<extra>%{fullData.name}</extra>"))
                     dumbbell.update_xaxes(title="ОПЖ, лет")
@@ -400,9 +400,9 @@ elif page == "Регионы":
                 st.caption("Для читаемости на линии показаны 12 территорий с наибольшей ОПЖ выбранного года. Таблица содержит всю выбранную группу. Уточните список территорий, чтобы сравнить другие.")
             lines=go.Figure()
             for _,row in detail.sort_values(col,ascending=False).head(12).iterrows():
-                lines.add_trace(go.Scatter(x=anchors,y=[row[str(y)] for y in anchors],mode="lines+markers",name=row.territory,connectgaps=False,
+                lines.add_trace(go.Scatter(x=anchors,y=[row[str(y)] for y in anchors],mode="lines+markers",name=row.territory,connectgaps=True,
                     hovertemplate="%{x}: %{y:.2f} лет<extra>%{fullData.name}</extra>"))
-            lines.add_trace(go.Scatter(x=anchors,y=[float(rf.loc[rf.year==y,"opzh"].iloc[0]) for y in anchors],mode="lines+markers",name="Россия",line=dict(color=INK,dash="dash",width=3)))
+            lines.add_trace(go.Scatter(x=anchors,y=[float(rf.loc[rf.year==y,"opzh"].iloc[0]) for y in anchors],mode="lines+markers",name="Россия",connectgaps=True,line=dict(color=INK,dash="dash",width=3)))
             lines.update_xaxes(tickvals=anchors)
             chart(layout(lines,"Опорные значения ОПЖ", "лет",520),"regional_detail")
             st.caption("Линии соединяют только имеющиеся опорные наблюдения. Они не показывают значения промежуточных лет.")

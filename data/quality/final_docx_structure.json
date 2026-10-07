@@ -1,0 +1,47 @@
+{
+  "pages": 26,
+  "headings": {
+    "РЕФЕРАТ": 2,
+    "ВВЕДЕНИЕ": 4,
+    "1 Данные и методология": 5,
+    "1.1 Показатели": 5,
+    "1.2 Источники и версия данных": 6,
+    "1.3 Территории и пропуски": 7,
+    "2 Подготовка и контроль качества": 8,
+    "2.1 Очистка и расчёты": 8,
+    "2.2 Проверка качества": 9,
+    "3 Результаты анализа": 10,
+    "3.1 Ожидаемая продолжительность жизни": 10,
+    "3.2 Детская и материнская смертность": 11,
+    "3.3 Общая смертность и естественная убыль": 12,
+    "3.4 Регионы и Приморский край": 13,
+    "4 Интерактивный дашборд": 15,
+    "4.1 Структура и публикация": 15,
+    "4.2 Фильтры и связанный выбор": 16,
+    "4.3 Оформление и движение": 17,
+    "5 Проверка и доработка проекта": 19,
+    "5.1 Критерии и исправления": 19,
+    "5.2 Проверка окончательной версии": 19,
+    "5.3 Выполнение задания и совместная работа": 20,
+    "ЗАКЛЮЧЕНИЕ": 21,
+    "СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ": 22,
+    "ПРИЛОЖЕНИЕ А Выполнение технического задания": 25,
+    "ПРИЛОЖЕНИЕ Б Состав комплекта и воспроизведение": 26
+  },
+  "page_size": {
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w": "11906",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h": "16838"
+  },
+  "margins": {
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top": "1134",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right": "850",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom": "1134",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left": "1701",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header": "567",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer": "567",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter": "0"
+  },
+  "images": 8,
+  "tables": 5,
+  "sha256": "b35f7fb9334941b9001803848e251f03a4d6272e7fd7e4e1d171fc022be08795"
+}

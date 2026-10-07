@@ -1,22 +1,29 @@
 {
   "passed": true,
-  "testType": "Pure Node vm with mocked DOM/Canvas2D/timer/rAF; no browser automation",
-  "cases": [
-    "normal visible rotation",
-    "button pause/resume",
-    "intersection offscreen stops scheduler",
-    "visibilitychange stops scheduler",
-    "reduced-motion initial stop",
-    "preference change true/false",
-    "explicit opt-in with reduced-motion",
-    "Canvas2D unsupported SVG fallback"
+  "testType": "Pure Node vm; actual JS with mocked DOM/Canvas2D/timer/rAF; no browser automation",
+  "source": "work/deploy/trust-road/dashboard",
+  "passedCases": [
+    "automatic visible rotation without a button",
+    "pointer enter pauses; leave resumes",
+    "drag changes longitude while automatic rotation is paused",
+    "pointer leave during capture does not restart until drag cancel",
+    "lost capture ends drag; non-primary button does not start drag",
+    "offscreen stops callbacks and resumes when visible",
+    "document hidden stops callbacks; visible resumes without catch-up",
+    "reduced-motion stops automatic motion and cannot be overridden by resume",
+    "initial reduced-motion is static; preference change safely resumes",
+    "pagehide stops pending work; pageshow restores it",
+    "missing IntersectionObserver uses viewport and scroll fallback",
+    "Canvas2D unsupported leaves real static SVG visible",
+    "initial drawing failure and animation failure restore SVG",
+    "drag drawing failure restores SVG without uncaught error",
+    "final drag draw also restores SVG on failure",
+    "markup has a real SVG fallback and no removed toggle",
+    "CSS braces balanced and direct pointer rules are outside media"
   ],
+  "failedCases": [],
   "geometryPoints": 5143,
   "periodSeconds": 180,
   "maxFps": 20,
-  "totalTestWallMs": 334.85,
-  "displayAttributes": [
-    "data-motion-state",
-    "data-frame-count"
-  ]
+  "totalTestWallMs": 820.03
 }

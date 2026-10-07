@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "runtime": "/Users/apple/Documents/Codex/2026-10-07/x20/work/venv/bin/python",
+  "code_cells_executed": 10,
+  "errors": [],
+  "line_point_checks": [
+    {
+      "figure": "opzh.png",
+      "series": "opzh",
+      "points": 10,
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    },
+    {
+      "figure": "opzh.png",
+      "series": "opzh_m",
+      "points": 9,
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ]
+    },
+    {
+      "figure": "opzh.png",
+      "series": "opzh_f",
+      "points": 9,
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ]
+    },
+    {
+      "figure": "mortality.png",
+      "series": "inf_mort",
+      "points": 10,
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    },
+    {
+      "figure": "mortality.png",
+      "series": "under5_mort",
+      "points": 8,
+      "years": [
+        2015,
+        2016,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ]
+    },
+    {
+      "figure": "mortality.png",
+      "series": "mat_mort",
+      "points": 10,
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    }
+  ],
+  "prepared_data_bytes_unchanged": true,
+  "other_figures_preserved": true,
+  "regenerated_other_figures_restored": [],
+  "under5_points": 8,
+  "under5_missing_year_markers": [],
+  "under5_real_years": [
+    2015,
+    2016,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "notebook_sha256": "7ea5993753ff619a9511002afe0559219e2764c54b869aca0d3b650a09ad5022",
+  "mortality_png_sha256": "68a106652e597596825ed338f2fa692acf32d15efbc447a7b2e788c9ea442127",
+  "canonical_copies_identical": true,
+  "visual_inspection": "PASS: three panels legible; under5 line connects 2016–2018; no marker for 2017/2024; all original observations and units retained."
+}
