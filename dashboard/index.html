@@ -4276,9 +4276,17 @@ function initGlobeMotion() {
   stage.addEventListener('pointermove', e => {
     if (!dragStart || e.pointerId !== dragStart.id) return;
     dragOffset = dragStart.offset + (dragStart.x - e.clientX) * 0.32;
-    if (performance.now() - lastDraw >= interval) { lastDraw = performance.now(); draw(); }
+    if (performance.now() - lastDraw >= interval) {
+      lastDraw = performance.now();
+      try { draw(); } catch (_) { failToStatic(); }
+    }
   });
-  const finishDrag = () => { dragStart = null; stage.classList.remove('dragging'); syncLoop(); };
+  const finishDrag = () => {
+    const wasDragging = !!dragStart;
+    dragStart = null; stage.classList.remove('dragging');
+    if (wasDragging && !failed) { try { draw(); } catch (_) { failToStatic(); } }
+    syncLoop();
+  };
   stage.addEventListener('pointerup', finishDrag);
   stage.addEventListener('pointercancel', finishDrag);
   stage.addEventListener('lostpointercapture', finishDrag);
