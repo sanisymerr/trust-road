@@ -1,10 +1,10 @@
 {
-  "verified_date": "2026-10-07",
+  "verified_date": "2026-10-08",
   "url": "https://trust-road.onrender.com/",
   "repository": "https://github.com/sanisymerr/trust-road",
-  "deployment_commit": "76db4167077b5e0a968c69fe45a625b5c7c7d4db",
+  "deployment_commit": "f6fd32a75c6d79271bbb1c1ce7b279490905ed9d",
   "render_service": "srv-d6k24l3h46gs73e6ue2g",
-  "render_deploy": "dep-db34mpom7kps73d18gr0",
+  "render_deploy": "dep-db357cc9v7es73ccke6g",
   "render_status": "Deploy succeeded | Live",
   "build_command": "python -m compileall -q serve.py",
   "start_command": "bash run.sh",
@@ -12,14 +12,16 @@
   "backup_branch": "archive/trust-road-before-sdg3-20261007",
   "browser_checks": [
     "public access without login",
-    "national presets and metrics",
-    "regions and district filtering",
-    "Primorye 68.53, RF 70.15, national rank57",
-    "empty regional period2024",
-    "invalid district rejected",
-    "CSV3observationsPrimorye",
+    "custom year grid and district menu",
+    "keyboard cancellation and selection",
+    "national preset2019–2021 RF70.15 change-3.19",
+    "DFO Primorye68.53 national rank57",
+    "CSV Primorye2019/2021 exactly2rows",
+    "actual geographic globe rotation, pause and resume",
     "mobile390 no horizontal overflow",
     "no console errors"
   ],
-  "html_matches_verified_local_file": true
+  "html_matches_verified_local_file": true,
+  "previous_deployment_commit": "76db4167077b5e0a968c69fe45a625b5c7c7d4db",
+  "html_sha256": "58fc60dc5161fdf7aa96149a0f6169e50464c1da959896f6b940df761ecc520c"
 }
