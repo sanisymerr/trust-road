@@ -70,16 +70,16 @@ const CONFIG = Object.freeze({ fps: 20, periodSeconds: 180, longitude: 60, latit
 function initGlobeMotion() {
   const stage = document.getElementById('globe-stage');
   const canvas = document.getElementById('globe-canvas');
-  const button = document.getElementById('globe-motion-toggle');
-  if (!stage || !canvas || !button || canvas.__globeMotion) return;
+  if (!stage || !canvas || canvas.__globeMotion) return;
   const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
   if (!ctx) return; // The supplied static SVG remains visible.
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const status = document.querySelector('[data-globe-motion-status]');
   let failed = false;
   let requestedMotion = !reduced.matches;
-  let userDecision = false;
+  let dragStart = null;
+  let dragOffset = 0;
+  let pointerInside = false;
   let inView = false;
   let timer = 0;
   let raf = 0;
@@ -142,7 +142,7 @@ function initGlobeMotion() {
   function draw() {
     if (!backingSide || !background) return;
     const begin = performance.now();
-    const longitude = CONFIG.longitude + activeMilliseconds * 360 / (CONFIG.periodSeconds * 1000);
+    const longitude = CONFIG.longitude + dragOffset + activeMilliseconds * 360 / (CONFIG.periodSeconds * 1000);
     projection.rotate([-longitude, -CONFIG.latitude, 0]);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, backingSide, backingSide);
@@ -176,20 +176,9 @@ function initGlobeMotion() {
   }
 
   function canAnimate() {
-    return !failed && requestedMotion && inView && document.visibilityState !== 'hidden' && stage.isConnected;
+    return !failed && requestedMotion && !pointerInside && !dragStart && inView && document.visibilityState !== 'hidden' && stage.isConnected;
   }
 
-  function updateControl() {
-    button.type = 'button';
-    button.hidden = false;
-    button.setAttribute('aria-pressed', String(requestedMotion));
-    const label = requestedMotion ? 'Пауза глобуса' : 'Вращать глобус';
-    button.setAttribute('aria-label', label + ': автоматическое вращение глобуса');
-    const slot = button.querySelector('[data-globe-control-text]');
-    if (slot) slot.textContent = label; else button.textContent = label;
-    button.title = requestedMotion ? 'Приостановить вращение' : 'Включить вращение';
-    if (status) status.textContent = requestedMotion ? 'Вращение включено' : 'Вращение выключено';
-  }
 
   function stopLoop() {
     if (timer) window.clearTimeout(timer);
@@ -223,7 +212,7 @@ function initGlobeMotion() {
   }
 
   function syncLoop() {
-    stage.dataset.motionState = failed ? 'fallback' : !requestedMotion ? 'paused' : document.visibilityState === 'hidden' ? 'hidden' : !inView ? 'offscreen' : 'running';
+    stage.dataset.motionState = failed ? 'fallback' : !requestedMotion ? 'reduced' : document.visibilityState === 'hidden' ? 'hidden' : !inView ? 'offscreen' : dragStart ? 'dragging' : pointerInside ? 'hover' : 'running';
     if (canAnimate()) schedule(); else stopLoop();
   }
 
@@ -255,20 +244,26 @@ function initGlobeMotion() {
     stopLoop();
     stage.dataset.motionState = 'fallback';
     delete stage.dataset.globeMotionReady;
-    button.hidden = true;
-    if (status) status.textContent = '';
   }
 
-  button.addEventListener('click', () => {
-    userDecision = true;
-    requestedMotion = !requestedMotion;
-    updateControl(); syncLoop();
+  // Direct manipulation keeps the decorative globe interactive without an extra button.
+  stage.addEventListener('pointerenter', () => { pointerInside = true; syncLoop(); });
+  stage.addEventListener('pointerleave', () => { pointerInside = false; syncLoop(); });
+  stage.addEventListener('pointerdown', e => {
+    if (e.button !== 0 || failed) return;
+    dragStart = { x: e.clientX, offset: dragOffset, id: e.pointerId };
+    stage.setPointerCapture(e.pointerId); stage.classList.add('dragging'); syncLoop();
   });
-  const onPreference = () => {
-    if (reduced.matches) requestedMotion = false;
-    else if (!userDecision) requestedMotion = true;
-    updateControl(); syncLoop();
-  };
+  stage.addEventListener('pointermove', e => {
+    if (!dragStart || e.pointerId !== dragStart.id) return;
+    dragOffset = dragStart.offset + (dragStart.x - e.clientX) * 0.32;
+    if (performance.now() - lastDraw >= interval) { lastDraw = performance.now(); draw(); }
+  });
+  const finishDrag = () => { dragStart = null; stage.classList.remove('dragging'); syncLoop(); };
+  stage.addEventListener('pointerup', finishDrag);
+  stage.addEventListener('pointercancel', finishDrag);
+  stage.addEventListener('lostpointercapture', finishDrag);
+  const onPreference = () => { requestedMotion = !reduced.matches; syncLoop(); };
   if (reduced.addEventListener) reduced.addEventListener('change', onPreference);
   else reduced.addListener(onPreference);
   document.addEventListener('visibilitychange', syncLoop);
@@ -288,8 +283,8 @@ function initGlobeMotion() {
 
   // Optional read-only diagnostics and explicit controls for local verification.
   canvas.__globeMotion = Object.freeze({
-    pause() { requestedMotion = false; userDecision = true; updateControl(); syncLoop(); },
-    resume() { requestedMotion = true; userDecision = true; updateControl(); syncLoop(); },
+    pause() { requestedMotion = false; syncLoop(); },
+    resume() { requestedMotion = !reduced.matches; syncLoop(); },
     diagnostics() {
       const sorted = [...samples].sort((a, b) => a - b);
       return {
@@ -303,7 +298,7 @@ function initGlobeMotion() {
       };
     }
   });
-  try { updateControl(); resize(); } catch (_) { failToStatic(); }
+  try { resize(); } catch (_) { failToStatic(); }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initGlobeMotion, { once: true });
 else initGlobeMotion();
