@@ -1,0 +1,152 @@
+{
+  "snapshot_date": "2026-10-07",
+  "sources": [
+    {
+      "id": "opzh",
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "local_file": "emiss31293_all.xls",
+      "locator": "Данные: Российская Федерация, всё население, соответствующий пол; Паспорт",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "16.03.2025",
+      "retrieved_on": "2026-10-07",
+      "sha256": "fc0645130b898fd5594ad90a2261fb3a01fa6af462e4b1496dd9c82113e5e5c8"
+    },
+    {
+      "id": "birthdeath",
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo21_2023.xlsx",
+      "local_file": "demo21_2023.xlsx",
+      "locator": "Лист1; Все население; год; сноски1 и4",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "не указана в файле",
+      "retrieved_on": "2026-10-07",
+      "sha256": "fea67d5117b78a63e795e0fe32417ee427219433e3d7b6c5c464f89bcf5ae627"
+    },
+    {
+      "id": "birthdeath2024",
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/cent_fo_4k-2024.pdf",
+      "local_file": null,
+      "locator": "РазделVII, Демографическая ситуация; 2024; РФ; сноска1 Предварительные данные",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "издание2025",
+      "retrieved_on": "2026-10-07",
+      "original_filename": "cent_fo_4k-2024.pdf",
+      "fullfile_sha256": "9adf88bbb8e4ada45674ac5c9f3508c5da99513a60f590ee856052e7c02a4bee",
+      "verification_note": "Полный PDF проверен при сверке, хранится по официальной ссылке.",
+      "evidence_text_file": "РФ_движение_населения_2024_Росстат_стр43.txt"
+    },
+    {
+      "id": "infant",
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo22_2022.xls",
+      "local_file": "demo22_2022.xls",
+      "locator": "Лист1; всё население; коэффициент на1000; округление до0.1",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "не указана в файле",
+      "retrieved_on": "2026-10-07",
+      "sha256": "04155d8f131ebab17c28c00debda9d9bdb9080d194d4bcbb4418fa47b5c15035"
+    },
+    {
+      "id": "infant2023",
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "local_file": null,
+      "locator": "Табл4.17, печатная99/PDF100; Всего",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "2024",
+      "retrieved_on": "2026-10-07",
+      "original_filename": "Ejegodnik_2024.pdf",
+      "fullfile_sha256": "415decdbc2d265a555941362af52dea2aaca0130e385a9937754e7627458a952",
+      "verification_note": "Полный PDF проверен при сверке, хранится по официальной ссылке.",
+      "evidence_text_file": "Младенческая_смертность_2023_Ежегодник2024_стр99.txt"
+    },
+    {
+      "id": "infant2024",
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Region_Pokaz_2025.pdf",
+      "local_file": null,
+      "locator": "Табл1.5; печатная38/PDF39;РФ;Младенческая смертность4.0",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "2025",
+      "retrieved_on": "2026-10-07",
+      "original_filename": "Region_Pokaz_2025.pdf",
+      "fullfile_sha256": "e6e4871f8b856699dfd41f3811bc3d6a1e23fe187d32cce6941ed303b05794d2",
+      "verification_note": "Полный PDF проверен при сверке, хранится по официальной ссылке.",
+      "evidence_text_file": "Младенческая_смертность_2024_Регионы2025_стр38.txt"
+    },
+    {
+      "id": "maternal",
+      "source_url": "https://fedstat.ru/indicator/57314",
+      "local_file": "emiss57314_all.xls",
+      "locator": "Данные; Все население; код643 за2015–2022; код643004.АГ без новых субъектов за2023–2024; Паспорт",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "22.09.2026",
+      "retrieved_on": "2026-10-07",
+      "sha256": "28d5fdaad08614b465d8f7b3b427dd4038f21ceb6eb09ab13dd2582598a69358"
+    },
+    {
+      "id": "maternalcount",
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo23_2022.xls",
+      "local_file": "demo23_2022.xls",
+      "locator": "Лист1, Все население, число умерших женщин",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "не указана в файле",
+      "retrieved_on": "2026-10-07",
+      "sha256": "00d38744edf85711219f862c9304381b9dbb8bb408cdb4137361f15529912ece"
+    },
+    {
+      "id": "maternalcount2023",
+      "source_url": "https://rosstat.gov.ru/storage/2025/02-21/iKdrivYU/ОПРФ_семья_и_дети_концепция04_СМАРТ.pdf",
+      "local_file": null,
+      "locator": "Раздел Материнская смертность2012–2023; печатная51/PDF52;2023=168",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "2025",
+      "retrieved_on": "2026-10-07",
+      "original_filename": "family_children_2025.pdf",
+      "fullfile_sha256": "ec1d66da2f4205b224b4ec7f9ab45f15ccc4bc3e172d0979d66993b4a811d3a2",
+      "verification_note": "Полный PDF проверен при сверке, хранится по официальной ссылке.",
+      "evidence_text_file": "Материнская_смертность_2012-2023_Семья_и_дети_стр51.txt"
+    },
+    {
+      "id": "under5",
+      "source_url": "https://fedstat.ru/indicator/58536",
+      "local_file": "emiss58536_all.xls",
+      "locator": "Данные; РФ, все население; категория1 Всего для2015–2016, категория12 Оба пола для2018–2023; Паспорт",
+      "provider": "Росстат/ЕМИСС",
+      "passport_last_updated": "27.06.2024",
+      "retrieved_on": "2026-10-07",
+      "sha256": "e302db355c4a6fdfb5c475ad7954a732b276f9e9550fb47cd0753b49a5969301"
+    },
+    {
+      "id": "opzh2024_preliminary",
+      "source_url": "https://34.rosstat.gov.ru/storage/mediabank/Волгоградская%20область%20в%20цифрах.pdf",
+      "local_file": null,
+      "original_filename": "Волгоградская область в цифрах.pdf",
+      "fullfile_sha256": "1070f9f98fa24b9dc552582547d36bab2411c0852a8989a7ac39d44211e156c0",
+      "locator": "печатная/PDF стр.31; примечание об ОПЖ РФ2024=72.84 предварительно",
+      "provider": "Волгоградстат/Росстат",
+      "retrieved_on": "2026-10-07",
+      "verification_note": "Полный PDF проверен при сверке, хранится по официальной ссылке.",
+      "evidence_text_file": "ОПЖ_РФ_2024_предварительная_Волгоградстат_стр31.txt"
+    }
+  ],
+  "notes": [
+    "Территориальная база с2022: без ДНР,ЛНР,Запорожской иХерсонской областей.",
+    "Общие коэффициенты смертности2011–2021 пересчитаны поВПН-2020.",
+    "ОПЖ национальная и региональная — единая выгрузкаЕМИСС31293. Современные округа:040ЮФО,041СФО,042ДФО. Исторические годы относятся ксовременному составу этих кодов; не смешивать с037,035,036.",
+    "Младенческая смертность до1года связана сЦУР3.2, но не является3.2.2.",
+    "Under5 отсутствует за2017 и2024; данные не интерполированы.",
+    "Число материнских смертей2024 не подтверждено и оставлено пропуском.",
+    "Младенческая смертность2024=4.0 втаблице1.5 издания2025 безмаркировкипредварительности; исходныйастериск снят."
+  ],
+  "output_snapshots": [
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "sha256": "6eb805d1b37c4b7624079575e6114ef893479afe644224c879692df89990dca2"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "sha256": "76576f8f3b9fd75770660de2cf702d9e07bb4748540c7aff5be635be7a96bee7"
+    },
+    {
+      "file": "cell_statuses.csv",
+      "sha256": "e9b76ef714ab9b7d4a1abc0bd98ebf85ca9e4c44b900e68b3113b5ab22657f8a"
+    }
+  ]
+}

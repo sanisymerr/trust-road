@@ -1,0 +1,2536 @@
+{
+  "rows": [
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Общий коэффициент смертности",
+      "year": 2015,
+      "value": 13.0,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo21_2023.xlsx",
+      "locator": "Лист1, Все население, колонка 6 (умерших на 1000); сноска1 о пересчёте 2011–2021 по ВПН-2020"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Общий коэффициент смертности",
+      "year": 2016,
+      "value": 12.8,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo21_2023.xlsx",
+      "locator": "Лист1, Все население, колонка 6 (умерших на 1000); сноска1 о пересчёте 2011–2021 по ВПН-2020"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Общий коэффициент смертности",
+      "year": 2018,
+      "value": 12.4,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo21_2023.xlsx",
+      "locator": "Лист1, Все население, колонка 6 (умерших на 1000); сноска1 о пересчёте 2011–2021 по ВПН-2020"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Общий коэффициент смертности",
+      "year": 2019,
+      "value": 12.2,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo21_2023.xlsx",
+      "locator": "Лист1, Все население, колонка 6 (умерших на 1000); сноска1 о пересчёте 2011–2021 по ВПН-2020"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Общий коэффициент смертности",
+      "year": 2020,
+      "value": 14.5,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo21_2023.xlsx",
+      "locator": "Лист1, Все население, колонка 6 (умерших на 1000); сноска1 о пересчёте 2011–2021 по ВПН-2020"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Общий коэффициент смертности",
+      "year": 2021,
+      "value": 16.6,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo21_2023.xlsx",
+      "locator": "Лист1, Все население, колонка 6 (умерших на 1000); сноска1 о пересчёте 2011–2021 по ВПН-2020"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Общий коэффициент смертности",
+      "year": 2022,
+      "value": 12.9,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/demo21_2023.xlsx",
+      "locator": "Лист1, Все население, колонка 6 (умерших на 1000); сноска1 о пересчёте 2011–2021 по ВПН-2020"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, все население",
+      "year": 2015,
+      "value": 71.38,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, мужчины",
+      "year": 2015,
+      "value": 65.95,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, женщины",
+      "year": 2015,
+      "value": 76.67,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, мужчины",
+      "year": 2016,
+      "value": 66.54,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, женщины",
+      "year": 2016,
+      "value": 77.01,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, мужчины",
+      "year": 2017,
+      "value": 67.56,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, женщины",
+      "year": 2017,
+      "value": 77.58,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, мужчины",
+      "year": 2018,
+      "value": 67.82,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, женщины",
+      "year": 2018,
+      "value": 77.74,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, мужчины",
+      "year": 2019,
+      "value": 68.33,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, женщины",
+      "year": 2019,
+      "value": 78.09,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, все население",
+      "year": 2020,
+      "value": 71.58,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, мужчины",
+      "year": 2020,
+      "value": 66.65,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, женщины",
+      "year": 2020,
+      "value": 76.38,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, все население",
+      "year": 2021,
+      "value": 70.15,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, мужчины",
+      "year": 2021,
+      "value": 65.69,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Ожидаемая продолжительность жизни при рождении, женщины",
+      "year": 2021,
+      "value": 74.5,
+      "source_url": "https://rosstat.gov.ru/storage/mediabank/Ejegodnik_2024.pdf",
+      "locator": "табл. 4.13, печатная стр.95, PDF страница96; обновлённые исторические оценки, не версия Регионов2022"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент материнской смертности",
+      "year": 2024,
+      "value": 11.2,
+      "source_url": "https://fedstat.ru/indicator/57314",
+      "locator": "Данные, строка643004.АГ РФ без новых субъектов, Все население; паспорт обновлён22.09.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Российская Федерация",
+      "year": 2015,
+      "value": 71.38,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 643 Российская Федерация; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Российская Федерация",
+      "year": 2021,
+      "value": 70.15,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 643 Российская Федерация; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Центральный федеральный округ",
+      "year": 2015,
+      "value": 72.76,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 030 Центральный федеральный округ; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Центральный федеральный округ",
+      "year": 2019,
+      "value": 74.61,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 030 Центральный федеральный округ; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Центральный федеральный округ",
+      "year": 2021,
+      "value": 71.08,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 030 Центральный федеральный округ; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Белгородская область",
+      "year": 2015,
+      "value": 72.63,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 14000000000 Белгородская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Белгородская область",
+      "year": 2019,
+      "value": 74.26,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 14000000000 Белгородская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Белгородская область",
+      "year": 2021,
+      "value": 70.72,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 14000000000 Белгородская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Брянская область",
+      "year": 2015,
+      "value": 70.3,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 15000000000 Брянская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Брянская область",
+      "year": 2019,
+      "value": 72.14,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 15000000000 Брянская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Брянская область",
+      "year": 2021,
+      "value": 68.54,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 15000000000 Брянская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Владимирская область",
+      "year": 2015,
+      "value": 69.88,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 17000000000 Владимирская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Владимирская область",
+      "year": 2019,
+      "value": 72.0,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 17000000000 Владимирская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Владимирская область",
+      "year": 2021,
+      "value": 68.31,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 17000000000 Владимирская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Воронежская область",
+      "year": 2019,
+      "value": 73.61,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 20000000000 Воронежская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Воронежская область",
+      "year": 2021,
+      "value": 69.58,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 20000000000 Воронежская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ивановская область",
+      "year": 2015,
+      "value": 70.4,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 24000000000 Ивановская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ивановская область",
+      "year": 2019,
+      "value": 71.41,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 24000000000 Ивановская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ивановская область",
+      "year": 2021,
+      "value": 68.51,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 24000000000 Ивановская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Калужская область",
+      "year": 2015,
+      "value": 70.95,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 29000000000 Калужская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Калужская область",
+      "year": 2019,
+      "value": 72.79,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 29000000000 Калужская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Калужская область",
+      "year": 2021,
+      "value": 69.78,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 29000000000 Калужская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Костромская область",
+      "year": 2015,
+      "value": 70.13,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 34000000000 Костромская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Костромская область",
+      "year": 2019,
+      "value": 71.83,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 34000000000 Костромская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Костромская область",
+      "year": 2021,
+      "value": 68.06,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 34000000000 Костромская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Курская область",
+      "year": 2015,
+      "value": 70.77,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 38000000000 Курская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Курская область",
+      "year": 2019,
+      "value": 72.18,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 38000000000 Курская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Курская область",
+      "year": 2021,
+      "value": 68.51,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 38000000000 Курская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Липецкая область",
+      "year": 2015,
+      "value": 71.11,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 42000000000 Липецкая область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Липецкая область",
+      "year": 2019,
+      "value": 73.38,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 42000000000 Липецкая область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Липецкая область",
+      "year": 2021,
+      "value": 68.72,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 42000000000 Липецкая область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Московская область",
+      "year": 2015,
+      "value": 72.9,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 46000000000 Московская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Московская область",
+      "year": 2019,
+      "value": 74.67,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 46000000000 Московская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Московская область",
+      "year": 2021,
+      "value": 71.36,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 46000000000 Московская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Орловская область",
+      "year": 2015,
+      "value": 70.34,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 54000000000 Орловская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Орловская область",
+      "year": 2019,
+      "value": 72.46,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 54000000000 Орловская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Орловская область",
+      "year": 2021,
+      "value": 68.9,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 54000000000 Орловская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Рязанская область",
+      "year": 2015,
+      "value": 71.48,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 61000000000 Рязанская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Рязанская область",
+      "year": 2019,
+      "value": 73.22,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 61000000000 Рязанская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Рязанская область",
+      "year": 2021,
+      "value": 68.78,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 61000000000 Рязанская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Смоленская область",
+      "year": 2015,
+      "value": 69.64,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 66000000000 Смоленская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Смоленская область",
+      "year": 2019,
+      "value": 71.66,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 66000000000 Смоленская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Смоленская область",
+      "year": 2021,
+      "value": 67.72,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 66000000000 Смоленская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тамбовская область",
+      "year": 2015,
+      "value": 71.63,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 68000000000 Тамбовская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тамбовская область",
+      "year": 2019,
+      "value": 73.43,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 68000000000 Тамбовская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тамбовская область",
+      "year": 2021,
+      "value": 69.9,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 68000000000 Тамбовская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тверская область",
+      "year": 2015,
+      "value": 69.09,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 28000000000 Тверская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тверская область",
+      "year": 2019,
+      "value": 71.2,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 28000000000 Тверская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тверская область",
+      "year": 2021,
+      "value": 67.88,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 28000000000 Тверская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тульская область",
+      "year": 2015,
+      "value": 70.26,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 70000000000 Тульская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тульская область",
+      "year": 2019,
+      "value": 72.58,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 70000000000 Тульская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тульская область",
+      "year": 2021,
+      "value": 69.54,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 70000000000 Тульская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ярославская область",
+      "year": 2015,
+      "value": 70.89,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 78000000000 Ярославская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ярославская область",
+      "year": 2019,
+      "value": 72.74,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 78000000000 Ярославская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ярославская область",
+      "year": 2021,
+      "value": 68.82,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 78000000000 Ярославская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "г. Москва",
+      "year": 2015,
+      "value": 76.45,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 45000000000 Город Москва столица Российской Федерации город федерального значения; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "г. Москва",
+      "year": 2019,
+      "value": 78.08,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 45000000000 Город Москва столица Российской Федерации город федерального значения; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "г. Москва",
+      "year": 2021,
+      "value": 74.6,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 45000000000 Город Москва столица Российской Федерации город федерального значения; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Северо-Западный федеральный округ",
+      "year": 2015,
+      "value": 71.63,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 031 Северо-Западный федеральный округ; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Северо-Западный федеральный округ",
+      "year": 2019,
+      "value": 73.61,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 031 Северо-Западный федеральный округ; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Северо-Западный федеральный округ",
+      "year": 2021,
+      "value": 70.4,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 031 Северо-Западный федеральный округ; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Карелия",
+      "year": 2015,
+      "value": 68.72,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 86000000000 Республика Карелия; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Карелия",
+      "year": 2019,
+      "value": 70.44,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 86000000000 Республика Карелия; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Карелия",
+      "year": 2021,
+      "value": 66.08,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 86000000000 Республика Карелия; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Коми",
+      "year": 2015,
+      "value": 69.14,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 87000000000 Республика Коми; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Коми",
+      "year": 2019,
+      "value": 70.78,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 87000000000 Республика Коми; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Коми",
+      "year": 2021,
+      "value": 67.55,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 87000000000 Республика Коми; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Архангельская область",
+      "year": 2015,
+      "value": 70.34,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 11000000000 Архангельская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Архангельская область",
+      "year": 2019,
+      "value": 71.56,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 11000000000 Архангельская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Архангельская область",
+      "year": 2021,
+      "value": 68.68,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 11000000000 Архангельская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ненецкий автономный округ",
+      "year": 2015,
+      "value": 70.29,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 11100000000 Ненецкий автономный округ (Архангельская область); Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ненецкий автономный округ",
+      "year": 2019,
+      "value": 72.55,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 11100000000 Ненецкий автономный округ (Архангельская область); Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ненецкий автономный округ",
+      "year": 2021,
+      "value": 68.76,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 11100000000 Ненецкий автономный округ (Архангельская область); Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Архангельская область без автономного округа",
+      "year": 2015,
+      "value": 70.33,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 11001000000 Архангельская область (кроме Ненецкого автономного округа); Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Архангельская область без автономного округа",
+      "year": 2019,
+      "value": 71.52,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 11001000000 Архангельская область (кроме Ненецкого автономного округа); Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Архангельская область без автономного округа",
+      "year": 2021,
+      "value": 68.67,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 11001000000 Архангельская область (кроме Ненецкого автономного округа); Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Вологодская область",
+      "year": 2015,
+      "value": 70.39,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 19000000000 Вологодская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Вологодская область",
+      "year": 2019,
+      "value": 71.78,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 19000000000 Вологодская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Вологодская область",
+      "year": 2021,
+      "value": 69.06,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 19000000000 Вологодская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Калининградская область",
+      "year": 2015,
+      "value": 70.56,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 27000000000 Калининградская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Калининградская область",
+      "year": 2019,
+      "value": 73.53,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 27000000000 Калининградская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ленинградская область",
+      "year": 2015,
+      "value": 71.36,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 41000000000 Ленинградская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ленинградская область",
+      "year": 2019,
+      "value": 73.9,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 41000000000 Ленинградская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ленинградская область",
+      "year": 2021,
+      "value": 70.7,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 41000000000 Ленинградская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Мурманская область",
+      "year": 2015,
+      "value": 69.9,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 47000000000 Мурманская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Мурманская область",
+      "year": 2019,
+      "value": 71.04,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 47000000000 Мурманская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Мурманская область",
+      "year": 2021,
+      "value": 67.37,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 47000000000 Мурманская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Новгородская область",
+      "year": 2015,
+      "value": 68.63,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 49000000000 Новгородская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Новгородская область",
+      "year": 2019,
+      "value": 70.33,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 49000000000 Новгородская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Новгородская область",
+      "year": 2021,
+      "value": 67.48,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 49000000000 Новгородская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Псковская область",
+      "year": 2015,
+      "value": 68.35,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 58000000000 Псковская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Псковская область",
+      "year": 2019,
+      "value": 70.38,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 58000000000 Псковская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Псковская область",
+      "year": 2021,
+      "value": 67.44,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 58000000000 Псковская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "г. Санкт-Петербург",
+      "year": 2019,
+      "value": 76.38,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 40000000000 Город Санкт-Петербург город федерального значения; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "г. Санкт-Петербург",
+      "year": 2021,
+      "value": 72.89,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 40000000000 Город Санкт-Петербург город федерального значения; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Южный федеральный округ",
+      "year": 2015,
+      "value": 71.91,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 040 Южный федеральный округ; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Южный федеральный округ",
+      "year": 2019,
+      "value": 73.77,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 040 Южный федеральный округ; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Южный федеральный округ",
+      "year": 2021,
+      "value": 70.32,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 040 Южный федеральный округ; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Адыгея",
+      "year": 2015,
+      "value": 72.4,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 79000000000 Республика Адыгея (Адыгея); Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Адыгея",
+      "year": 2019,
+      "value": 74.13,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 79000000000 Республика Адыгея (Адыгея); Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Адыгея",
+      "year": 2021,
+      "value": 71.7,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 79000000000 Республика Адыгея (Адыгея); Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Калмыкия",
+      "year": 2015,
+      "value": 72.02,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 85000000000 Республика Калмыкия; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Калмыкия",
+      "year": 2019,
+      "value": 74.54,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 85000000000 Республика Калмыкия; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Калмыкия",
+      "year": 2021,
+      "value": 71.15,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 85000000000 Республика Калмыкия; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Крым",
+      "year": 2015,
+      "value": 70.5,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 35000000000 Республика Крым; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Крым",
+      "year": 2019,
+      "value": 72.74,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 35000000000 Республика Крым; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Крым",
+      "year": 2021,
+      "value": 69.75,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 35000000000 Республика Крым; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Краснодарский край",
+      "year": 2015,
+      "value": 72.6,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 03000000000 Краснодарский край; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Краснодарский край",
+      "year": 2019,
+      "value": 74.05,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 03000000000 Краснодарский край; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Краснодарский край",
+      "year": 2021,
+      "value": 70.77,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 03000000000 Краснодарский край; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Астраханская область",
+      "year": 2015,
+      "value": 70.98,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 12000000000 Астраханская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Астраханская область",
+      "year": 2019,
+      "value": 72.95,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 12000000000 Астраханская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Астраханская область",
+      "year": 2021,
+      "value": 69.14,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 12000000000 Астраханская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Волгоградская область",
+      "year": 2015,
+      "value": 72.0,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 18000000000 Волгоградская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Волгоградская область",
+      "year": 2019,
+      "value": 74.11,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 18000000000 Волгоградская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Волгоградская область",
+      "year": 2021,
+      "value": 70.11,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 18000000000 Волгоградская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ростовская область",
+      "year": 2019,
+      "value": 73.66,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 60000000000 Ростовская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ростовская область",
+      "year": 2021,
+      "value": 69.87,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 60000000000 Ростовская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "г. Севастополь",
+      "year": 2015,
+      "value": 70.76,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 67000000000 Город федерального значения Севастополь; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "г. Севастополь",
+      "year": 2019,
+      "value": 74.75,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 67000000000 Город федерального значения Севастополь; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "г. Севастополь",
+      "year": 2021,
+      "value": 72.65,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 67000000000 Город федерального значения Севастополь; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Северо-Кавказский федеральный округ",
+      "year": 2015,
+      "value": 74.54,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 038 Северо-Кавказский федеральный округ; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Северо-Кавказский федеральный округ",
+      "year": 2019,
+      "value": 76.42,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 038 Северо-Кавказский федеральный округ; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Северо-Кавказский федеральный округ",
+      "year": 2021,
+      "value": 73.6,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 038 Северо-Кавказский федеральный округ; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Дагестан",
+      "year": 2015,
+      "value": 76.34,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 82000000000 Республика Дагестан; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Дагестан",
+      "year": 2019,
+      "value": 79.03,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 82000000000 Республика Дагестан; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Дагестан",
+      "year": 2021,
+      "value": 76.28,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 82000000000 Республика Дагестан; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Ингушетия",
+      "year": 2015,
+      "value": 78.47,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 26000000000 Республика Ингушетия; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Ингушетия",
+      "year": 2019,
+      "value": 79.64,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 26000000000 Республика Ингушетия; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Ингушетия",
+      "year": 2021,
+      "value": 75.77,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 26000000000 Республика Ингушетия; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Кабардино-Балкарская Республика",
+      "year": 2015,
+      "value": 74.54,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 83000000000 Кабардино-Балкарская Республика; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Кабардино-Балкарская Республика",
+      "year": 2019,
+      "value": 76.2,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 83000000000 Кабардино-Балкарская Республика; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Кабардино-Балкарская Республика",
+      "year": 2021,
+      "value": 73.58,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 83000000000 Кабардино-Балкарская Республика; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Карачаево-Черкесская Республика",
+      "year": 2015,
+      "value": 74.26,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 91000000000 Карачаево-Черкесская Республика; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Карачаево-Черкесская Республика",
+      "year": 2019,
+      "value": 75.7,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 91000000000 Карачаево-Черкесская Республика; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Карачаево-Черкесская Республика",
+      "year": 2021,
+      "value": 72.95,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 91000000000 Карачаево-Черкесская Республика; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Северная Осетия – Алания",
+      "year": 2015,
+      "value": 74.03,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 90000000000 Республика Северная Осетия-Алания; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Северная Осетия – Алания",
+      "year": 2019,
+      "value": 75.39,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 90000000000 Республика Северная Осетия-Алания; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Северная Осетия – Алания",
+      "year": 2021,
+      "value": 72.3,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 90000000000 Республика Северная Осетия-Алания; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Чеченская Республика",
+      "year": 2015,
+      "value": 73.33,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 96000000000 Чеченская Республика; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Чеченская Республика",
+      "year": 2019,
+      "value": 75.53,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 96000000000 Чеченская Республика; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Чеченская Республика",
+      "year": 2021,
+      "value": 72.71,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 96000000000 Чеченская Республика; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ставропольский край",
+      "year": 2015,
+      "value": 73.42,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 07000000000 Ставропольский край; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ставропольский край",
+      "year": 2019,
+      "value": 74.77,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 07000000000 Ставропольский край; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ставропольский край",
+      "year": 2021,
+      "value": 71.97,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 07000000000 Ставропольский край; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Приволжский федеральный округ",
+      "year": 2021,
+      "value": 69.56,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 033 Приволжский федеральный округ; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Башкортостан",
+      "year": 2015,
+      "value": 70.19,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 80000000000 Республика Башкортостан; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Башкортостан",
+      "year": 2019,
+      "value": 72.82,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 80000000000 Республика Башкортостан; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Башкортостан",
+      "year": 2021,
+      "value": 69.8,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 80000000000 Республика Башкортостан; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Марий Эл",
+      "year": 2015,
+      "value": 69.84,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 88000000000 Республика Марий Эл; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Марий Эл",
+      "year": 2019,
+      "value": 72.95,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 88000000000 Республика Марий Эл; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Марий Эл",
+      "year": 2021,
+      "value": 69.59,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 88000000000 Республика Марий Эл; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Мордовия",
+      "year": 2015,
+      "value": 72.14,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 89000000000 Республика Мордовия; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Мордовия",
+      "year": 2019,
+      "value": 74.14,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 89000000000 Республика Мордовия; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Мордовия",
+      "year": 2021,
+      "value": 70.57,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 89000000000 Республика Мордовия; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Татарстан",
+      "year": 2015,
+      "value": 72.92,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 92000000000 Республика Татарстан (Татарстан); Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Татарстан",
+      "year": 2019,
+      "value": 75.24,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 92000000000 Республика Татарстан (Татарстан); Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Татарстан",
+      "year": 2021,
+      "value": 71.66,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 92000000000 Республика Татарстан (Татарстан); Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Удмуртская Республика",
+      "year": 2015,
+      "value": 70.35,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 94000000000 Удмуртская Республика; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Удмуртская Республика",
+      "year": 2019,
+      "value": 72.55,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 94000000000 Удмуртская Республика; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Удмуртская Республика",
+      "year": 2021,
+      "value": 69.68,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 94000000000 Удмуртская Республика; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Чувашская Республика",
+      "year": 2015,
+      "value": 71.29,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 97000000000 Чувашская Республика - Чувашия; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Чувашская Республика",
+      "year": 2019,
+      "value": 73.34,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 97000000000 Чувашская Республика - Чувашия; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Чувашская Республика",
+      "year": 2021,
+      "value": 69.87,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 97000000000 Чувашская Республика - Чувашия; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Пермский край",
+      "year": 2015,
+      "value": 69.06,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 57000000000 Пермский край; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Пермский край",
+      "year": 2019,
+      "value": 71.25,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 57000000000 Пермский край; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Пермский край",
+      "year": 2021,
+      "value": 68.45,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 57000000000 Пермский край; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Кировская область",
+      "year": 2015,
+      "value": 70.88,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 33000000000 Кировская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Кировская область",
+      "year": 2019,
+      "value": 72.48,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 33000000000 Кировская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Кировская область",
+      "year": 2021,
+      "value": 69.08,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 33000000000 Кировская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Нижегородская область",
+      "year": 2015,
+      "value": 70.11,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 22000000000 Нижегородская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Нижегородская область",
+      "year": 2019,
+      "value": 72.19,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 22000000000 Нижегородская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Нижегородская область",
+      "year": 2021,
+      "value": 68.81,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 22000000000 Нижегородская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Оренбургская область",
+      "year": 2015,
+      "value": 69.5,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 53000000000 Оренбургская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Оренбургская область",
+      "year": 2019,
+      "value": 71.81,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 53000000000 Оренбургская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Оренбургская область",
+      "year": 2021,
+      "value": 67.96,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 53000000000 Оренбургская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Пензенская область",
+      "year": 2015,
+      "value": 72.0,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 56000000000 Пензенская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Пензенская область",
+      "year": 2019,
+      "value": 73.35,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 56000000000 Пензенская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Пензенская область",
+      "year": 2021,
+      "value": 69.77,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 56000000000 Пензенская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Самарская область",
+      "year": 2015,
+      "value": 70.4,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 36000000000 Самарская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Самарская область",
+      "year": 2019,
+      "value": 72.84,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 36000000000 Самарская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Самарская область",
+      "year": 2021,
+      "value": 69.48,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 36000000000 Самарская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Саратовская область",
+      "year": 2015,
+      "value": 71.5,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 63000000000 Саратовская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Саратовская область",
+      "year": 2019,
+      "value": 73.28,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 63000000000 Саратовская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Саратовская область",
+      "year": 2021,
+      "value": 69.46,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 63000000000 Саратовская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ульяновская область",
+      "year": 2015,
+      "value": 70.36,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 73000000000 Ульяновская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ульяновская область",
+      "year": 2019,
+      "value": 72.76,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 73000000000 Ульяновская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ульяновская область",
+      "year": 2021,
+      "value": 68.87,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 73000000000 Ульяновская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Уральский федеральный округ",
+      "year": 2015,
+      "value": 70.39,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 034 Уральский федеральный округ; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Уральский федеральный округ",
+      "year": 2019,
+      "value": 72.54,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 034 Уральский федеральный округ; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Уральский федеральный округ",
+      "year": 2021,
+      "value": 69.66,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 034 Уральский федеральный округ; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Курганская область",
+      "year": 2015,
+      "value": 68.85,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 37000000000 Курганская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Курганская область",
+      "year": 2019,
+      "value": 70.75,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 37000000000 Курганская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Курганская область",
+      "year": 2021,
+      "value": 67.82,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 37000000000 Курганская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Свердловская область",
+      "year": 2015,
+      "value": 69.82,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 65000000000 Свердловская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Свердловская область",
+      "year": 2019,
+      "value": 71.79,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 65000000000 Свердловская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тюменская область",
+      "year": 2015,
+      "value": 71.91,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71000000000 Тюменская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тюменская область",
+      "year": 2019,
+      "value": 74.37,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71000000000 Тюменская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тюменская область",
+      "year": 2021,
+      "value": 71.69,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71000000000 Тюменская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ханты-Мансийский автономный округ – Югра",
+      "year": 2015,
+      "value": 72.62,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71100000000 Ханты-Мансийский автономный округ - Югра (Тюменская область); Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ханты-Мансийский автономный округ – Югра",
+      "year": 2019,
+      "value": 75.11,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71100000000 Ханты-Мансийский автономный округ - Югра (Тюменская область); Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ханты-Мансийский автономный округ – Югра",
+      "year": 2021,
+      "value": 72.16,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71100000000 Ханты-Мансийский автономный округ - Югра (Тюменская область); Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ямало-Ненецкий автономный округ",
+      "year": 2015,
+      "value": 71.61,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71140000000 Ямало-Ненецкий автономный округ (Тюменская область); Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ямало-Ненецкий автономный округ",
+      "year": 2019,
+      "value": 74.21,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71140000000 Ямало-Ненецкий автономный округ (Тюменская область); Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Ямало-Ненецкий автономный округ",
+      "year": 2021,
+      "value": 71.78,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71140000000 Ямало-Ненецкий автономный округ (Тюменская область); Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тюменская область без автономных округов",
+      "year": 2015,
+      "value": 70.91,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71001000000 Тюменская область (кроме Ханты-Мансийского автономного округа-Югры и Ямало-Ненецкого автономного округа); Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тюменская область без автономных округов",
+      "year": 2019,
+      "value": 73.41,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71001000000 Тюменская область (кроме Ханты-Мансийского автономного округа-Югры и Ямало-Ненецкого автономного округа); Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Тюменская область без автономных округов",
+      "year": 2021,
+      "value": 70.96,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 71001000000 Тюменская область (кроме Ханты-Мансийского автономного округа-Югры и Ямало-Ненецкого автономного округа); Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Челябинская область",
+      "year": 2021,
+      "value": 69.17,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 75000000000 Челябинская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Сибирский федеральный округ",
+      "year": 2015,
+      "value": 69.41,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 041 Сибирский федеральный округ; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Сибирский федеральный округ",
+      "year": 2019,
+      "value": 71.06,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 041 Сибирский федеральный округ; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Сибирский федеральный округ",
+      "year": 2021,
+      "value": 68.25,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 041 Сибирский федеральный округ; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Алтай",
+      "year": 2015,
+      "value": 68.19,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 84000000000 Республика Алтай; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Алтай",
+      "year": 2019,
+      "value": 69.78,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 84000000000 Республика Алтай; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Алтай",
+      "year": 2021,
+      "value": 67.22,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 84000000000 Республика Алтай; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Тыва",
+      "year": 2015,
+      "value": 63.14,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 93000000000 Республика Тыва; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Тыва",
+      "year": 2019,
+      "value": 67.5,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 93000000000 Республика Тыва; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Тыва",
+      "year": 2021,
+      "value": 66.81,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 93000000000 Республика Тыва; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Хакасия",
+      "year": 2015,
+      "value": 68.72,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 95000000000 Республика Хакасия; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Хакасия",
+      "year": 2019,
+      "value": 71.1,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 95000000000 Республика Хакасия; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Хакасия",
+      "year": 2021,
+      "value": 68.62,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 95000000000 Республика Хакасия; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Алтайский край",
+      "year": 2015,
+      "value": 70.13,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 01000000000 Алтайский край; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Алтайский край",
+      "year": 2019,
+      "value": 70.92,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 01000000000 Алтайский край; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Алтайский край",
+      "year": 2021,
+      "value": 67.79,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 01000000000 Алтайский край; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Красноярский край",
+      "year": 2015,
+      "value": 69.72,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 04000000000 Красноярский край; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Красноярский край",
+      "year": 2019,
+      "value": 71.23,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 04000000000 Красноярский край; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Красноярский край",
+      "year": 2021,
+      "value": 68.45,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 04000000000 Красноярский край; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Иркутская область",
+      "year": 2015,
+      "value": 67.46,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 25000000000 Иркутская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Иркутская область",
+      "year": 2019,
+      "value": 69.73,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 25000000000 Иркутская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Иркутская область",
+      "year": 2021,
+      "value": 67.01,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 25000000000 Иркутская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Кемеровская область",
+      "year": 2015,
+      "value": 68.27,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 32000000000 Кемеровская область - Кузбасс; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Кемеровская область",
+      "year": 2019,
+      "value": 69.69,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 32000000000 Кемеровская область - Кузбасс; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Кемеровская область",
+      "year": 2021,
+      "value": 67.54,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 32000000000 Кемеровская область - Кузбасс; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Новосибирская область",
+      "year": 2015,
+      "value": 70.91,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 50000000000 Новосибирская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Новосибирская область",
+      "year": 2019,
+      "value": 72.37,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 50000000000 Новосибирская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Новосибирская область",
+      "year": 2021,
+      "value": 69.35,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 50000000000 Новосибирская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Омская область",
+      "year": 2015,
+      "value": 70.39,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 52000000000 Омская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Омская область",
+      "year": 2019,
+      "value": 72.29,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 52000000000 Омская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Омская область",
+      "year": 2021,
+      "value": 68.98,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 52000000000 Омская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Томская область",
+      "year": 2015,
+      "value": 71.29,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 69000000000 Томская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Томская область",
+      "year": 2019,
+      "value": 72.93,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 69000000000 Томская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Томская область",
+      "year": 2021,
+      "value": 69.86,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 69000000000 Томская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Дальневосточный федеральный округ",
+      "year": 2015,
+      "value": 68.48,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 042 Дальневосточный федеральный округ; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Дальневосточный федеральный округ",
+      "year": 2019,
+      "value": 70.08,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 042 Дальневосточный федеральный округ; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Дальневосточный федеральный округ",
+      "year": 2021,
+      "value": 67.95,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 042 Дальневосточный федеральный округ; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Бурятия",
+      "year": 2015,
+      "value": 69.1,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 81000000000 Республика Бурятия; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Бурятия",
+      "year": 2019,
+      "value": 70.71,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 81000000000 Республика Бурятия; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Бурятия",
+      "year": 2021,
+      "value": 68.87,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 81000000000 Республика Бурятия; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Саха (Якутия)",
+      "year": 2015,
+      "value": 70.23,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 98000000000 Республика Саха (Якутия); Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Саха (Якутия)",
+      "year": 2019,
+      "value": 72.82,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 98000000000 Республика Саха (Якутия); Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Республика Саха (Якутия)",
+      "year": 2021,
+      "value": 69.82,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 98000000000 Республика Саха (Якутия); Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Забайкальский край",
+      "year": 2015,
+      "value": 67.15,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 76000000000 Забайкальский край; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Забайкальский край",
+      "year": 2019,
+      "value": 68.49,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 76000000000 Забайкальский край; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Забайкальский край",
+      "year": 2021,
+      "value": 66.37,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 76000000000 Забайкальский край; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Камчатский край",
+      "year": 2015,
+      "value": 68.23,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 30000000000 Камчатский край; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Камчатский край",
+      "year": 2019,
+      "value": 69.91,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 30000000000 Камчатский край; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Камчатский край",
+      "year": 2021,
+      "value": 67.3,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 30000000000 Камчатский край; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Приморский край",
+      "year": 2015,
+      "value": 69.14,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 05000000000 Приморский край; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Приморский край",
+      "year": 2019,
+      "value": 70.42,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 05000000000 Приморский край; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Приморский край",
+      "year": 2021,
+      "value": 68.53,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 05000000000 Приморский край; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Хабаровский край",
+      "year": 2015,
+      "value": 68.78,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 08000000000 Хабаровский край; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Хабаровский край",
+      "year": 2019,
+      "value": 70.21,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 08000000000 Хабаровский край; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Хабаровский край",
+      "year": 2021,
+      "value": 68.05,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 08000000000 Хабаровский край; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Амурская область",
+      "year": 2015,
+      "value": 67.15,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 10000000000 Амурская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Амурская область",
+      "year": 2019,
+      "value": 68.42,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 10000000000 Амурская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Амурская область",
+      "year": 2021,
+      "value": 66.1,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 10000000000 Амурская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Магаданская область",
+      "year": 2015,
+      "value": 67.93,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 44000000000 Магаданская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Магаданская область",
+      "year": 2019,
+      "value": 69.23,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 44000000000 Магаданская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Магаданская область",
+      "year": 2021,
+      "value": 66.98,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 44000000000 Магаданская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Сахалинская область",
+      "year": 2015,
+      "value": 67.95,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 64000000000 Сахалинская область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Сахалинская область",
+      "year": 2019,
+      "value": 70.39,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 64000000000 Сахалинская область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Сахалинская область",
+      "year": 2021,
+      "value": 68.49,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 64000000000 Сахалинская область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Еврейская автономная область",
+      "year": 2015,
+      "value": 64.92,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 99000000000 Еврейская автономная область; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Еврейская автономная область",
+      "year": 2019,
+      "value": 67.91,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 99000000000 Еврейская автономная область; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Еврейская автономная область",
+      "year": 2021,
+      "value": 65.96,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 99000000000 Еврейская автономная область; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Чукотский автономный округ",
+      "year": 2015,
+      "value": 63.91,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 77000000000 Чукотский автономный округ; Оба пола; всё население; год 2015; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Чукотский автономный округ",
+      "year": 2019,
+      "value": 67.26,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 77000000000 Чукотский автономный округ; Оба пола; всё население; год 2019; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_opzh_regiony.csv",
+      "key": "Чукотский автономный округ",
+      "year": 2021,
+      "value": 64.0,
+      "source_url": "https://fedstat.ru/indicator/31293",
+      "locator": "Данные; 77000000000 Чукотский автономный округ; Оба пола; всё население; год 2021; актуальная выгрузка07.10.2026"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент смертности детей до 5 лет",
+      "year": 2015,
+      "value": 8.0,
+      "source_url": "https://fedstat.ru/indicator/58536",
+      "locator": "Данные; РФ, всё население; Всего/Оба пола; соответствующий год",
+      "change_type": "added_indicator"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент смертности детей до 5 лет",
+      "year": 2016,
+      "value": 7.4,
+      "source_url": "https://fedstat.ru/indicator/58536",
+      "locator": "Данные; РФ, всё население; Всего/Оба пола; соответствующий год",
+      "change_type": "added_indicator"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент смертности детей до 5 лет",
+      "year": 2018,
+      "value": 6.3,
+      "source_url": "https://fedstat.ru/indicator/58536",
+      "locator": "Данные; РФ, всё население; Всего/Оба пола; соответствующий год",
+      "change_type": "added_indicator"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент смертности детей до 5 лет",
+      "year": 2019,
+      "value": 6.0,
+      "source_url": "https://fedstat.ru/indicator/58536",
+      "locator": "Данные; РФ, всё население; Всего/Оба пола; соответствующий год",
+      "change_type": "added_indicator"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент смертности детей до 5 лет",
+      "year": 2020,
+      "value": 5.5,
+      "source_url": "https://fedstat.ru/indicator/58536",
+      "locator": "Данные; РФ, всё население; Всего/Оба пола; соответствующий год",
+      "change_type": "added_indicator"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент смертности детей до 5 лет",
+      "year": 2021,
+      "value": 5.8,
+      "source_url": "https://fedstat.ru/indicator/58536",
+      "locator": "Данные; РФ, всё население; Всего/Оба пола; соответствующий год",
+      "change_type": "added_indicator"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент смертности детей до 5 лет",
+      "year": 2022,
+      "value": 5.6,
+      "source_url": "https://fedstat.ru/indicator/58536",
+      "locator": "Данные; РФ, всё население; Всего/Оба пола; соответствующий год",
+      "change_type": "added_indicator"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент смертности детей до 5 лет",
+      "year": 2023,
+      "value": 5.3,
+      "source_url": "https://fedstat.ru/indicator/58536",
+      "locator": "Данные; РФ, всё население; Всего/Оба пола; соответствующий год",
+      "change_type": "added_indicator"
+    }
+  ],
+  "notes": [
+    "Региональные 2015/2019/2021 полностью обновлены по единой актуальной выгрузке ЕМИСС 31293.",
+    "ЮФО код040 — современный состав с Крымом/Севастополем; СФО041,ДФО042 — состав после03.11.2018. Не использовать исторические коды037/035/036 для этих рядов."
+  ],
+  "notation_changes": [
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Число родившихся",
+      "year": 2024,
+      "change": "добавлен знак предварительности по сноске1 официального бюллетеняЦФО"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Число умерших",
+      "year": 2024,
+      "change": "добавлен знак предварительности по сноске1 официального бюллетеняЦФО"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Естественный прирост (убыль) населения",
+      "year": 2024,
+      "change": "добавлен знак предварительности по сноске1 официального бюллетеняЦФО"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Общий коэффициент смертности",
+      "year": 2024,
+      "change": "добавлен знак предварительности по сноске1 официального бюллетеняЦФО"
+    },
+    {
+      "file": "rosstat_rf_zdorovie.csv",
+      "key": "Коэффициент младенческой смертности",
+      "year": 2024,
+      "change": "снят прежний знак предварительности; в выбранной таблице1.5 Регионов России2025 значение4.0 приводится беззвёздочки"
+    }
+  ]
+}

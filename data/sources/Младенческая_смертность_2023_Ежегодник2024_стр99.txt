@@ -1,0 +1,63 @@
+4. НАСЕЛЕНИЕ / POPULATION 
+ 
+Российский статистический ежегодник. 2024 
+ 
+99 
+ 
+4.17. МЛАДЕНЧЕСКАЯ СМЕРТНОСТЬ1) 
+INFANT MORTALITY 1) 
+ 2000 2010 2021 2022 2023  
+Умершие в возрасте до 1 года, человек      Infant deaths under 1 year, persons 
+всего 19 286 13 405 6 516 5 876 5 313 total 
+мальчики 11 248 7 626 3 798 3 346 2 957 males 
+девочки 8 038 5 779 2 718 2 530 2 356 females 
+Умеpшие в возpасте до 1 года  
+на 1 000 pодившихся живыми      Infant deaths under 1 year per 1 000 live births 
+всего 15,3 7,5 4,6 4,4 4,2 total 
+мальчики 17,3 8,6 5,3 4,9 4,5 males 
+девочки 13,2 6,9 4,0 3,9 3,8 females 
+1) См. методологические пояснения к разделу. 
+1) See the methodological notes for this section. 
+4.18. МЛАДЕНЧЕСКАЯ СМЕРТНОСТЬ ПО ОСНОВНЫМ КЛАССАМ ПРИЧИН СМЕРТИ  
+INFANT MORTALITY BY MAJOR CAUSES OF DEATH 
+ 2000 2010 2021 2022 2023  
+ Человек / Persons  
+Умершие в возрасте до 1 года  
+от всех причин 19 286 13 405 6 516 5 876 5 313 All causes of Infant deaths under 1 year 
+из них по причинам:        of which by causes: 
+от некоторых инфекционных  
+и паpазитаpных болезней 1 162 544 247 268 256 
+certain infectious  
+and parasitic diseases 
+от болезней оpганов дыхания 2 073 825 344 316 319 diseases of the respiratory system 
+от болезней оpганов пищеваpения 117 84 39 31 41 diseases of the digestive system 
+от вpожденных аномалий (пороков развития),  
+деформаций и хромосомных нарушений 4 460 3 245 1 361 1 244 1 088 
+congenital malformations, deformations and 
+chromosomal abnormalities 
+от отдельных состояний, возникающих  
+в пеpинатальном пеpиоде 8 517 6 152 3 291 2 856 2 464 
+certain conditions originating in the perinatal  
+period 
+от внешних причин смерти 1 222 846 386 345 345 external causes of deaths 
+ 
+На 10 000 родившихся живыми /  
+Per 10 000 live births  
+Умершие в возрасте до 1 года  
+от всех причин 153,3 75,1 46,4 44,4 41,5 All causes of Infant deaths under 1 year 
+из них по причинам:      of which by causes: 
+от некоторых инфекционных  
+и паpазитаpных болезней 9,2 3,0 1,8 2,0 2,0 
+certain infectious  
+and parasitic diseases 
+от болезней оpганов дыхания 16,5 4,6 2,4 2,4 2,5 diseases of the respiratory system 
+от болезней оpганов пищеваpения 0,9 0,5 0,3 0,2 0,3 diseases of the digestive system 
+от вpожденных аномалий (пороков развития),  
+деформаций и хромосомных нарушений 35,5 18,2 9,7 9,4 8,4 
+congenital malformations, deformations and 
+chromosomal abnormalities 
+от отдельных состояний, возникающих  
+в пеpинатальном пеpиоде 67,7 34,5 23,4 21,6 19,2 
+certain conditions originating in the perinatal  
+period 
+от внешних причин смерти 9,7 4,7 2,7 2,6 2,7 external causes of deaths 

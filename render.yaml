@@ -1,33 +1,11 @@
 services:
   - type: web
-    name: trust-road
+    name: sdg3-bbi24
     runtime: python
     plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --bind 0.0.0.0:$PORT app:app
-    healthCheckPath: /health
+    buildCommand: python -m compileall -q serve.py
+    startCommand: bash run.sh
+    healthCheckPath: /_stcore/health
     envVars:
       - key: PYTHON_VERSION
-        value: 3.12.4
-      - key: SECRET_KEY
-        generateValue: true
-      - key: ADMIN_USERNAME
-        value: trust
-      - key: ADMIN_PASSWORD
-        value: binance
-      - key: PUBLIC_BASE_URL
-        value: https://trust-road.onrender.com
-      - key: FLASK_DEBUG
-        value: "0"
-      - key: SESSION_COOKIE_SECURE
-        value: "1"
-      - key: DATABASE_URL
-        fromDatabase:
-          name: trust-road-db
-          property: connectionString
-
-databases:
-  - name: trust-road-db
-    plan: free
-    databaseName: trust_road
-    user: trust_road
+        value: 3.12.14

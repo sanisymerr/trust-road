@@ -1,6 +1,8 @@
-Flask>=3.1,<4
-Flask-SQLAlchemy>=3.1,<4
-qrcode[pil]>=8.0,<9
-Pillow>=11.0,<13
-gunicorn>=23.0,<27
-psycopg[binary]>=3.2,<4
+pandas==2.2.3
+numpy==2.3.5
+matplotlib==3.11.2
+plotly==7.1.0
+streamlit==1.65.0
+nbformat==5.11.1
+nbclient==0.11.0
+ipykernel==7.4.0
