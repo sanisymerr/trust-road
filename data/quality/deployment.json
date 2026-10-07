@@ -1,0 +1,25 @@
+{
+  "verified_date": "2026-10-07",
+  "url": "https://trust-road.onrender.com/",
+  "repository": "https://github.com/sanisymerr/trust-road",
+  "deployment_commit": "76db4167077b5e0a968c69fe45a625b5c7c7d4db",
+  "render_service": "srv-d6k24l3h46gs73e6ue2g",
+  "render_deploy": "dep-db34mpom7kps73d18gr0",
+  "render_status": "Deploy succeeded | Live",
+  "build_command": "python -m compileall -q serve.py",
+  "start_command": "bash run.sh",
+  "health_path": "/health",
+  "backup_branch": "archive/trust-road-before-sdg3-20261007",
+  "browser_checks": [
+    "public access without login",
+    "national presets and metrics",
+    "regions and district filtering",
+    "Primorye 68.53, RF 70.15, national rank57",
+    "empty regional period2024",
+    "invalid district rejected",
+    "CSV3observationsPrimorye",
+    "mobile390 no horizontal overflow",
+    "no console errors"
+  ],
+  "html_matches_verified_local_file": true
+}
